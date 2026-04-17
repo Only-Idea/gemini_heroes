@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "challenges": "チャレンジ",
+    "features": "機能",
+    "impact": "インパクト",
+    "contact": "お問い合わせ",
+    "download": "ダウンロード"
+  },
+  "hero": {
+    "label": "バーチャルチャレンジ · 2026",
+    "title": "すべての一歩が、冒険になる。",
+    "subtitle": "富士山、四十七士、日本の鉄道。歩くほど、世界が変わる。",
+    "cta_download": "App Storeでダウンロード",
+    "cta_learn": "もっと知る",
+    "scroll": "Scroll"
+  },
+  "stats": {
+    "routes": "チャレンジルート",
+    "activities": "アクティビティタイプ",
+    "countries": "対応国"
+  },
+  "medal": {
+    "label": "本物を手に入れる",
+    "title": "デジタルバッジではない。本物のメダルを。",
+    "description": "各チャレンジを完了すると、世界中に発送されるプレミアムメダルを獲得できます。"
+  },
+  "features": {
+    "map": "インタラクティブマップ",
+    "tracking": "リアルタイム参加者トラッキング",
+    "team": "チーム機能",
+    "achievements": "アチーブメント",
+    "streak": "ストリーク",
+    "community": "コミュニティフィード"
+  },
+  "impact": {
+    "title": "環境へのインパクト",
+    "trees": "植樹",
+    "ocean": "海洋浄化"
+  },
+  "activities": {
+    "message": "自分のペースで動く"
+  },
+  "cta": {
+    "title": "あなたの冒険を始めよう。"
+  },
+  "contact": {
+    "name": "お名前",
+    "email": "メール",
+    "message": "メッセージ",
+    "submit": "送信"
+  },
+  "footer": {
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "contact": "お問い合わせ",
+    "copyright": "© 2026 Heroes Inc."
+  },
+  "download_bar": {
+    "label": "無料でダウンロード"
+  }
+}

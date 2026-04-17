@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    }
+  },
+  "context": {
+    "discoveryMaxDirs": 200,
+    "includeDirectories": ["lib", "test"]
+  },
+  "hooks": {
+    "AfterTool": [
+      {
+        "matcher": "write_file|replace_in_file|apply_diff",
+        "command": ".gemini/hooks/run-analyzer.sh",
+        "timeout": 60000
+      }
+    ]
+  },
+  "ui": {
+    "theme": "dark",
+    "hideContextSummary": false
+  }
+}

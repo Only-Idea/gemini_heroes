@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* =========================================
+   Heroes Design System — CSS Variables
+   ========================================= */
+
+:root {
+  /* --- Primary Gradient --- */
+  --color-coral: #EC7A5C;
+  --color-amber: #F2BE5E;
+  --color-teal: #375E65;
+
+  /* --- Backgrounds --- */
+  --color-void: #0F1114;
+  --color-carbon: #181B21;
+  --color-slate: #1E2128;
+
+  /* --- Text & UI --- */
+  --color-ivory: #E8E2D6;
+  --color-stone: #A0998A;
+  --color-ash: #5A5550;
+  --color-border: #2A2E35;
+
+  /* --- Gradient --- */
+  --gradient-heroes: linear-gradient(135deg, #375E65 0%, #F2BE5E 50%, #EC7A5C 100%);
+
+  /* --- Spacing --- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+  --space-2xl: 128px;
+  --space-3xl: 200px;
+
+  /* --- Border Radius --- */
+  --radius-sm: 8px;
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --radius-phone-outer: 44px;
+  --radius-phone-inner: 34px;
+
+  /* --- Easing --- */
+  --ease-heroes: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* --- Font Stacks (Noto Sans JP via next/font CSS var) --- */
+  --font-display: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", var(--font-noto-sans-jp), "Yu Gothic", "Segoe UI", sans-serif;
+  --font-body: var(--font-display);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    var(--font-noto-sans-jp), monospace;
+}
+
+/* =========================================
+   Tailwind Theme — Map CSS vars to utilities
+   ========================================= */
+
+@theme inline {
+  /* Colors */
+  --color-coral: var(--color-coral);
+  --color-amber: var(--color-amber);
+  --color-teal: var(--color-teal);
+  --color-void: var(--color-void);
+  --color-carbon: var(--color-carbon);
+  --color-slate: var(--color-slate);
+  --color-ivory: var(--color-ivory);
+  --color-stone: var(--color-stone);
+  --color-ash: var(--color-ash);
+  --color-border: var(--color-border);
+
+  /* Font families */
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  /* Font sizes — Type Scale */
+  --font-size-hero: clamp(45px, 8vw, 96px);
+  --font-size-section-title: clamp(32px, 4.5vw, 60px);
+  --font-size-challenge: 28px;
+  --font-size-stat: clamp(45px, 5vw, 72px);
+  --font-size-body-lg: 17px;
+  --font-size-body: 17px;
+  --font-size-nav: 13px;
+  --font-size-label: 11px;
+  --font-size-button: 12px;
+  --font-size-footer: 11px;
+}
+
+/* =========================================
+   Base Styles
+   ========================================= */
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.59;
+}
+
+/* =========================================
+   Utility Classes — Gradient
+   ========================================= */
+
+.bg-gradient-heroes {
+  background-image: var(--gradient-heroes);
+}
+
+.text-gradient-heroes {
+  background-image: var(--gradient-heroes);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.border-gradient-heroes {
+  border-image: var(--gradient-heroes) 1;
+}
+
+/* =========================================
+   Scroll Reveal (base pattern)
+   ========================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s var(--ease-heroes), transform 1s var(--ease-heroes);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
+   Reduced Motion
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

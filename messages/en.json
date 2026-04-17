@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "challenges": "Challenges",
+    "features": "Features",
+    "impact": "Impact",
+    "contact": "Contact",
+    "download": "Download"
+  },
+  "hero": {
+    "label": "Virtual Challenge · 2026",
+    "title": "Every step becomes an adventure.",
+    "subtitle": "Mt. Fuji, the 47 Ronin, Japanese Railways. The more you move, the more the world changes.",
+    "cta_download": "Download on App Store",
+    "cta_learn": "Learn More",
+    "scroll": "Scroll"
+  },
+  "stats": {
+    "routes": "Challenge Routes",
+    "activities": "Activity Types",
+    "countries": "Countries Supported"
+  },
+  "medal": {
+    "label": "Earn the Real Thing",
+    "title": "Not a digital badge. A real medal.",
+    "description": "Complete each challenge to earn a premium medal shipped worldwide in original packaging."
+  },
+  "features": {
+    "map": "Interactive Map",
+    "tracking": "Real-time Participant Tracking",
+    "team": "Team Features",
+    "achievements": "Achievements",
+    "streak": "Streak Tracking",
+    "community": "Community Feed"
+  },
+  "impact": {
+    "title": "Environmental Impact",
+    "trees": "Tree Planting",
+    "ocean": "Ocean Cleanup"
+  },
+  "activities": {
+    "message": "Move at your own pace"
+  },
+  "cta": {
+    "title": "Start your adventure."
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Submit"
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "copyright": "© 2026 Heroes Inc."
+  },
+  "download_bar": {
+    "label": "Download for Free"
+  }
+}
