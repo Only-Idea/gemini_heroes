@@ -19,9 +19,9 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: 'Heroes — バーチャルチャレンジ',
+  title: 'Heroes — The Virtual Odyssey',
   description:
-    'すべての一歩が、冒険になる。富士山、四十七士、日本の鉄道。歩くほど、世界が変わる。',
+    'Every step becomes a journey. Discover Japan’s most iconic routes through an interactive 3D experience.',
 };
 
 export default async function LocaleLayout({
@@ -34,7 +34,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${notoSansJP.variable} h-full antialiased`}>
-      <body className="min-h-full bg-void text-ivory">
+      <body className="min-h-full bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
             <GrainOverlay />

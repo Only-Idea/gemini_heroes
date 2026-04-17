@@ -16,7 +16,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.5);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -38,13 +38,13 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 z-50 w-full transition-colors duration-500 ${
+        className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
           scrolled
-            ? 'bg-slate/80 backdrop-blur-xl'
-            : 'bg-transparent backdrop-blur-none'
+            ? 'bg-white/40 backdrop-blur-xl py-3 border-b border-white/50 shadow-heroes'
+            : 'bg-transparent py-5 backdrop-blur-none'
         }`}
       >
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 lg:px-10">
+        <div className="mx-auto flex items-center justify-between px-6 lg:px-10 max-w-[1400px]">
           {/* Logo */}
           <a
             href="#"
@@ -52,18 +52,18 @@ export default function Navbar() {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="font-display text-[18px] font-bold tracking-[0.02em] text-ivory"
+            className="font-display text-[20px] font-bold tracking-tight text-foreground"
           >
             Heroes
           </a>
 
           {/* Desktop nav links */}
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-10 md:flex">
             {navLinks.map(({ key, href }) => (
               <button
                 key={key}
                 onClick={() => handleAnchorClick(href)}
-                className="font-body text-nav font-normal tracking-[0.06em] text-ivory/70 transition-opacity duration-300 hover:text-ivory"
+                className="font-body text-nav font-medium tracking-wide text-muted transition-colors duration-300 hover:text-foreground"
               >
                 {t(key)}
               </button>
@@ -72,7 +72,7 @@ export default function Navbar() {
 
           {/* Download button (desktop) */}
           <button
-            className="hidden rounded-full border border-transparent bg-gradient-heroes px-5 py-2 font-mono text-button font-medium tracking-[0.1em] text-void transition-transform duration-400 hover:-translate-y-0.5 md:block"
+            className="hidden rounded-full bg-gradient-heroes px-6 py-2.5 font-mono text-button font-semibold tracking-wider text-white shadow-lg transition-all duration-400 hover:scale-105 active:scale-95 md:block"
           >
             {t('download')}
           </button>
@@ -80,22 +80,22 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex h-12 w-12 items-center justify-center md:hidden"
+            className="flex h-10 w-10 items-center justify-center md:hidden"
             aria-label="Toggle menu"
           >
             <div className="relative h-5 w-6">
               <span
-                className={`absolute left-0 h-[1.5px] w-6 bg-ivory transition-all duration-300 ${
+                className={`absolute left-0 h-[1.5px] w-6 bg-foreground transition-all duration-300 ${
                   mobileOpen ? 'top-[9px] rotate-45' : 'top-0'
                 }`}
               />
               <span
-                className={`absolute left-0 top-[9px] h-[1.5px] w-6 bg-ivory transition-opacity duration-300 ${
+                className={`absolute left-0 top-[9px] h-[1.5px] w-6 bg-foreground transition-opacity duration-300 ${
                   mobileOpen ? 'opacity-0' : 'opacity-100'
                 }`}
               />
               <span
-                className={`absolute left-0 h-[1.5px] w-6 bg-ivory transition-all duration-300 ${
+                className={`absolute left-0 h-[1.5px] w-6 bg-foreground transition-all duration-300 ${
                   mobileOpen ? 'top-[9px] -rotate-45' : 'top-[18px]'
                 }`}
               />
@@ -106,23 +106,23 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-void/95 backdrop-blur-xl transition-opacity duration-500 md:hidden ${
-          mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+        className={`fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl transition-all duration-500 md:hidden ${
+          mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0 translate-y-[-10%]'
         }`}
       >
-        <div className="flex h-full flex-col items-center justify-center gap-8 pt-16">
+        <div className="flex h-full flex-col items-center justify-center gap-10">
           {navLinks.map(({ key, href }) => (
             <button
               key={key}
               onClick={() => handleAnchorClick(href)}
-              className="min-h-[48px] font-display text-[24px] font-bold tracking-[0.02em] text-ivory/80 transition-colors duration-300 hover:text-ivory"
+              className="font-display text-[32px] font-bold tracking-tight text-foreground/40 transition-colors duration-300 hover:text-foreground"
             >
               {t(key)}
             </button>
           ))}
           <button
             onClick={() => setMobileOpen(false)}
-            className="mt-4 rounded-full bg-gradient-heroes px-8 py-3 font-mono text-button font-medium tracking-[0.1em] text-void"
+            className="mt-6 rounded-full bg-gradient-heroes px-10 py-4 font-mono text-button font-bold tracking-widest text-white shadow-xl"
           >
             {t('download')}
           </button>

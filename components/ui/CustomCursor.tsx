@@ -28,22 +28,28 @@ export default function CustomCursor() {
     };
 
     const animate = () => {
-      ringPos.current.x = lerp(ringPos.current.x, mousePos.current.x, 0.18);
-      ringPos.current.y = lerp(ringPos.current.y, mousePos.current.y, 0.18);
+      ringPos.current.x = lerp(ringPos.current.x, mousePos.current.x, 0.15);
+      ringPos.current.y = lerp(ringPos.current.y, mousePos.current.y, 0.15);
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate(${mousePos.current.x - 3}px, ${mousePos.current.y - 3}px)`;
       }
 
       if (ringRef.current) {
-        const size = isHovering.current ? 64 : 36;
+        const size = isHovering.current ? 72 : 24;
         const offset = size / 2;
         ringRef.current.style.width = `${size}px`;
         ringRef.current.style.height = `${size}px`;
         ringRef.current.style.transform = `translate(${ringPos.current.x - offset}px, ${ringPos.current.y - offset}px)`;
         ringRef.current.style.borderColor = isHovering.current
           ? 'var(--color-coral)'
-          : 'var(--color-ivory)';
+          : 'rgba(26, 28, 30, 0.15)'; // Using foreground color with low opacity
+        
+        if (isHovering.current) {
+          ringRef.current.style.backgroundColor = 'rgba(236, 122, 92, 0.05)';
+        } else {
+          ringRef.current.style.backgroundColor = 'transparent';
+        }
       }
 
       rafId.current = requestAnimationFrame(animate);
@@ -66,12 +72,12 @@ export default function CustomCursor() {
       {/* Dot */}
       <div
         ref={dotRef}
-        className="absolute left-0 top-0 h-[6px] w-[6px] rounded-full bg-ivory"
+        className="absolute left-0 top-0 h-[6px] w-[6px] rounded-full bg-foreground"
       />
       {/* Ring */}
       <div
         ref={ringRef}
-        className="absolute left-0 top-0 h-9 w-9 rounded-full border border-ivory/50 transition-[width,height,border-color] duration-300"
+        className="absolute left-0 top-0 h-6 w-6 rounded-full border border-foreground/15 transition-[width,height,border-color,background-color] duration-500 ease-out"
       />
     </div>
   );

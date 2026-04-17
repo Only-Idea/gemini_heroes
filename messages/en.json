@@ -7,41 +7,41 @@
     "download": "Download"
   },
   "hero": {
-    "label": "Virtual Challenge · 2026",
-    "title": "Every step becomes an adventure.",
-    "subtitle": "Mt. Fuji, the 47 Ronin, Japanese Railways. The more you move, the more the world changes.",
-    "cta_download": "Download on App Store",
-    "cta_learn": "Learn More",
-    "scroll": "Scroll"
+    "label": "The Virtual Odyssey · 2026",
+    "title": "Every step becomes a journey.",
+    "subtitle": "Discover Japan's most iconic routes through an interactive 3D experience. Move through history, earn real rewards, and leave a lasting legacy.",
+    "cta_download": "Get Started",
+    "cta_learn": "Explore Routes",
+    "scroll": "Begin the Ascent"
   },
   "stats": {
-    "routes": "Challenge Routes",
-    "activities": "Activity Types",
-    "countries": "Countries Supported"
+    "routes": "Legendary Routes",
+    "activities": "Ways to Move",
+    "countries": "Global Community"
   },
   "medal": {
-    "label": "Earn the Real Thing",
-    "title": "Not a digital badge. A real medal.",
-    "description": "Complete each challenge to earn a premium medal shipped worldwide in original packaging."
+    "label": "A Token of Achievement",
+    "title": "Beyond the digital screen.",
+    "description": "True achievements deserve more than a badge. Complete your odyssey and receive a premium physical medal, crafted with precision and shipped to your door."
   },
   "features": {
-    "map": "Interactive Map",
-    "tracking": "Real-time Participant Tracking",
-    "team": "Team Features",
-    "achievements": "Achievements",
-    "streak": "Streak Tracking",
-    "community": "Community Feed"
+    "map": "3D World Mapping",
+    "tracking": "Precision Odyssey Tracking",
+    "team": "Collective Journeys",
+    "achievements": "Global Milestones",
+    "streak": "Unbroken Paths",
+    "community": "Echoes of Adventure"
   },
   "impact": {
-    "title": "Environmental Impact",
-    "trees": "Tree Planting",
-    "ocean": "Ocean Cleanup"
+    "title": "The Path of Purpose",
+    "trees": "Forests Restored",
+    "ocean": "Oceans Protected"
   },
   "activities": {
-    "message": "Move at your own pace"
+    "message": "Movement is your canvas"
   },
   "cta": {
-    "title": "Start your adventure."
+    "title": "Your odyssey begins here."
   },
   "contact": {
     "name": "Name",

@@ -1,64 +1,54 @@
-# 04 — Design System
+# 04 — Design System (Light Aesthetic)
 
-## Color Palette
+## Color Palette (OKLCH Modern)
 
-The Heroes gradient (top-right EC7A5C → center F2BE5E → bottom-left 375E65) is the brand's signature. It should appear as a diagonal gradient on key accent elements, CTAs, and as the glow source for the hero 3D scene. The background is deep charcoal, not pure black, to create warmth.
+The Heroes aesthetic for 2025 is "Tactile Minimalism"—a warm, airy light mode that uses high-end glassmorphism and organic neutrals. The signature brand gradient remains as a refined accent.
 
-### Primary Gradient
+### Base Palette
 
-| Color | Hex | Role |
-|-------|-----|------|
-| Coral Sunset | `#EC7A5C` | Top-right gradient anchor, CTA hover, accent highlights |
-| Golden Amber | `#F2BE5E` | Center gradient anchor, achievement badges, warm accents |
-| Deep Teal | `#375E65` | Bottom-left gradient anchor, section labels, subheadings |
+| Element | OKLCH Value | Hex Equiv | Role |
+| :--- | :--- | :--- | :--- |
+| **Background** | `oklch(0.96 0.01 60)` | `#F7F4F0` | Main page background (Warm Ivory) |
+| **Foreground** | `oklch(0.25 0.02 260)`| `#1A1C1E` | Primary text and headlines |
+| **Muted** | `oklch(0.60 0.02 260)` | `#707478` | Secondary/body text |
+| **Surface** | `oklch(1 0 0 / 0.4)` | `rgba(255,255,255,0.4)` | Glass cards background |
+| **Border** | `oklch(1 0 0 / 0.7)` | `rgba(255,255,255,0.7)` | Crystalline crystalline borders |
 
-**CSS**: `background: linear-gradient(135deg, #375E65 0%, #F2BE5E 50%, #EC7A5C 100%);`
+### Primary Gradient (Accents)
 
-### Backgrounds
+| Color | OKLCH | Role |
+|-------|-------|------|
+| Coral Sunset | `oklch(0.70 0.15 40)` | Active states, primary CTA |
+| Golden Amber | `oklch(0.85 0.15 80)` | Achievement accents |
+| Deep Teal | `oklch(0.45 0.10 200)`| Semantic labels |
 
-| Color | Hex | Role |
-|-------|-----|------|
-| Void | `#0F1114` | Page background (primary) |
-| Carbon | `#181B21` | Card backgrounds, elevated surfaces |
-| Slate | `#1E2128` | Navbar background (with backdrop blur) |
+**CSS Gradient**: `linear-gradient(135deg, oklch(0.45 0.10 200) 0%, oklch(0.85 0.15 80) 50%, oklch(0.70 0.15 40) 100%);`
 
-### Text & UI
+## Glassmorphism & Depth
 
-| Color | Hex | Role |
-|-------|-----|------|
-| Warm Ivory | `#E8E2D6` | Primary text on dark backgrounds |
-| Stone | `#A0998A` | Secondary/dimmed text |
-| Ash | `#5A5550` | Disabled text, faint labels |
-| Border | `#2A2E35` | Card borders, divider lines |
+- **Crystalline Glass**: Use `backdrop-filter: blur(12px)` with a high-transparency white background. Borders should be slightly more opaque than the surface to create a "beveled" edge feel.
+- **Soft Shadows**: Avoid dark shadows. Use `box-shadow: 0 10px 40px -10px oklch(0.25 0.02 260 / 0.05)`.
+- **Bento Grid**: Organize information into modular "compartments" with rounded corners (`24px`).
 
-## Gradient Usage Rules
-
-- **Hero section**: Gradient used as the light source for the 3D orb/scene, creating a warm atmospheric glow across the dark background.
-- **CTAs**: Primary buttons use the full gradient as background. On hover, shift gradient 20% brighter.
-- **Section dividers**: Use a 1px gradient line (horizontal) between major sections.
-- **Medal glow**: The 3D medal model uses the gradient as its environment reflection map.
-- **Typography accent**: Use gradient as text fill only for the hero headline and section numbers (using `background-clip: text`).
-- **Never**: Do not use the gradient as a full-page background. It is an accent, not a surface.
-
-## Spacing System
+## Spacing System (Modular)
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--space-xs` | 4px | Icon padding, tight gaps |
-| `--space-sm` | 8px | Inline element spacing |
-| `--space-md` | 16px | Component internal padding |
-| `--space-lg` | 32px | Card padding, grid gaps |
-| `--space-xl` | 64px | Section internal spacing |
-| `--space-2xl` | 128px | Section vertical padding (desktop) |
-| `--space-3xl` | 200px | Hero section vertical space |
+| `--space-xs` | 4px | Tight elements |
+| `--space-md` | 16px | Internal padding |
+| `--space-lg` | 40px | Bento card padding |
+| `--space-xl` | 80px | Section gaps |
+| `--space-2xl`| 160px | Vertical section spacing |
 
 ## Border & Radius
 
-- **Cards**: `border-radius: 20px` with 1px border in `#2A2E35`. On hover: border transitions to gradient (use `border-image`).
-- **Buttons**: `border-radius: 999px` (pill shape). Primary: gradient background. Ghost: 1px border.
-- **Phone frames**: `border-radius: 44px` (outer), `34px` (inner screen). Subtle inset shadow for realism.
-- No sharp corners anywhere. Minimum radius: 8px for any UI element.
+- **Radius (L)**: `24px` for Bento cards.
+- **Radius (M)**: `12px` for buttons.
+- **Radius (Pill)**: `999px` for chips and main CTAs.
+- All cards use a `1px` crystalline border.
 
 ## Grain & Texture
 
-A full-viewport SVG noise grain overlay at 4–6% opacity with `mix-blend-mode: overlay` sits on top of all content (`pointer-events: none`). This adds analog warmth to the digital interface and prevents the "flat digital" feel.
+A subtle grain overlay (`2%` opacity) is used to add "paper" texture to the Ivory background.
+- **Blend Mode**: `multiply` or `overlay`.
+- **Color**: `oklch(0.25 0.02 260 / 0.02)`.

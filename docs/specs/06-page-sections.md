@@ -1,77 +1,64 @@
-# 06 — Page Sections & Content Mapping
+# 06 — Page Sections & Content Mapping (Light Aesthetic)
 
-The website is a single continuous scroll experience divided into 10 distinct sections. Each section occupies at least 100vh and has its own scroll-triggered entrance animation and optional 3D scene.
+The website is a single continuous scroll experience divided into 10 distinct sections. The aesthetic is "Tactile Minimalism"—airy, clean, and premium.
 
 ## Section 1: Navigation Bar (Fixed)
 
-Fixed top navigation with backdrop blur. Left: "Heroes" logo text (system sans-serif, bold 700). Center: anchor links (チャレンジ / 機能 / インパクト / お問い合わせ). Right: "ダウンロード" pill button with gradient border. On scroll past hero: background becomes solid `#1E2128` with 80% opacity.
+Fixed top navigation with "Crystalline Glass" effect (`bg-white/40 backdrop-blur-xl`). 
+- **Left**: "Heroes" logo in `Charcoal` (#1A1C1E).
+- **Center**: Navigation links with gradient underline on hover.
+- **Right**: "Get Started" pill button with the brand gradient.
+On scroll: Navbar scales down slightly and gains a soft shadow (`shadow-heroes`).
 
-## Section 2: Hero (100vh+)
+## Section 2: Hero (The Virtual Odyssey)
 
-Full-viewport hero with a breathing 3D orb/sphere at center. The orb uses the Heroes gradient as its light source and environment map, creating warm coral/gold/teal reflections.
+High-key hero section with a bright 3D orb at the center. 
+- **Aesthetic**: Light environment with soft global illumination.
+- **Top label**: 「バーチャル・オデッセイ · 2026」 (Teal, monospace, 0.3em tracking).
+- **Main headline**: 「すべての一歩が、旅になる。」 (Charcoal, font-bold, tracking-tight).
+- **Subtitle**: 「日本を象徴する伝説のルートを、没入感のある3D体験で。歴史を歩み、本物の栄誉を手にし、未来へ繋がる足跡を。」 (Muted grey, body-lg).
+- **CTA**: Primary gradient button + Ghost border button.
 
-Overlaid content (centered, pointer-events through to 3D):
-- **Top label**: 「バーチャルチャレンジ · 2026」 in monospace (`ui-monospace`), uppercase, 11px
-- **Main headline**: 「すべての一歩が、冒険になる。」 (system sans-serif, weight 900, clamp 45–96px, gradient text fill)
-- **Subtitle**: 「富士山、四十七士、日本の鉄道。歩くほど、世界が変わる。」 (Noto Sans JP, 18px, dimmed ivory)
-- **CTA buttons**: 「App Storeでダウンロード」 (gradient primary) + 「もっと知る」 (ghost)
-- **Scroll hint**: 「Scroll」 with animated line, monospace
+## Section 3: Stats Bar (Modernized)
 
-3D interaction: The orb parallax-tilts toward the cursor position. On mobile, it gently auto-rotates. Breathing cycle: 4 seconds.
+Horizontal strip with a very subtle off-white background (`bg-foreground/[0.02]`). 
+- Three animated counters that scale up on hover.
+- Labels: 伝説のルート / 多彩な旅の形 / グローバルコミュニティ.
 
-## Section 3: Stats Bar
+## Section 4: Challenge Showcase (Bento Cards)
 
-Horizontal strip with 1px gradient border top and bottom. Three animated counters that count up when scrolled into view:
-- 「3」+ チャレンジルート (Challenge routes)
-- 「12」 アクティビティタイプ (Activity types, including 車いす)
-- 「32」+ 対応国 (Countries supported)
+Three modular cards organizer as a horizontal grid.
+- **Style**: White crystalline glass cards with `24px` radius.
+- **Content**: Route names (富士山 / 浪人 / 鉄道) with a 1px gradient line reveal on hover.
+- **Depth**: Cards cast soft, diffused shadows to feel like objects on paper.
 
-## Section 4: Challenge Showcase
+## Section 5: Medal Showcase (The Artifact)
 
-Three horizontal cards, each representing a challenge route:
-- A placeholder 3D scene or parallax image (Fuji mountain, samurai path, railway track)
-- Challenge name in bold sans-serif weight 700 (富士山 / 浪人 / 鉄道)
-- Brief description from brand knowledge
-- A CTA to explore the challenge
+The center of the journey. A high-detail 3D medal model is showcased in a "Studio Lighting" environment.
+- **Medal**: Gold/Silver/Bronze with high reflectivity.
+- **Grounding**: Uses `ContactShadows` in R3F to ground the model on the Warm Ivory surface.
+- **Copy**: Focuses on "The Artifact"—a premium physical reward for the journey.
 
-Scroll behavior: Cards slide in from the right. Desktop: horizontally scrollable within the section. Mobile: stack vertically with staggered entrance.
+## Section 6: App Feature Showcase (2025 Bento Grid)
 
-## Section 5: Medal Showcase
+Instead of a simple list, features are organized into a modern **Bento Grid** with varying card sizes.
+- **Primary Cell**: Real-time tracking with an interactive 3D map snippet.
+- **Secondary Cells**: Team journeys, Achievements (with animated badge icons), and Community feed.
+- **Surface**: All cells use `glass` utility for a cohesive crystalline feel.
 
-The conversion section. A 3D model of the premium physical medal rotates in the center of the viewport. The model uses the Heroes gradient as its environment reflection.
+## Section 7: Environmental Impact (Path of Purpose)
 
-- **Label**: 「本物を手に入れる」 (monospace, uppercase)
-- **Headline**: 「デジタルバッジではない。本物のメダルを。」
-- **Copy**: Each challenge unlocks a unique, premium medal shipped worldwide in original packaging
-- **3D placeholder**: A gold/bronze disc with embossed design, ~400×400px viewport space
+Elegant split layout. Focus on the relationship between movement and the environment. Uses the brand Teal and Coral to represent Forest and Ocean respectively.
 
-As the user scrolls, the medal rotates from profile view to front-facing.
+## Section 8: Activity Types Ribbon
 
-## Section 6: App Feature Showcase
+A clean, horizontal scrolling ribbon of minimalist activity icons. Background is pure white to contrast with the Warm Ivory of the surrounding sections.
 
-A floating phone mockup (3D or CSS-perspective) displaying app screenshots. The phone tilts toward the cursor. Feature cards fade in with scroll:
+## Section 9: Final CTA (The Odyssey Conclusion)
 
-1. インタラクティブマップ (Interactive Map — Mapbox, 3 styles)
-2. リアルタイム参加者トラッキング (Real-time participant tracking)
-3. チーム機能 (Team features with live chat)
-4. アチーブメント (10 categories, 5 rarities)
-5. ストリーク (Streak tracking)
-6. コミュニティフィード (Social feed)
-
-Each feature has a small phone-icon badge and a dotted line connecting to the phone mockup, emphasizing this is a mobile app experience.
-
-## Section 7: Environmental Impact
-
-Split layout. Left: animated tree/ocean illustration (or 3D scene of trees growing). Right: text about Tree Care and Clean Ocean initiatives. Animated counter: number of trees planted (placeholder value).
-
-## Section 8: Activity Types
-
-A scrolling horizontal ribbon of 12 activity type icons with labels: ステップ / ランニング / ウォーキング / サイクリング / 水泳 / ローイング / エリプティカル / スキー / 車いす. Infinite horizontal scroll animation. Below: 「自分のペースで動く」 message.
-
-## Section 9: Final CTA
-
-Large, centered call-to-action. Headline: 「あなたの冒険を始めよう。」 App Store and Google Play buttons with gradient backgrounds. Below: mockup of both iOS and Android devices side by side.
+Large, centered headline: 「あなたのオデッセイが、ここから始まる。」
+Buttons: High-contrast (Charcoal) for App Store to emphasize the premium app nature.
 
 ## Section 10: Contact & Footer
 
-Contact form (お名前 / メール / メッセージ) with minimal styling against dark background. Footer with links: プライバシー / 利用規約 / お問い合わせ. Social links: Twitter, Instagram. Copyright: © 2026 Heroes Inc.
+Minimalist form on Warm Ivory. Footer uses `text-muted` and `text-foreground` with a 2px gradient line on link hover. Crystalline social icons.
