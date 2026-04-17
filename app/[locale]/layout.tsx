@@ -8,6 +8,7 @@ import GrainOverlay from '@/components/ui/GrainOverlay';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import SmoothScroll from '@/components/ui/SmoothScroll';
+import DevTools from '@/components/three/DevTools';
 import '../globals.css';
 
 const notoSansJP = Noto_Sans_JP({
@@ -45,6 +46,7 @@ export default async function LocaleLayout({
               {children}
               <Footer />
             </div>
+            <DevTools />
           </SmoothScroll>
         </NextIntlClientProvider>
       </body>

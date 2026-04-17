@@ -2,22 +2,40 @@
 
 ## Phase 1: Foundation (Week 1–2)
 
-- Set up Next.js 15 project with TypeScript, Tailwind CSS 4, and ESLint/Prettier
-- Configure i18n routing (ja default, /en for English)
-- Implement design system: CSS variables for colors, spacing, typography
-- Load all Japanese Google Fonts with proper subsets and display strategies
-- Build layout components: Navbar, Footer, GrainOverlay, CustomCursor
-- Set up Lenis smooth scroll integration
-- Deploy skeleton to Vercel for continuous preview
+- [x] Set up Next.js 15 project with TypeScript, Tailwind CSS 4, and ESLint/Prettier
+- [x] Configure i18n routing (ja default, /en for English)
+- [x] Implement design system: CSS variables for colors, spacing, typography
+- [x] Load all Japanese Google Fonts with proper subsets and display strategies
+- [x] Build layout components: Navbar, Footer, GrainOverlay, CustomCursor
+- [x] Set up Lenis smooth scroll integration
+- [x] Deploy skeleton to Vercel for continuous preview
 
 ## Phase 2: 3D & Hero (Week 3–4)
 
-- Build the Hero Orb scene with React Three Fiber
-- Implement breathing animation cycle and mouse parallax
-- Build medal placeholder scene (procedural cylinder)
-- Set up ScrollControls and GSAP ScrollTrigger integration
-- Implement hero section with all text, animations, and CTAs
-- Test WebGL fallback for devices without GPU support
+### 2.1 3D Foundation & Canvas
+- [x] Initialize R3F Canvas in `Hero.tsx` with `AgX` tone mapping and high-key global illumination.
+- [x] Implement `studio` Environment map to generate high-end reflections on the Warm Ivory surface.
+- [ ] Create `components/three/LoadingState.tsx` for 3D assets with high-key branding.
+- [x] Optimize with `PerformanceMonitor` to scale quality (DPR, shadow resolution) based on device.
+
+### 2.2 Hero Orb Section
+- [x] Create `HeroOrb.tsx` using `Float` (Drei) for gentle breathing and mouse-parallax motion.
+- [x] Implement multi-layered glass material for the orb (Inner glow + Outer crystalline refraction).
+- [ ] Implement GSAP `SplitText` logic for the character-by-character "fade & lift" entrance animation.
+- [ ] Build the "Begin the Ascent" scroll hint with a custom-animated SVG path.
+- [ ] Refactor CTA buttons to use magnetic hover effects (GSAP + MouseEvent).
+
+### 2.3 3D Medal Showcase Foundation
+- [x] Build `MedalScene.tsx` as a standalone reusable 3D viewport.
+- [x] Create a procedural high-reflectivity "Medal" placeholder (Gold/Silver/Bronze presets).
+- [ ] Link medal rotation to scroll progress (0.4–0.6 range) using GSAP ScrollTrigger.
+- [x] Implement `ContactShadows` as a performant mobile fallback for grounding.
+
+### 2.4 Scroll & Interaction Engine
+- [ ] Configure `Lenis` to sync perfectly with R3F frame loop via GSAP `ticker`.
+- [ ] Implement a global "WebGL Ready" state to orchestrate the transition from placeholder to 3D.
+- [ ] Set up `Stats.js` or `Leva` (dev-only) for real-time 3D performance monitoring.
+- [ ] Create a robust fallback for "Reduced Motion" and "No-WebGL" scenarios.
 
 ## Phase 3: Content Sections (Week 5–6)
 

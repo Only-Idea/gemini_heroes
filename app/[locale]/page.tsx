@@ -4,12 +4,20 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import dynamic from 'next/dynamic';
+import { useStore } from '@/store/useStore';
+
+// Dynamic imports for 3D components
+const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
+const HeroOrb = dynamic(() => import('@/components/three/HeroOrb'), { ssr: false });
+const MedalScene = dynamic(() => import('@/components/three/MedalScene'), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const t = useTranslations();
   const heroRef = useRef<HTMLDivElement>(null);
+  const isWebGLReady = useStore((state) => state.isWebGLReady);
 
   useEffect(() => {
     if (!heroRef.current) return;
@@ -30,27 +38,43 @@ export default function Home() {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20">
-        <p className="hero-reveal font-mono text-label font-bold uppercase tracking-[0.3em] text-teal/60">
-          {t('hero.label')}
-        </p>
-        <h1 className="hero-reveal mt-8 max-w-5xl text-center font-display text-hero font-bold leading-[1.05] tracking-tight text-foreground">
-          {t('hero.title')}
-        </h1>
-        <p className="hero-reveal mt-8 max-w-2xl text-center text-body-lg font-medium leading-[1.6] text-muted">
-          {t('hero.subtitle')}
-        </p>
-        <div className="hero-reveal mt-12 flex flex-wrap justify-center gap-6">
-          <button className="rounded-full bg-gradient-heroes px-10 py-4 font-mono text-button font-bold tracking-widest text-white shadow-xl transition-all duration-400 hover:scale-105 active:scale-95">
-            {t('hero.cta_download')}
-          </button>
-          <button className="rounded-full border border-foreground/10 px-10 py-4 font-mono text-button font-bold tracking-widest text-foreground transition-all duration-300 hover:border-foreground hover:bg-foreground/5">
-            {t('hero.cta_learn')}
-          </button>
+      <section ref={heroRef} className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 overflow-hidden">
+        {/* 3D Hero Orb Background - Animated transition */}
+        <div className={`transition-opacity duration-1000 absolute inset-0 ${isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
+          <Scene>
+            <HeroOrb />
+          </Scene>
+        </div>
+
+        {/* Static Placeholder (Optional, can be a subtle gradient) */}
+        {!isWebGLReady && (
+          <div className="absolute inset-0 bg-background flex items-center justify-center">
+            <div className="h-32 w-32 rounded-full bg-gradient-heroes opacity-5 blur-3xl animate-pulse" />
+          </div>
+        )}
+
+        <div className="relative z-10 flex flex-col items-center">
+          <p className="hero-reveal font-mono text-label font-bold uppercase tracking-[0.3em] text-teal/60">
+            {t('hero.label')}
+          </p>
+          <h1 className="hero-reveal mt-8 max-w-5xl text-center font-display text-hero font-bold leading-[1.05] tracking-tight text-foreground">
+            {t('hero.title')}
+          </h1>
+          <p className="hero-reveal mt-8 max-w-2xl text-center text-body-lg font-medium leading-[1.6] text-muted">
+            {t('hero.subtitle')}
+          </p>
+          <div className="hero-reveal mt-12 flex flex-wrap justify-center gap-6">
+            <button className="rounded-full bg-gradient-heroes px-10 py-4 font-mono text-button font-bold tracking-widest text-white shadow-xl transition-all duration-400 hover:scale-105 active:scale-95">
+              {t('hero.cta_download')}
+            </button>
+            <button className="rounded-full border border-foreground/10 px-10 py-4 font-mono text-button font-bold tracking-widest text-foreground transition-all duration-300 hover:border-foreground hover:bg-foreground/5">
+              {t('hero.cta_learn')}
+            </button>
+          </div>
         </div>
         
         {/* Scroll hint */}
-        <div className="absolute bottom-12 flex flex-col items-center gap-3">
+        <div className="absolute bottom-12 flex flex-col items-center gap-3 z-10">
           <span className="font-mono text-[11px] font-bold tracking-[0.3em] text-muted/30 uppercase">
             {t('hero.scroll')}
           </span>
@@ -58,7 +82,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Bar (Modernized) */}
+      {/* Stats Bar */}
       <section className="py-20 bg-foreground/[0.02] border-y border-foreground/5">
         <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-around gap-12 px-6 md:flex-row md:gap-0">
           {[
@@ -78,7 +102,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Challenges (Bento-ish) */}
+      {/* Challenges */}
       <section id="challenges" className="px-6 py-32 lg:py-48">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
@@ -120,7 +144,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features (Bento Grid 2025) */}
+      {/* Features */}
       <section id="features" className="px-6 py-32 bg-foreground/[0.02]">
         <div className="mx-auto max-w-[1400px]">
           <p className="font-mono text-label font-bold uppercase tracking-[0.3em] text-teal">
@@ -131,14 +155,12 @@ export default function Home() {
           </h2>
           
           <div className="mt-20 bento-grid">
-            {/* Primary Feature */}
             <div className="col-span-12 lg:col-span-8 glass rounded-3xl p-12 min-h-[400px] flex flex-col justify-end">
               <div className="absolute top-12 right-12 h-24 w-24 bg-teal/10 blur-2xl rounded-full" />
               <h3 className="font-display text-subhead font-bold text-foreground">{t('features.tracking')}</h3>
               <p className="mt-4 max-w-md text-muted font-medium">Precision tracking for over 12 activity types, seamlessly integrated with your journey.</p>
             </div>
             
-            {/* Secondary Features */}
             <div className="col-span-12 md:col-span-6 lg:col-span-4 glass rounded-3xl p-10">
               <h3 className="font-display text-[20px] font-bold text-foreground">{t('features.map')}</h3>
               <p className="mt-2 text-muted text-sm font-medium">Beautiful 3D maps of your progress across Japan.</p>
@@ -162,7 +184,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Medal (Clean) */}
+      {/* Medal Section */}
       <section className="px-6 py-48">
         <div className="mx-auto max-w-[1400px] text-center">
           <p className="font-mono text-label font-bold uppercase tracking-[0.3em] text-coral">
@@ -174,17 +196,25 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-2xl text-body-lg font-medium leading-relaxed text-muted">
             {t('medal.description')}
           </p>
-          {/* 3D Medal container */}
-          <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes">
-            <div className="absolute inset-0 bg-gradient-heroes opacity-5 blur-3xl rounded-full" />
-            <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
-              Interactive 3D Medal
-            </span>
+          
+          <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes overflow-hidden">
+            <div className={`w-full h-full transition-opacity duration-1000 ${isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
+              <Scene cameraPos={[0, 0, 5]} shadows={true}>
+                <MedalScene />
+              </Scene>
+            </div>
+            {!isWebGLReady && (
+              <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
+                <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
+                  Initializing Odyssey...
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Impact (Elegant) */}
+      {/* Impact Section */}
       <section id="impact" className="px-6 py-32 border-t border-foreground/5 bg-white">
         <div className="mx-auto max-w-[1400px]">
           <div className="grid md:grid-cols-2 gap-20 items-center">
@@ -217,7 +247,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA (Typewriter/Elegant) */}
+      {/* Final CTA */}
       <section className="relative flex min-h-[80vh] flex-col items-center justify-center px-6 py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-heroes opacity-5" />
         <h2 className="relative font-display text-section-title font-bold text-center text-foreground max-w-4xl leading-tight">
