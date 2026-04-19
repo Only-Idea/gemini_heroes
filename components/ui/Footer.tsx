@@ -15,15 +15,15 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-10">
             {(['privacy', 'terms', 'contact'] as const).map((key) => (
               <a
                 key={key}
                 href="#"
-                className="group relative font-mono text-nav font-medium tracking-wide text-muted transition-colors duration-300 hover:text-foreground"
+                className="group relative font-mono text-nav font-medium tracking-wide text-muted transition-all duration-300 hover:text-foreground"
               >
-                {t(key)}
-                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-heroes transition-all duration-300 group-hover:w-full" />
+                <span className="relative z-10">{t(key)}</span>
+                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-gradient-heroes transition-all duration-500 cubic-bezier(0.65, 0, 0.35, 1) group-hover:w-full" />
               </a>
             ))}
           </div>

@@ -6,6 +6,7 @@ import { Environment, ContactShadows, PerformanceMonitor } from '@react-three/dr
 import { Suspense, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { useStore } from '@/store/useStore';
+import LoadingState from './LoadingState';
 
 interface SceneProps {
   children: React.ReactNode;
@@ -94,7 +95,7 @@ export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true 
           shadow-bias={-0.0001}
         />
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingState />}>
           {children}
         </Suspense>
 

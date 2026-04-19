@@ -7,7 +7,6 @@ import * as THREE from 'three';
 
 export default function HeroOrb() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const mouse = useRef({ x: 0, y: 0 });
 
   useFrame((state) => {
     if (!meshRef.current) return;
