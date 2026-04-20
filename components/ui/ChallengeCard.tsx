@@ -17,7 +17,7 @@ export default function ChallengeCard({
   accentColor,
   className = '',
 }: ChallengeCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLButtonElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,9 +63,9 @@ export default function ChallengeCard({
   };
 
   return (
-    <div
+    <button
       ref={cardRef}
-      className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-8 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 ${className}`}
+      className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-8 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
       style={{ transformStyle: 'preserve-3d' }}
     >
       {/* Dynamic Glow Effect */}
@@ -104,6 +104,6 @@ export default function ChallengeCard({
            </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

@@ -48,7 +48,12 @@ function SceneMountNotifier() {
 }
 
 export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true }: SceneProps) {
-  const [dpr, setDpr] = useState(1.5);
+  const [dpr] = useState<number | [number, number]>(() => {
+    if (typeof window !== 'undefined' && !window.matchMedia('(pointer: coarse)').matches) {
+      return [1, 2];
+    }
+    return [1, 1.5];
+  });
   const setPerfLevel = useStore((state) => state.setPerfLevel);
   const isReducedMotion = useStore((state) => state.isReducedMotion);
   const setReducedMotion = useStore((state) => state.setReducedMotion);
@@ -64,7 +69,7 @@ export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true 
   return (
     <div className="absolute inset-0 z-0 h-full w-full pointer-events-none overflow-hidden transition-opacity duration-1000">
       <Canvas
-        shadows={shadows}
+        shadows={shadows ? { type: THREE.PCFShadowMap } : false}
         dpr={dpr}
         frameloop="never" // Essential for ticker sync
         gl={{ 
@@ -75,13 +80,16 @@ export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true 
         }}
         camera={{ position: cameraPos, fov: 45 }}
         className="h-full w-full"
+        aria-hidden="true"
       >
         <TickerSync />
         <SceneMountNotifier />
         
         <PerformanceMonitor 
-          onIncline={() => { setDpr(2); setPerfLevel(3); }} 
-          onDecline={() => { setDpr(1); setPerfLevel(1); }} 
+          onIncline={() => { setPerfLevel(3); }} 
+          onDecline={() => { setPerfLevel(1); }} 
+          flipflops={3}
+          onFallback={() => setPerfLevel(1)}
         />
         
         {/* High-Key Global Illumination */}

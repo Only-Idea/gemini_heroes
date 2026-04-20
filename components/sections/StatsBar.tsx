@@ -13,7 +13,11 @@ export default function StatsBar() {
   ];
 
   return (
-    <section className="py-20 bg-foreground/[0.02] border-y border-foreground/5 relative overflow-hidden">
+    <section 
+      className="py-20 bg-foreground/[0.02] border-y border-foreground/5 relative overflow-hidden"
+      role="region"
+      aria-label="Statistics"
+    >
       {/* Background decoration */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-coral/5 blur-[120px] rounded-full pointer-events-none" />

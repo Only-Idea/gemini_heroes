@@ -4,9 +4,12 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
+import { useStore } from '@/store/useStore';
 
 export default function HeroOrb() {
   const meshRef = useRef<THREE.Mesh>(null);
+  const perfLevel = useStore((state) => state.perfLevel);
+  const segments = perfLevel === 1 ? 32 : 64;
 
   useFrame((state) => {
     if (!meshRef.current) return;
@@ -21,7 +24,7 @@ export default function HeroOrb() {
 
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <Sphere ref={meshRef} args={[1.5, 64, 64]}>
+      <Sphere ref={meshRef} args={[1.5, segments, segments]}>
         <MeshDistortMaterial
           color="#F7F4F0" // Warm Ivory base
           speed={2}
@@ -40,7 +43,7 @@ export default function HeroOrb() {
       <mesh rotation={[Math.PI / 4, 0, 0]}>
         <icosahedronGeometry args={[2.2, 1]} />
         <meshBasicMaterial 
-          color="oklch(0.45 0.10 200)" // Deep Teal
+          color="#375E65" // Deep Teal
           wireframe 
           transparent 
           opacity={0.05} 

@@ -16,17 +16,19 @@ export default function ActivityRibbon() {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
-    // Scroll animation for seamless loop
-    const tl = gsap.to(scrollContainer, {
-      x: `-50%`,
-      duration: 30,
-      ease: 'none',
-      repeat: -1,
+    const mm = gsap.matchMedia();
+
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // Scroll animation for seamless loop
+      gsap.to(scrollContainer, {
+        x: `-50%`,
+        duration: 30,
+        ease: 'none',
+        repeat: -1,
+      });
     });
 
-    return () => {
-      tl.kill();
-    };
+    return () => mm.revert();
   }, []);
 
   return (

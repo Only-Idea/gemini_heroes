@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
@@ -52,6 +53,7 @@ const features = [
 ];
 
 export default function PhoneShowcase() {
+  const t = useTranslations('nav');
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
@@ -79,6 +81,8 @@ export default function PhoneShowcase() {
       ref={sectionRef} 
       id="features" 
       className="relative bg-foreground/[0.02] py-32 lg:py-64"
+      role="region"
+      aria-label={t('features')}
     >
       <div className="mx-auto max-w-[1400px] px-6">
         <div className="mb-24">

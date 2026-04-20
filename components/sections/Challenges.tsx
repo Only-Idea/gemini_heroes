@@ -18,42 +18,80 @@ export default function Challenges() {
     const scrollContainer = scrollRef.current;
     if (!section || !scrollContainer) return;
 
-    // Horizontal scroll on desktop
+    // Responsive animations with matchMedia
     const mm = gsap.matchMedia();
 
-    mm.add('(min-width: 1024px)', () => {
-      const scrollWidth = scrollContainer.scrollWidth;
-      const amountToScroll = scrollWidth - window.innerWidth;
+    mm.add({
+      isDesktop: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
+      isMobile: '(max-width: 1023px) and (prefers-reduced-motion: no-preference)',
+      reduceMotion: '(prefers-reduced-motion: reduce)'
+    }, (context) => {
+      const { isDesktop, isMobile, reduceMotion } = context.conditions!;
 
-      gsap.to(scrollContainer, {
-        x: -amountToScroll,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: `+=${amountToScroll}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
+      if (isDesktop) {
+        const scrollWidth = scrollContainer.scrollWidth;
+        const amountToScroll = scrollWidth - window.innerWidth;
+
+        gsap.to(scrollContainer, {
+          x: -amountToScroll,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: `+=${amountToScroll}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
+
+      if (isMobile) {
+        gsap.from('.challenge-card', {
+          opacity: 0,
+          y: 40,
+          stagger: 0.2,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+          },
+        });
+      }
+
+      if (reduceMotion) {
+        // Simple vertical reveal for reduced motion
+        gsap.from('.challenge-card', {
+          opacity: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+          },
+        });
+      }
     });
 
     return () => mm.revert();
   }, []);
 
   const challenges = [
-    { title: '富士山', subtitle: 'Conquer the sacred peak of Japan.', color: 'teal' as const, span: 'col-span-12 lg:col-span-7' },
-    { title: '浪人', subtitle: 'Follow the path of the masterless warrior.', color: 'amber' as const, span: 'col-span-12 lg:col-span-5' },
-    { title: '鉄道', subtitle: 'Journey through the historic rail routes.', color: 'coral' as const, span: 'col-span-12 lg:col-span-5' },
-    { title: '桜', subtitle: 'A seasonal journey through cherry blossoms.', color: 'teal' as const, span: 'col-span-12 lg:col-span-7' },
+    { title: '富士山', subtitle: 'Conquer the sacred peak of Japan.', color: 'teal' as const },
+    { title: '浪人', subtitle: 'Follow the path of the masterless warrior.', color: 'amber' as const },
+    { title: '鉄道', subtitle: 'Journey through the historic rail routes.', color: 'coral' as const },
+    { title: '桜', subtitle: 'A seasonal journey through cherry blossoms.', color: 'teal' as const },
   ];
 
   return (
     <section 
       ref={sectionRef} 
       id="challenges" 
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden py-32 lg:py-0"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden py-[var(--space-section-y)] lg:py-0"
+      role="region"
+      aria-label={t('nav.challenges')}
     >
       <div className="mx-auto max-w-[1400px] px-6 w-full mb-12 lg:absolute lg:top-24 lg:left-1/2 lg:-translate-x-1/2">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
@@ -83,7 +121,7 @@ export default function Challenges() {
               subtitle={challenge.subtitle}
               accentColor={challenge.color}
               imageAlt={challenge.title}
-              className={`w-full lg:w-[450px] aspect-[4/5] lg:aspect-auto lg:h-[500px] shrink-0`}
+              className="challenge-card w-full lg:w-[450px] aspect-[4/5] lg:aspect-auto lg:h-[500px] shrink-0"
             />
           ))}
         </div>

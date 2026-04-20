@@ -22,56 +22,75 @@ export default function Hero() {
     if (!heroRef.current) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
+      const mm = gsap.matchMedia();
 
-      // Label fade in
-      tl.from('.hero-label', {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        ease: 'power3.out',
+      // Standard animations
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const tl = gsap.timeline();
+
+        // Label fade in
+        tl.from('.hero-label', {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          ease: 'power3.out',
+        });
+
+        // Title character-by-character animation
+        tl.from('.hero-title .char', {
+          opacity: 0,
+          y: 40,
+          stagger: 0.02,
+          duration: 1,
+          ease: 'power4.out',
+        }, '-=0.4');
+
+        // Subtitle fade in
+        tl.from('.hero-subtitle', {
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          ease: 'power3.out',
+        }, '-=0.6');
+
+        // CTA buttons fade in
+        tl.from('.hero-cta', {
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+        }, '-=0.8');
+
+        // Scroll hint fade in
+        tl.from('.hero-scroll-hint', {
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.out',
+        }, '-=0.5');
       });
 
-      // Title character-by-character animation
-      tl.from('.hero-title .char', {
-        opacity: 0,
-        y: 40,
-        stagger: 0.02,
-        duration: 1,
-        ease: 'power4.out',
-      }, '-=0.4');
-
-      // Subtitle fade in
-      tl.from('.hero-subtitle', {
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        ease: 'power3.out',
-      }, '-=0.6');
-
-      // CTA buttons fade in
-      tl.from('.hero-cta', {
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        stagger: 0.2,
-        ease: 'power3.out',
-      }, '-=0.8');
-
-      // Scroll hint fade in
-      tl.from('.hero-scroll-hint', {
-        opacity: 0,
-        duration: 1,
-        ease: 'power2.out',
-      }, '-=0.5');
-
+      // Reduced motion fallback
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from('.hero-label, .hero-title, .hero-subtitle, .hero-cta, .hero-scroll-hint', {
+          opacity: 0,
+          duration: 1,
+          stagger: 0.1,
+          ease: 'power2.out',
+        });
+      });
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={heroRef} className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 overflow-hidden">
+    <section 
+      ref={heroRef} 
+      className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 overflow-hidden"
+      role="region"
+      aria-label={t('label')}
+    >
       {/* 3D Hero Orb Background */}
       <div className={`transition-opacity duration-1000 absolute inset-0 ${isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
         <Scene>

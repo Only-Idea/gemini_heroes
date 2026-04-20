@@ -15,39 +15,77 @@ export default function MedalShowcase() {
   const t = useTranslations();
   const sectionRef = useRef<HTMLElement>(null);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
+  const setMedalScrollProgress = useStore((state) => state.setMedalScrollProgress);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Character-wipe entrance for titles
-      gsap.from('.medal-title .char', {
-        scrollTrigger: {
-          trigger: '.medal-title',
-          start: 'top 80%',
-        },
-        opacity: 0,
-        x: -20,
-        stagger: 0.02,
-        duration: 0.8,
-        ease: 'power2.out',
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Character-wipe entrance for titles
+        gsap.from('.medal-title .char', {
+          scrollTrigger: {
+            trigger: '.medal-title',
+            start: 'top 80%',
+          },
+          opacity: 0,
+          x: -20,
+          stagger: 0.02,
+          duration: 0.8,
+          ease: 'power2.out',
+        });
+
+        gsap.from('.medal-description', {
+          scrollTrigger: {
+            trigger: '.medal-description',
+            start: 'top 85%',
+          },
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          ease: 'power3.out',
+        });
+
+        // Drive medal rotation via scroll progress
+        gsap.to({}, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+            onUpdate: (self) => {
+              setMedalScrollProgress(self.progress);
+            },
+          },
+        });
       });
 
-      gsap.from('.medal-description', {
-        scrollTrigger: {
-          trigger: '.medal-description',
-          start: 'top 85%',
-        },
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        ease: 'power3.out',
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from('.medal-title, .medal-description', {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+          opacity: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power2.out',
+        });
+        // Reset progress for static view
+        setMedalScrollProgress(0);
       });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [setMedalScrollProgress]);
 
   return (
-    <section ref={sectionRef} className="px-6 py-48 relative overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className="px-6 py-48 relative overflow-hidden"
+      role="region"
+      aria-label={t('medal.label')}
+    >
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber/5 blur-[150px] rounded-full pointer-events-none" />
 

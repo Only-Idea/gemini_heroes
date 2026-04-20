@@ -1,4 +1,10 @@
 {
+  "metadata": {
+    "title": "Heroes — The Virtual Odyssey",
+    "description": "Transform every step into a journey. Discover Japan's most iconic routes through an interactive 3D experience and earn real premium medals.",
+    "ogTitle": "Heroes — Every step becomes a journey.",
+    "ogDescription": "A purpose-driven virtual challenge platform. Move through Japan's history in 3D and leave a lasting legacy."
+  },
   "nav": {
     "challenges": "Challenges",
     "features": "Features",

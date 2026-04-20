@@ -2,12 +2,12 @@
 
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Float, useScroll, AccumulativeShadows, RandomizedLight } from '@react-three/drei';
+import { Float, AccumulativeShadows, RandomizedLight } from '@react-three/drei';
 import * as THREE from 'three';
+import { useStore } from '@/store/useStore';
 
 export default function MedalScene() {
   const meshRef = useRef<THREE.Group>(null);
-  const scroll = useScroll();
 
   // Create a custom gradient texture for reflection mapping
   const envMapTexture = useMemo(() => {
@@ -30,10 +30,9 @@ export default function MedalScene() {
 
   useFrame(() => {
     if (!meshRef.current) return;
-    
-    // Get progress in the range 0.4 to 0.6
-    // range(start, distance)
-    const scrollProgress = scroll.range(0.4, 0.2);
+
+    // Read scroll progress from store (driven by GSAP ScrollTrigger in MedalShowcase)
+    const scrollProgress = useStore.getState().medalScrollProgress;
     
     // Map scroll progress to rotation: 90 degrees (profile) to 0 degrees (front)
     // plus one extra spin for flair

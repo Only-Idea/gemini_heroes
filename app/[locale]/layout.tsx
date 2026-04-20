@@ -1,7 +1,6 @@
-import type { Metadata } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getLocale } from 'next-intl/server';
+import { getMessages, getLocale, getTranslations } from 'next-intl/server';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import GrainOverlay from '@/components/ui/GrainOverlay';
@@ -9,6 +8,8 @@ import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import DevTools from '@/components/three/DevTools';
+import DownloadBar from '@/components/ui/DownloadBar';
+import JsonLd from '@/components/ui/JsonLd';
 import '../globals.css';
 
 const notoSansJP = Noto_Sans_JP({
@@ -19,11 +20,48 @@ const notoSansJP = Noto_Sans_JP({
   preload: true,
 });
 
-export const metadata: Metadata = {
-  title: 'Heroes — The Virtual Odyssey',
-  description:
-    'Every step becomes a journey. Discover Japan’s most iconic routes through an interactive 3D experience.',
-};
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ locale: string }> 
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata' });
+  const baseUrl = 'https://medalhero.com';
+
+  return {
+    metadataBase: new URL(baseUrl),
+    title: {
+      template: `%s | ${t('title')}`,
+      default: t('title'),
+    },
+    description: t('description'),
+    alternates: {
+      canonical: '/',
+      languages: {
+        'ja': '/ja',
+        'en': '/en',
+      },
+    },
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: './',
+      siteName: 'Heroes',
+      locale: locale === 'ja' ? 'ja_JP' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    }
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -33,9 +71,30 @@ export default async function LocaleLayout({
   const locale = await getLocale();
   const messages = await getMessages();
 
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    'name': 'Heroes',
+    'url': 'https://medalhero.com',
+    'logo': 'https://medalhero.com/images/logo.png',
+    'sameAs': [
+      'https://twitter.com/medalhero',
+      'https://instagram.com/medalhero'
+    ]
+  };
+
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    'name': 'Heroes',
+    'url': 'https://medalhero.com'
+  };
+
   return (
     <html lang={locale} className={`${notoSansJP.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-foreground">
+        <JsonLd data={organizationJsonLd} />
+        <JsonLd data={websiteJsonLd} />
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
             <GrainOverlay />
@@ -46,6 +105,7 @@ export default async function LocaleLayout({
               {children}
               <Footer />
             </div>
+            <DownloadBar />
             <DevTools />
           </SmoothScroll>
         </NextIntlClientProvider>

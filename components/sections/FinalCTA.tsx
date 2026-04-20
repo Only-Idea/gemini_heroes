@@ -15,28 +15,45 @@ export default function FinalCTA() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Typewriter effect using SplitText characters
-      gsap.from('.cta-title .char', {
-        scrollTrigger: {
-          trigger: '.cta-title',
-          start: 'top 80%',
-        },
-        opacity: 0,
-        stagger: 0.05,
-        duration: 0.1,
-        ease: 'none',
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Typewriter effect using SplitText characters
+        gsap.from('.cta-title .char', {
+          scrollTrigger: {
+            trigger: '.cta-title',
+            start: 'top 80%',
+          },
+          opacity: 0,
+          stagger: 0.05,
+          duration: 0.1,
+          ease: 'none',
+        });
+
+        // Reveal buttons
+        gsap.from('.cta-button-container', {
+          scrollTrigger: {
+            trigger: '.cta-button-container',
+            start: 'top 90%',
+          },
+          opacity: 0,
+          y: 20,
+          duration: 1,
+          ease: 'power3.out',
+        });
       });
 
-      // Reveal buttons
-      gsap.from('.cta-button-container', {
-        scrollTrigger: {
-          trigger: '.cta-button-container',
-          start: 'top 90%',
-        },
-        opacity: 0,
-        y: 20,
-        duration: 1,
-        ease: 'power3.out',
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from('.cta-title, .cta-button-container', {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+          opacity: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power2.out',
+        });
       });
     }, sectionRef);
 
@@ -44,7 +61,12 @@ export default function FinalCTA() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex min-h-[80vh] flex-col items-center justify-center px-6 py-32 overflow-hidden bg-background">
+    <section 
+      ref={sectionRef} 
+      className="relative flex min-h-[80vh] flex-col items-center justify-center px-6 py-32 overflow-hidden bg-background"
+      role="region"
+      aria-label={t('title')}
+    >
       {/* Subtle Background Glow */}
       <div className="absolute inset-0 bg-gradient-heroes opacity-5" />
       

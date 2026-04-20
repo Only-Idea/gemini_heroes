@@ -80,12 +80,12 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex h-10 w-10 items-center justify-center md:hidden"
+            className="flex h-12 w-12 items-center justify-center md:hidden relative z-[60]"
             aria-label="Toggle menu"
           >
             <div className="relative h-5 w-6">
               <span
-                className={`absolute left-0 h-[1.5px] w-6 bg-foreground transition-all duration-300 ${
+                className={`absolute left-0 h-[1.5px] w-6 bg-foreground transition-all duration-500 ${
                   mobileOpen ? 'top-[9px] rotate-45' : 'top-0'
                 }`}
               />
@@ -95,7 +95,7 @@ export default function Navbar() {
                 }`}
               />
               <span
-                className={`absolute left-0 h-[1.5px] w-6 bg-foreground transition-all duration-300 ${
+                className={`absolute left-0 h-[1.5px] w-6 bg-foreground transition-all duration-500 ${
                   mobileOpen ? 'top-[9px] -rotate-45' : 'top-[18px]'
                 }`}
               />
@@ -106,23 +106,25 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl transition-all duration-500 md:hidden ${
+        className={`fixed inset-0 z-50 bg-background/95 backdrop-blur-2xl transition-all duration-700 ease-heroes md:hidden ${
           mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0 translate-y-[-10%]'
         }`}
       >
-        <div className="flex h-full flex-col items-center justify-center gap-10">
+        <div className="flex h-full flex-col items-center justify-center gap-12">
           {navLinks.map(({ key, href }) => (
             <button
               key={key}
               onClick={() => handleAnchorClick(href)}
-              className="font-display text-[32px] font-bold tracking-tight text-foreground/40 transition-colors duration-300 hover:text-foreground"
+              className="font-display text-[40px] font-bold tracking-tight text-foreground/40 transition-all duration-500 hover:text-foreground active:scale-95"
             >
-              {t(key)}
+              <span className={mobileOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}>
+                {t(key)}
+              </span>
             </button>
           ))}
           <button
             onClick={() => setMobileOpen(false)}
-            className="mt-6 rounded-full bg-gradient-heroes px-10 py-4 font-mono text-button font-bold tracking-widest text-white shadow-xl"
+            className="mt-8 rounded-full bg-gradient-heroes px-12 py-5 font-mono text-button font-bold tracking-widest text-white shadow-xl active:scale-95 transition-all duration-300"
           >
             {t('download')}
           </button>

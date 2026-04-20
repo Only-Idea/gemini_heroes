@@ -27,9 +27,10 @@
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
-  --space-lg: 40px;
-  --space-xl: 80px;
-  --space-2xl: 160px;
+  --space-lg: clamp(24px, 5vw, 40px);
+  --space-xl: clamp(48px, 10vw, 80px);
+  --space-2xl: clamp(96px, 15vw, 160px);
+  --space-section-y: clamp(80px, 12vw, 200px);
 
   /* --- Border Radius --- */
   --radius-sm: 8px;
@@ -82,6 +83,10 @@ body {
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+button, a, [role="button"] {
+  touch-action: manipulation;
 }
 
 /* =========================================
