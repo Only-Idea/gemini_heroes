@@ -1,9 +1,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
 import Magnetic from '@/components/ui/Magnetic';
 
@@ -13,52 +14,34 @@ export default function FinalCTA() {
   const t = useTranslations('cta');
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Typewriter effect using SplitText characters
-        gsap.from('.cta-title .char', {
-          scrollTrigger: {
-            trigger: '.cta-title',
-            start: 'top 80%',
-          },
-          opacity: 0,
-          stagger: 0.05,
-          duration: 0.1,
-          ease: 'none',
-        });
-
-        // Reveal buttons
-        gsap.from('.cta-button-container', {
-          scrollTrigger: {
-            trigger: '.cta-button-container',
-            start: 'top 90%',
-          },
-          opacity: 0,
-          y: 20,
-          duration: 1,
-          ease: 'power3.out',
-        });
+  useReducedMotionAnimation(
+    sectionRef,
+    () => {
+      gsap.from('.cta-title .char', {
+        scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
+        opacity: 0,
+        stagger: 0.05,
+        duration: 0.1,
+        ease: 'none',
       });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.from('.cta-title, .cta-button-container', {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          },
-          opacity: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power2.out',
-        });
+      gsap.from('.cta-button-container', {
+        scrollTrigger: { trigger: '.cta-button-container', start: 'top 90%' },
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        ease: 'power3.out',
       });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    () => {
+      gsap.from('.cta-title, .cta-button-container', {
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power2.out',
+      });
+    },
+  );
 
   return (
     <section 

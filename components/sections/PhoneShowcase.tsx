@@ -57,7 +57,23 @@ export default function PhoneShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
+  const [shouldMountScene, setShouldMountScene] = useState(false);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShouldMountScene(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -97,23 +113,20 @@ export default function PhoneShowcase() {
         <div ref={containerRef} className="grid lg:grid-cols-2 gap-24 items-start">
           {/* Sticky Phone Viewport */}
           <div className="lg:sticky lg:top-[20vh] h-[60vh] lg:h-[70vh] w-full rounded-3xl overflow-hidden glass border border-white/10 shadow-heroes">
-            <div className={`w-full h-full transition-opacity duration-1000 ${isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
-              <Scene cameraPos={[0, 0, 8]}>
-                <PhoneModel activeFeatureIndex={activeFeatureIndex} />
-              </Scene>
+            <div className={`w-full h-full transition-opacity duration-1000 ${shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
+              {shouldMountScene && (
+                <Scene cameraPos={[0, 0, 8]}>
+                  <PhoneModel activeFeatureIndex={activeFeatureIndex} />
+                </Scene>
+              )}
             </div>
-            {!isWebGLReady && (
+            {!(shouldMountScene && isWebGLReady) && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
                 <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
                   Initializing Hardware...
                 </span>
               </div>
             )}
-            
-            {/* SVG Annotation Lines Container */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible">
-               {/* Lines will be drawn dynamically in a future polish step or via CSS-only paths */}
-            </svg>
           </div>
 
           {/* Bento Grid Features */}

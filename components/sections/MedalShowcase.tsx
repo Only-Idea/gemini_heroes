@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
+import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
 
 // Dynamic import for 3D component
@@ -14,70 +15,64 @@ const MedalScene = dynamic(() => import('@/components/three/MedalScene'), { ssr:
 export default function MedalShowcase() {
   const t = useTranslations();
   const sectionRef = useRef<HTMLElement>(null);
+  const [shouldMountScene, setShouldMountScene] = useState(false);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
   const setMedalScrollProgress = useStore((state) => state.setMedalScrollProgress);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+    if (!sectionRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShouldMountScene(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Character-wipe entrance for titles
-        gsap.from('.medal-title .char', {
-          scrollTrigger: {
-            trigger: '.medal-title',
-            start: 'top 80%',
-          },
-          opacity: 0,
-          x: -20,
-          stagger: 0.02,
-          duration: 0.8,
-          ease: 'power2.out',
-        });
-
-        gsap.from('.medal-description', {
-          scrollTrigger: {
-            trigger: '.medal-description',
-            start: 'top 85%',
-          },
-          opacity: 0,
-          y: 20,
-          duration: 1,
-          ease: 'power3.out',
-        });
-
-        // Drive medal rotation via scroll progress
-        gsap.to({}, {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-            onUpdate: (self) => {
-              setMedalScrollProgress(self.progress);
-            },
-          },
-        });
+  useReducedMotionAnimation(
+    sectionRef,
+    () => {
+      gsap.from('.medal-title .char', {
+        scrollTrigger: { trigger: '.medal-title', start: 'top 80%' },
+        opacity: 0,
+        x: -20,
+        stagger: 0.02,
+        duration: 0.8,
+        ease: 'power2.out',
       });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.from('.medal-title, .medal-description', {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          },
-          opacity: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power2.out',
-        });
-        // Reset progress for static view
-        setMedalScrollProgress(0);
+      gsap.from('.medal-description', {
+        scrollTrigger: { trigger: '.medal-description', start: 'top 85%' },
+        opacity: 0,
+        y: 20,
+        duration: 1,
+        ease: 'power3.out',
       });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [setMedalScrollProgress]);
+      gsap.to({}, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+          onUpdate: (self) => setMedalScrollProgress(self.progress),
+        },
+      });
+    },
+    () => {
+      gsap.from('.medal-title, .medal-description', {
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power2.out',
+      });
+      setMedalScrollProgress(0);
+    },
+  );
 
   return (
     <section 
@@ -101,12 +96,14 @@ export default function MedalShowcase() {
         </p>
         
         <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes overflow-hidden group">
-          <div className={`w-full h-full transition-opacity duration-1000 ${isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
-            <Scene cameraPos={[0, 0, 5]} shadows={true}>
-              <MedalScene />
-            </Scene>
+          <div className={`w-full h-full transition-opacity duration-1000 ${shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
+            {shouldMountScene && (
+              <Scene cameraPos={[0, 0, 5]} shadows={true}>
+                <MedalScene />
+              </Scene>
+            )}
           </div>
-          {!isWebGLReady && (
+          {!(shouldMountScene && isWebGLReady) && (
             <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
               <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
                 Crafting Your Reward...

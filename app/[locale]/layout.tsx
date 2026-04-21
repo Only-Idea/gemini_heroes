@@ -92,7 +92,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${notoSansJP.variable} h-full antialiased`}>
-      <body className="min-h-full bg-background text-foreground">
+      <body className="min-h-full bg-background text-foreground" suppressHydrationWarning>
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
         <NextIntlClientProvider messages={messages}>

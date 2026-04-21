@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
+import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
 import Magnetic from '@/components/ui/Magnetic';
 import ScrollHint from '@/components/ui/ScrollHint';
@@ -18,78 +19,32 @@ export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
 
-  useEffect(() => {
-    if (!heroRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      // Standard animations
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const tl = gsap.timeline();
-
-        // Label fade in
-        tl.from('.hero-label', {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          ease: 'power3.out',
-        });
-
-        // Title character-by-character animation
-        tl.from('.hero-title .char', {
-          opacity: 0,
-          y: 40,
-          stagger: 0.02,
-          duration: 1,
-          ease: 'power4.out',
-        }, '-=0.4');
-
-        // Subtitle fade in
-        tl.from('.hero-subtitle', {
-          opacity: 0,
-          y: 20,
-          duration: 1,
-          ease: 'power3.out',
-        }, '-=0.6');
-
-        // CTA buttons fade in
-        tl.from('.hero-cta', {
-          opacity: 0,
-          y: 20,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-        }, '-=0.8');
-
-        // Scroll hint fade in
-        tl.from('.hero-scroll-hint', {
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out',
-        }, '-=0.5');
+  useReducedMotionAnimation(
+    heroRef,
+    () => {
+      const tl = gsap.timeline();
+      tl.from('.hero-label', { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' });
+      tl.from('.hero-title .char', { opacity: 0, y: 40, stagger: 0.02, duration: 1, ease: 'power4.out' }, '-=0.4');
+      tl.from('.hero-subtitle', { opacity: 0, y: 20, duration: 1, ease: 'power3.out' }, '-=0.6');
+      tl.from('.hero-cta', { opacity: 0, y: 20, duration: 1, stagger: 0.2, ease: 'power3.out' }, '-=0.8');
+      tl.from('.hero-scroll-hint', { opacity: 0, duration: 1, ease: 'power2.out' }, '-=0.5');
+    },
+    () => {
+      gsap.from('.hero-label, .hero-title, .hero-subtitle, .hero-cta, .hero-scroll-hint', {
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: 'power2.out',
       });
-
-      // Reduced motion fallback
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.from('.hero-label, .hero-title, .hero-subtitle, .hero-cta, .hero-scroll-hint', {
-          opacity: 0,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'power2.out',
-        });
-      });
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+  );
 
   return (
     <section 
       ref={heroRef} 
       className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 overflow-hidden"
       role="region"
-      aria-label={t('label')}
+      aria-label={t('hero.label')}
     >
       {/* 3D Hero Orb Background */}
       <div className={`transition-opacity duration-1000 absolute inset-0 ${isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>

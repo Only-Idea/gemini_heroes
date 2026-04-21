@@ -34,16 +34,13 @@ function TickerSync() {
 // Notifier when 3D is ready
 function SceneMountNotifier() {
   const setWebGLReady = useStore((state) => state.setWebGLReady);
-  
+
   useEffect(() => {
     // Small delay to ensure everything is actually rendered
     const timer = setTimeout(() => setWebGLReady(true), 100);
-    return () => {
-      clearTimeout(timer);
-      setWebGLReady(false);
-    };
+    return () => clearTimeout(timer);
   }, [setWebGLReady]);
-  
+
   return null;
 }
 

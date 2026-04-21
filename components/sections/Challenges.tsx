@@ -18,61 +18,34 @@ export default function Challenges() {
     const scrollContainer = scrollRef.current;
     if (!section || !scrollContainer) return;
 
-    // Responsive animations with matchMedia
     const mm = gsap.matchMedia();
 
-    mm.add({
-      isDesktop: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
-      isMobile: '(max-width: 1023px) and (prefers-reduced-motion: no-preference)',
-      reduceMotion: '(prefers-reduced-motion: reduce)'
-    }, (context) => {
-      const { isDesktop, isMobile, reduceMotion } = context.conditions!;
+    mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+      const amountToScroll = scrollContainer.scrollWidth - window.innerWidth;
+      gsap.to(scrollContainer, {
+        x: -amountToScroll,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: `+=${amountToScroll}`,
+          pin: true,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+    });
 
-      if (isDesktop) {
-        const scrollWidth = scrollContainer.scrollWidth;
-        const amountToScroll = scrollWidth - window.innerWidth;
-
-        gsap.to(scrollContainer, {
-          x: -amountToScroll,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: `+=${amountToScroll}`,
-            pin: true,
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-      }
-
-      if (isMobile) {
-        gsap.from('.challenge-card', {
-          opacity: 0,
-          y: 40,
-          stagger: 0.2,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
-          },
-        });
-      }
-
-      if (reduceMotion) {
-        // Simple vertical reveal for reduced motion
-        gsap.from('.challenge-card', {
-          opacity: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
-          },
-        });
-      }
+    mm.add('(max-width: 1023px), (prefers-reduced-motion: reduce)', () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      gsap.from('.challenge-card', {
+        opacity: 0,
+        y: reduced ? 0 : 40,
+        stagger: 0.2,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 80%' },
+      });
     });
 
     return () => mm.revert();

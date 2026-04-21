@@ -1,9 +1,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,52 +13,35 @@ export default function ImpactSection() {
   const t = useTranslations('nav');
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from('.impact-reveal', {
-          opacity: 0,
-          y: 40,
-          stagger: 0.1,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-          },
-        });
-
-        // Illustration animation
-        gsap.from('.impact-viz', {
-          scale: 0.8,
-          opacity: 0,
-          duration: 1.5,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 60%',
-          },
-        });
+  useReducedMotionAnimation(
+    sectionRef,
+    () => {
+      gsap.from('.impact-reveal', {
+        opacity: 0,
+        y: 40,
+        stagger: 0.1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
       });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.from('.impact-reveal, .impact-viz', {
-          opacity: 0,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-          },
-        });
+      gsap.from('.impact-viz', {
+        scale: 0.8,
+        opacity: 0,
+        duration: 1.5,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' },
       });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    () => {
+      gsap.from('.impact-reveal, .impact-viz', {
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+      });
+    },
+  );
 
   return (
     <section 

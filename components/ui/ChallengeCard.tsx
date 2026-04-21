@@ -24,8 +24,8 @@ export default function ChallengeCard({
     const card = cardRef.current;
     if (!card) return;
 
-    const xTo = gsap.quickTo(card, 'rotateY', { duration: 0.5, ease: 'power2.out' });
-    const yTo = gsap.quickTo(card, 'rotateX', { duration: 0.5, ease: 'power2.out' });
+    const xTo = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power2.out' });
+    const yTo = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power2.out' });
     const glowXTo = gsap.quickTo(glowRef.current, 'xPercent', { duration: 0.5, ease: 'power2.out' });
     const glowYTo = gsap.quickTo(glowRef.current, 'yPercent', { duration: 0.5, ease: 'power2.out' });
 
