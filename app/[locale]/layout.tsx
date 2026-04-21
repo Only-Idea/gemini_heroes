@@ -7,6 +7,7 @@ import GrainOverlay from '@/components/ui/GrainOverlay';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import SmoothScroll from '@/components/ui/SmoothScroll';
+import GlobalCanvas from '@/components/three/GlobalCanvas';
 import DevTools from '@/components/three/DevTools';
 import DownloadBar from '@/components/ui/DownloadBar';
 import JsonLd from '@/components/ui/JsonLd';
@@ -97,6 +98,7 @@ export default async function LocaleLayout({
         <JsonLd data={websiteJsonLd} />
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
+            <GlobalCanvas />
             <GrainOverlay />
             <CustomCursor />
             <ScrollProgress />

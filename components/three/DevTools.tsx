@@ -11,9 +11,6 @@ export default function DevTools() {
   return (
     <>
       <Leva collapsed />
-      <div className="fixed bottom-4 left-4 z-[100] opacity-50 hover:opacity-100 transition-opacity">
-        <Stats className="!static" />
-      </div>
     </>
   );
 }

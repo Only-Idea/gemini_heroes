@@ -1,10 +1,8 @@
 'use client';
 
 import * as THREE from 'three';
-import { Canvas, useThree } from '@react-three/fiber';
-import { Environment, ContactShadows, PerformanceMonitor } from '@react-three/drei';
-import { Suspense, useState, useEffect } from 'react';
-import { gsap } from 'gsap';
+import { View, Environment, ContactShadows, PerspectiveCamera } from '@react-three/drei';
+import { Suspense, useRef, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
 import LoadingState from './LoadingState';
 
@@ -12,23 +10,6 @@ interface SceneProps {
   children: React.ReactNode;
   cameraPos?: [number, number, number];
   shadows?: boolean;
-}
-
-// Internal component to handle ticker sync
-function TickerSync() {
-  const { advance } = useThree();
-  
-  useEffect(() => {
-    // Sync R3F with GSAP ticker
-    const onTick = (time: number) => {
-      advance(time);
-    };
-    
-    gsap.ticker.add(onTick);
-    return () => gsap.ticker.remove(onTick);
-  }, [advance]);
-  
-  return null;
 }
 
 // Notifier when 3D is ready
@@ -45,49 +26,15 @@ function SceneMountNotifier() {
 }
 
 export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true }: SceneProps) {
-  const [dpr] = useState<number | [number, number]>(() => {
-    if (typeof window !== 'undefined' && !window.matchMedia('(pointer: coarse)').matches) {
-      return [1, 2];
-    }
-    return [1, 1.5];
-  });
-  const setPerfLevel = useStore((state) => state.setPerfLevel);
+  const container = useRef<HTMLDivElement>(null!);
   const isReducedMotion = useStore((state) => state.isReducedMotion);
-  const setReducedMotion = useStore((state) => state.setReducedMotion);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, [setReducedMotion]);
 
   return (
-    <div className="absolute inset-0 z-0 h-full w-full pointer-events-none overflow-hidden transition-opacity duration-1000">
-      <Canvas
-        shadows={shadows ? { type: THREE.PCFShadowMap } : false}
-        dpr={dpr}
-        frameloop="never" // Essential for ticker sync
-        gl={{ 
-          toneMapping: THREE.AgXToneMapping, 
-          toneMappingExposure: 1.0,
-          antialias: true,
-          alpha: true
-        }}
-        camera={{ position: cameraPos, fov: 45 }}
-        className="h-full w-full"
-        aria-hidden="true"
-      >
-        <TickerSync />
+    <div ref={container} className="absolute inset-0 z-0 h-full w-full pointer-events-none overflow-hidden">
+      <View track={container} className="h-full w-full">
         <SceneMountNotifier />
         
-        <PerformanceMonitor 
-          onIncline={() => { setPerfLevel(3); }} 
-          onDecline={() => { setPerfLevel(1); }} 
-          flipflops={3}
-          onFallback={() => setPerfLevel(1)}
-        />
+        <PerspectiveCamera makeDefault position={cameraPos} fov={45} />
         
         {/* High-Key Global Illumination */}
         <Environment preset="studio" environmentIntensity={0.8} />
@@ -100,7 +47,7 @@ export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true 
           shadow-bias={-0.0001}
         />
 
-        <Suspense fallback={<LoadingState />}>
+        <Suspense fallback={null}>
           {children}
         </Suspense>
 
@@ -114,7 +61,7 @@ export default function Scene({ children, cameraPos = [0, 0, 5], shadows = true 
             far={4} 
           />
         )}
-      </Canvas>
+      </View>
     </div>
   );
 }

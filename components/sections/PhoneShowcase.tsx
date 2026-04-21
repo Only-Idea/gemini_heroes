@@ -69,7 +69,7 @@ export default function PhoneShowcase() {
           observer.disconnect();
         }
       },
-      { rootMargin: '400px' }
+      { rootMargin: '100px' }
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
