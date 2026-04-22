@@ -1,15 +1,16 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ChallengeCard from '@/components/ui/ChallengeCard';
+import SectionLabel from '@/components/ui/SectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Challenges() {
-  const t = useTranslations();
+  const t = useTranslations('challenges');
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -51,12 +52,12 @@ export default function Challenges() {
     return () => mm.revert();
   }, []);
 
-  const challenges = [
-    { title: '富士山', subtitle: 'Conquer the sacred peak of Japan.', color: 'teal' as const },
-    { title: '浪人', subtitle: 'Follow the path of the masterless warrior.', color: 'amber' as const },
-    { title: '鉄道', subtitle: 'Journey through the historic rail routes.', color: 'coral' as const },
-    { title: '桜', subtitle: 'A seasonal journey through cherry blossoms.', color: 'teal' as const },
-  ];
+  const challenges = useMemo(() => [
+    { title: t('fuji.title'), subtitle: t('fuji.subtitle'), color: 'teal' as const },
+    { title: t('ronin.title'), subtitle: t('ronin.subtitle'), color: 'amber' as const },
+    { title: t('rail.title'), subtitle: t('rail.subtitle'), color: 'coral' as const },
+    { title: t('sakura.title'), subtitle: t('sakura.subtitle'), color: 'teal' as const },
+  ], [t]);
 
   return (
     <section 
@@ -64,22 +65,16 @@ export default function Challenges() {
       id="challenges" 
       className="relative min-h-screen flex flex-col justify-center overflow-hidden py-[var(--space-section-y)] lg:py-0"
       role="region"
-      aria-label={t('nav.challenges')}
+      aria-label={t('label')}
     >
       <div className="mx-auto max-w-[1400px] px-6 w-full mb-12 lg:absolute lg:top-24 lg:left-1/2 lg:-translate-x-1/2">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="font-mono text-label font-bold uppercase tracking-[0.3em] text-coral">
-              01 / Explore
-            </p>
-            <h2 className="mt-4 font-display text-section-title font-bold leading-tight text-foreground">
-              {t('nav.challenges')}
-            </h2>
-          </div>
-          <p className="max-w-md text-body font-medium text-muted">
-            Choose your path through the heart of Japan. Each route is a unique journey of discovery.
-          </p>
-        </div>
+        <SectionLabel
+          number={t('label').split(' / ')[0]}
+          label={t('label').split(' / ')[1]}
+          title={t('label').split(' / ')[1]}
+          description={t('description')}
+          accentColor="coral"
+        />
       </div>
 
       <div className="lg:h-[60vh] flex items-center">

@@ -6,7 +6,7 @@ export default function Footer() {
   const t = useTranslations('footer');
 
   return (
-    <footer id="contact" className="border-t border-foreground/5 bg-background px-6 py-16 lg:px-10">
+    <footer id="contact" className="reveal border-t border-foreground/5 bg-background px-6 py-16 lg:px-10">
       <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
           {/* Logo/Brand */}

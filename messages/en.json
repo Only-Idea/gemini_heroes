@@ -31,12 +31,52 @@
     "description": "True achievements deserve more than a badge. Complete your odyssey and receive a premium physical medal, crafted with precision and shipped to your door."
   },
   "features": {
-    "map": "3D World Mapping",
-    "tracking": "Precision Odyssey Tracking",
-    "team": "Collective Journeys",
-    "achievements": "Global Milestones",
-    "streak": "Unbroken Paths",
-    "community": "Echoes of Adventure"
+    "label": "02 / Experience",
+    "section_title": "The Digital Companion",
+    "maps": {
+      "title": "Interactive Maps",
+      "description": "Explore Japan with high-fidelity Mapbox maps in three distinct styles."
+    },
+    "impact": {
+      "title": "Real-time Impact",
+      "description": "Track your steps as they translate into trees planted and plastic removed."
+    },
+    "medals": {
+      "title": "Physical Medals",
+      "description": "Earn premium physical artifacts shipped globally upon completion."
+    },
+    "teams": {
+      "title": "Team Journeys",
+      "description": "Collaborate with friends in real-time chat and shared leaderboards."
+    },
+    "achievements": {
+      "title": "Global Achievements",
+      "description": "Unlock 10 categories of achievements with 5 rarity tiers."
+    },
+    "inclusivity": {
+      "title": "12 Activity Types",
+      "description": "Whether you walk, run, or roll, every movement counts."
+    }
+  },
+  "challenges": {
+    "label": "01 / Explore",
+    "description": "Choose your path through the heart of Japan. Each route is a unique journey of discovery.",
+    "fuji": {
+      "title": "Mt. Fuji",
+      "subtitle": "Conquer the sacred peak of Japan."
+    },
+    "ronin": {
+      "title": "Ronin",
+      "subtitle": "Follow the path of the masterless warrior."
+    },
+    "rail": {
+      "title": "Railway",
+      "subtitle": "Journey through the historic rail routes."
+    },
+    "sakura": {
+      "title": "Sakura",
+      "subtitle": "A seasonal journey through cherry blossoms."
+    }
   },
   "impact": {
     "title": "The Path of Purpose",

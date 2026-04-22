@@ -14,7 +14,7 @@ export default function StatsBar() {
 
   return (
     <section 
-      className="py-20 bg-foreground/[0.02] border-y border-foreground/5 relative overflow-hidden"
+      className="reveal py-20 bg-foreground/[0.02] border-y border-foreground/5 relative overflow-hidden"
       role="region"
       aria-label="Statistics"
     >

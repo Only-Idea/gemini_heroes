@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import { Canvas, useThree } from '@react-three/fiber';
 import { View, Preload, PerformanceMonitor, Stats } from '@react-three/drei';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { useStore } from '@/store/useStore';
 
@@ -22,23 +22,29 @@ function TickerSync() {
 }
 
 export default function GlobalCanvas() {
-  const [dpr] = useState<number | [number, number]>(() => {
-    if (typeof window !== 'undefined' && !window.matchMedia('(pointer: coarse)').matches) {
-      return [1, 2];
-    }
-    return [1, 1.5];
-  });
-  
+  const [dpr, setDpr] = useState<number | [number, number]>(1);
   const setPerfLevel = useStore((state) => state.setPerfLevel);
   const setReducedMotion = useStore((state) => state.setReducedMotion);
 
   useEffect(() => {
+    // Client-side only DPR initialization to avoid hydration mismatch
+    const initialDpr = !window.matchMedia('(pointer: coarse)').matches ? [1, 2] : [1, 1.5];
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDpr(initialDpr as [number, number]);
+
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mq.matches);
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, [setReducedMotion]);
+
+  // Handle THREE.Clock -> THREE.Timer if available in r184+
+  const clock = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const T = THREE as any;
+    return T.Timer ? new T.Timer() : new THREE.Clock();
+  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[1]">
@@ -55,9 +61,11 @@ export default function GlobalCanvas() {
         }}
         camera={{ fov: 45 }}
         style={{ width: '100%', height: '100%' }}
-        onCreated={({ gl }) => {
+        onCreated={({ gl, set }) => {
           const onLost = (e: Event) => e.preventDefault();
           gl.domElement.addEventListener('webglcontextlost', onLost, false);
+          // Set custom clock
+          set({ clock });
         }}
       >
         <TickerSync />

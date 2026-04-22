@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import GlassCard from '@/components/ui/GlassCard';
 
 interface ChallengeCardProps {
   title: string;
@@ -56,17 +57,18 @@ export default function ChallengeCard({
     };
   }, []);
 
-  const colorClasses = {
-    teal: 'from-teal/20 to-teal/5 border-teal/20',
-    amber: 'from-amber/20 to-amber/5 border-amber/20',
-    coral: 'from-coral/20 to-coral/5 border-coral/20',
-  };
-
   return (
-    <button
+    <GlassCard
+      as="button"
       ref={cardRef}
-      className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-8 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
-      style={{ transformStyle: 'preserve-3d' }}
+      variant="accent"
+      hoverEffect="scale"
+      className={`group perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
+      style={{ 
+        transformStyle: 'preserve-3d',
+        background: `linear-gradient(135deg, color-mix(in srgb, var(--color-${accentColor}), transparent 80%) 0%, color-mix(in srgb, var(--color-${accentColor}), transparent 95%) 100%)`,
+        backgroundColor: 'rgba(255, 255, 255, 0.05)'
+      }}
     >
       {/* Dynamic Glow Effect */}
       <div
@@ -104,6 +106,6 @@ export default function ChallengeCard({
            </div>
         </div>
       </div>
-    </button>
+    </GlassCard>
   );
 }

@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
+import SectionLabel from '@/components/ui/SectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,15 +71,14 @@ export default function ImpactSection() {
 
           {/* Copy Side */}
           <div className="flex flex-col items-start">
-            <p className="impact-reveal font-mono text-label font-bold uppercase tracking-[0.3em] text-teal">
-              03 / Path of Purpose
-            </p>
-            <h2 className="impact-reveal mt-6 font-display text-section-title font-bold leading-tight text-foreground">
-              Every Step, <br />A Lasting Legacy.
-            </h2>
-            <p className="impact-reveal mt-8 text-body-lg font-medium text-muted leading-relaxed max-w-xl">
-              Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations to ensure your sweat equity translates into real-world change.
-            </p>
+            <SectionLabel
+              number="03"
+              label="Path of Purpose"
+              title={<>Every Step, <br />A Lasting Legacy.</>}
+              description="Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations to ensure your sweat equity translates into real-world change."
+              accentColor="teal"
+              itemClassName="impact-reveal"
+            />
 
             <div className="mt-16 grid grid-cols-2 gap-8 w-full">
               <div className="impact-reveal group">

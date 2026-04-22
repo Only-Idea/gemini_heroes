@@ -12,8 +12,11 @@ export function useReducedMotionAnimation(
 ) {
   const animsRef = useRef(animations);
   const reducedRef = useRef(reducedAnimations);
-  animsRef.current = animations;
-  reducedRef.current = reducedAnimations;
+
+  useEffect(() => {
+    animsRef.current = animations;
+    reducedRef.current = reducedAnimations;
+  }, [animations, reducedAnimations]);
 
   useEffect(() => {
     if (!scope.current) return;

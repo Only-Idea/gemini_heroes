@@ -132,9 +132,18 @@ button, a, [role="button"] {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 1.2s var(--ease-heroes), transform 1.2s var(--ease-heroes);
+  will-change: opacity, transform;
 }
 
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

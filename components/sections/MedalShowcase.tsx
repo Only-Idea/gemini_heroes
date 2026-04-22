@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
+import SectionLabel from '@/components/ui/SectionLabel';
 
 // Dynamic import for 3D component
 const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
@@ -37,16 +38,16 @@ export default function MedalShowcase() {
   useReducedMotionAnimation(
     sectionRef,
     () => {
-      gsap.from('.medal-title .char', {
-        scrollTrigger: { trigger: '.medal-title', start: 'top 80%' },
+      gsap.from('.medal-reveal-title .char', {
+        scrollTrigger: { trigger: '.medal-reveal-title', start: 'top 80%' },
         opacity: 0,
         x: -20,
         stagger: 0.02,
         duration: 0.8,
         ease: 'power2.out',
       });
-      gsap.from('.medal-description', {
-        scrollTrigger: { trigger: '.medal-description', start: 'top 85%' },
+      gsap.from('.medal-reveal-desc', {
+        scrollTrigger: { trigger: '.medal-reveal-desc', start: 'top 85%' },
         opacity: 0,
         y: 20,
         duration: 1,
@@ -63,7 +64,7 @@ export default function MedalShowcase() {
       });
     },
     () => {
-      gsap.from('.medal-title, .medal-description', {
+      gsap.from('.medal-reveal-title, .medal-reveal-desc', {
         scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
         opacity: 0,
         duration: 1,
@@ -80,20 +81,22 @@ export default function MedalShowcase() {
       className="px-6 py-48 relative overflow-hidden"
       role="region"
       aria-label={t('medal.label')}
+      suppressHydrationWarning
     >
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber/5 blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="mx-auto max-w-[1400px] text-center relative z-10">
-        <p className="font-mono text-label font-bold uppercase tracking-[0.3em] text-coral">
-          03 / {t('medal.label')}
-        </p>
-        <h2 className="medal-title mt-6 font-display text-section-title font-bold text-foreground">
-          <SplitText>{t('medal.title')}</SplitText>
-        </h2>
-        <p className="medal-description mx-auto mt-6 max-w-2xl text-body-lg font-medium leading-relaxed text-muted">
-          {t('medal.description')}
-        </p>
+      <div className="mx-auto max-w-[1400px] text-center relative z-10" suppressHydrationWarning>
+        <SectionLabel
+          number="04"
+          label={t('medal.label')}
+          title={<SplitText>{t('medal.title')}</SplitText>}
+          description={t('medal.description')}
+          accentColor="coral"
+          align="center"
+          titleClassName="medal-reveal-title"
+          descriptionClassName="medal-reveal-desc"
+        />
         
         <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes overflow-hidden group">
           <div className={`w-full h-full transition-opacity duration-1000 ${shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>

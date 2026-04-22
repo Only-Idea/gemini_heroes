@@ -1,24 +1,33 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface AnimatedCounterProps {
-  value: string;
+  value: string | number;
   duration?: number;
   delay?: number;
+  locale?: string;
 }
 
-export default function AnimatedCounter({ value, duration = 2, delay = 0 }: AnimatedCounterProps) {
+export default function AnimatedCounter({ 
+  value, 
+  duration = 2, 
+  delay = 0,
+  locale = 'ja-JP' 
+}: AnimatedCounterProps) {
   const [displayValue, setDisplayValue] = useState(0);
   const containerRef = useRef<HTMLSpanElement>(null);
   
+  // Memoize number formatting for performance
+  const formatter = useMemo(() => new Intl.NumberFormat(locale), [locale]);
+
   // Extract number and suffix (e.g., "32+" -> 32, "+")
-  const numericValue = parseInt(value, 10);
-  const suffix = value.replace(/[0-9]/g, '');
+  const numericValue = typeof value === 'string' ? parseInt(value.replace(/[^0-9]/g, ''), 10) : value;
+  const suffix = typeof value === 'string' ? value.replace(/[0-9]/g, '') : '';
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -28,15 +37,14 @@ export default function AnimatedCounter({ value, duration = 2, delay = 0 }: Anim
         val: numericValue,
         duration: duration,
         delay: delay,
-        ease: 'power2.out',
-        snap: { val: 1 },
+        ease: 'expo.out',
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top 85%',
           toggleActions: 'play none none none',
         },
         onUpdate: () => {
-          setDisplayValue(obj.val);
+          setDisplayValue(Math.floor(obj.val));
         },
       });
 
@@ -59,7 +67,7 @@ export default function AnimatedCounter({ value, duration = 2, delay = 0 }: Anim
 
   return (
     <span ref={containerRef} className="inline-block">
-      {displayValue}
+      {formatter.format(displayValue)}
       {suffix}
     </span>
   );

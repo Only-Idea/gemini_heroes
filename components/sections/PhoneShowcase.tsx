@@ -1,11 +1,13 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
+import SectionLabel from '@/components/ui/SectionLabel';
+import GlassCard from '@/components/ui/GlassCard';
 
 // Dynamic imports for 3D components
 const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
@@ -13,52 +15,52 @@ const PhoneModel = dynamic(() => import('@/components/three/PhoneModel'), { ssr:
 
 gsap.registerPlugin(ScrollTrigger);
 
-const features = [
-  {
-    id: 'maps',
-    title: 'Interactive Maps',
-    description: 'Explore Japan with high-fidelity Mapbox maps in three distinct styles.',
-    accent: 'teal',
-  },
-  {
-    id: 'impact',
-    title: 'Real-time Impact',
-    description: 'Track your steps as they translate into trees planted and plastic removed.',
-    accent: 'coral',
-  },
-  {
-    id: 'medals',
-    title: 'Physical Medals',
-    description: 'Earn premium physical artifacts shipped globally upon completion.',
-    accent: 'amber',
-  },
-  {
-    id: 'teams',
-    title: 'Team Journeys',
-    description: 'Collaborate with friends in real-time chat and shared leaderboards.',
-    accent: 'teal',
-  },
-  {
-    id: 'achievements',
-    title: 'Global Achievements',
-    description: 'Unlock 10 categories of achievements with 5 rarity tiers.',
-    accent: 'amber',
-  },
-  {
-    id: 'inclusivity',
-    title: '12 Activity Types',
-    description: 'Whether you walk, run, or roll, every movement counts.',
-    accent: 'coral',
-  },
-];
-
 export default function PhoneShowcase() {
-  const t = useTranslations('nav');
+  const t = useTranslations('features');
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
   const [shouldMountScene, setShouldMountScene] = useState(false);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
+
+  const features: { id: string; title: string; description: string; accent: 'teal' | 'coral' | 'amber' }[] = useMemo(() => [
+    {
+      id: 'maps',
+      title: t('maps.title'),
+      description: t('maps.description'),
+      accent: 'teal',
+    },
+    {
+      id: 'impact',
+      title: t('impact.title'),
+      description: t('impact.description'),
+      accent: 'coral',
+    },
+    {
+      id: 'medals',
+      title: t('medals.title'),
+      description: t('medals.description'),
+      accent: 'amber',
+    },
+    {
+      id: 'teams',
+      title: t('teams.title'),
+      description: t('teams.description'),
+      accent: 'teal',
+    },
+    {
+      id: 'achievements',
+      title: t('achievements.title'),
+      description: t('achievements.description'),
+      accent: 'amber',
+    },
+    {
+      id: 'inclusivity',
+      title: t('inclusivity.title'),
+      description: t('inclusivity.description'),
+      accent: 'coral',
+    },
+  ], [t]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -90,7 +92,7 @@ export default function PhoneShowcase() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [features]);
 
   return (
     <section 
@@ -98,17 +100,17 @@ export default function PhoneShowcase() {
       id="features" 
       className="relative bg-foreground/[0.02] py-32 lg:py-64"
       role="region"
-      aria-label={t('features')}
+      aria-label={t('section_title')}
+      suppressHydrationWarning
     >
-      <div className="mx-auto max-w-[1400px] px-6">
-        <div className="mb-24">
-          <p className="font-mono text-label font-bold uppercase tracking-[0.3em] text-teal">
-            02 / Experience
-          </p>
-          <h2 className="mt-4 font-display text-section-title font-bold text-foreground">
-            The Digital Companion
-          </h2>
-        </div>
+      <div className="mx-auto max-w-[1400px] px-6" suppressHydrationWarning>
+        <SectionLabel
+          number={t('label').split(' / ')[0]}
+          label={t('label').split(' / ')[1]}
+          title={t('section_title')}
+          accentColor="teal"
+          className="mb-24"
+        />
 
         <div ref={containerRef} className="grid lg:grid-cols-2 gap-24 items-start">
           {/* Sticky Phone Viewport */}
@@ -132,13 +134,14 @@ export default function PhoneShowcase() {
           {/* Bento Grid Features */}
           <div className="flex flex-col gap-12 lg:gap-32">
             {features.map((feature, index) => (
-              <div
+              <GlassCard
                 key={feature.id}
-                id={`feature-${feature.id}`}
-                className={`group relative glass rounded-[24px] p-10 transition-all duration-700 ${
-                  activeFeatureIndex === index ? 'opacity-100 translate-x-4 border-white/20 shadow-2xl scale-105' : 'opacity-40 border-white/5 grayscale pointer-events-none'
+                glowColor={feature.accent}
+                className={`transition-all duration-700 ${
+                  activeFeatureIndex === index ? 'opacity-100 translate-x-4 border-white/40 shadow-2xl scale-105' : 'opacity-40 border-white/5 grayscale pointer-events-none'
                 }`}
               >
+                <div id={`feature-${feature.id}`} className="absolute top-0 left-0 w-full h-1" />
                 <span className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-${feature.accent}`}>
                   Feature / 0{index + 1}
                 </span>
@@ -151,9 +154,9 @@ export default function PhoneShowcase() {
                 
                 {/* Indicator dot */}
                 <div className={`absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-500 bg-${feature.accent} ${
-                  activeFeatureIndex === index ? 'scale-150 shadow-[0_0_15px_rgba(var(--color-teal-rgb),0.5)]' : 'scale-0'
+                  activeFeatureIndex === index ? 'scale-150 shadow-[0_0_15px_rgba(var(--glow-rgb),0.5)]' : 'scale-0'
                 }`} />
-              </div>
+              </GlassCard>
             ))}
           </div>
         </div>

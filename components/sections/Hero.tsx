@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
 import SplitText from '@/components/ui/SplitText';
 import ScrollHint from '@/components/ui/ScrollHint';
+import SectionLabel from '@/components/ui/SectionLabel';
 
 const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
 const HeroOrb = dynamic(() => import('@/components/three/HeroOrb'), { ssr: false });
@@ -32,17 +33,15 @@ export default function Hero() {
       )}
 
       <div className="relative z-10 flex flex-col items-center">
-        <p className="font-mono text-label font-bold uppercase tracking-[0.3em] text-teal/60">
-          {t('hero.label')}
-        </p>
-
-        <h1 className="mt-8 max-w-5xl text-center font-display text-hero font-bold leading-[1.05] tracking-tight text-foreground">
-          <SplitText>{t('hero.title')}</SplitText>
-        </h1>
-
-        <p className="mt-8 max-w-2xl text-center text-body-lg font-medium leading-[1.6] text-muted">
-          {t('hero.subtitle')}
-        </p>
+        <SectionLabel
+          label={t('hero.label')}
+          title={<SplitText>{t('hero.title')}</SplitText>}
+          description={t('hero.subtitle')}
+          align="center"
+          accentColor="teal"
+          titleSize="hero"
+          as="h1"
+        />
       </div>
 
       <ScrollHint />
