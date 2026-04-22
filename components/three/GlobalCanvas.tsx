@@ -60,7 +60,7 @@ export default function GlobalCanvas() {
           powerPreference: "high-performance",
         }}
         camera={{ fov: 45 }}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
         onCreated={({ gl, set }) => {
           const onLost = (e: Event) => e.preventDefault();
           gl.domElement.addEventListener('webglcontextlost', onLost, false);

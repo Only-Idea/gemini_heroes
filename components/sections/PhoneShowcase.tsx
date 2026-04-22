@@ -78,16 +78,35 @@ export default function PhoneShowcase() {
   }, []);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const container = containerRef.current;
+    if (!section || !container) return;
+
     const ctx = gsap.context(() => {
-      features.forEach((feature, index) => {
-        ScrollTrigger.create({
-          trigger: `#feature-${feature.id}`,
-          start: 'top 50%',
-          end: 'bottom 50%',
-          onToggle: (self) => {
-            if (self.isActive) setActiveFeatureIndex(index);
-          },
+      const pickClosestToCenter = () => {
+        const cards = container.querySelectorAll<HTMLElement>('[data-feature-card]');
+        if (cards.length === 0) return;
+        const center = window.innerHeight / 2;
+        let closest = 0;
+        let minDist = Infinity;
+        cards.forEach((card, i) => {
+          const rect = card.getBoundingClientRect();
+          const mid = rect.top + rect.height / 2;
+          const dist = Math.abs(mid - center);
+          if (dist < minDist) {
+            minDist = dist;
+            closest = i;
+          }
         });
+        setActiveFeatureIndex(closest);
+      };
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: pickClosestToCenter,
+        onRefresh: pickClosestToCenter,
       });
     }, sectionRef);
 
@@ -137,8 +156,9 @@ export default function PhoneShowcase() {
               <GlassCard
                 key={feature.id}
                 glowColor={feature.accent}
+                data-feature-card
                 className={`transition-all duration-700 ${
-                  activeFeatureIndex === index ? 'opacity-100 translate-x-4 border-white/40 shadow-2xl scale-105' : 'opacity-40 border-white/5 grayscale pointer-events-none'
+                  activeFeatureIndex === index ? 'opacity-100 translate-x-4 border-white/40 shadow-2xl scale-105' : 'opacity-40 border-white/5 grayscale'
                 }`}
               >
                 <div id={`feature-${feature.id}`} className="absolute top-0 left-0 w-full h-1" />

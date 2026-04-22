@@ -1,11 +1,11 @@
 'use client';
 
-import { useRef, useEffect, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ChallengeCard from '@/components/ui/ChallengeCard';
 import SectionLabel from '@/components/ui/SectionLabel';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTranslations } from 'next-intl';
+import { useEffect, useMemo, useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +22,11 @@ export default function Challenges() {
     const mm = gsap.matchMedia();
 
     mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
-      const amountToScroll = scrollContainer.scrollWidth - window.innerWidth;
+      const lastCard = scrollContainer.lastElementChild as HTMLElement | null;
+      if (!lastCard) return;
+      const lastCardCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2;
+      const amountToScroll = lastCardCenter - window.innerWidth / 2;
+      if (amountToScroll <= 0) return;
       gsap.to(scrollContainer, {
         x: -amountToScroll,
         ease: 'none',
@@ -55,8 +59,7 @@ export default function Challenges() {
   const challenges = useMemo(() => [
     { title: t('fuji.title'), subtitle: t('fuji.subtitle'), color: 'teal' as const },
     { title: t('ronin.title'), subtitle: t('ronin.subtitle'), color: 'amber' as const },
-    { title: t('rail.title'), subtitle: t('rail.subtitle'), color: 'coral' as const },
-    { title: t('sakura.title'), subtitle: t('sakura.subtitle'), color: 'teal' as const },
+    { title: t('rail.title'), subtitle: t('rail.subtitle'), color: 'coral' as const }
   ], [t]);
 
   return (
@@ -67,7 +70,7 @@ export default function Challenges() {
       role="region"
       aria-label={t('label')}
     >
-      <div className="mx-auto max-w-[1400px] px-6 w-full mb-12 lg:absolute lg:top-24 lg:left-1/2 lg:-translate-x-1/2">
+      <div className="mx-auto max-w-[1400px] w-full px-6 lg:px-[15vw] mb-12">
         <SectionLabel
           number={t('label').split(' / ')[0]}
           label={t('label').split(' / ')[1]}
