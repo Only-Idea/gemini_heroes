@@ -9,7 +9,7 @@ export default function StatsBar() {
   const stats = [
     { value: '3', label: t('stats.routes') },
     { value: '12', label: t('stats.activities') },
-    { value: '32+', label: t('stats.countries') },
+    { value: '47', label: t('stats.countries') },
   ];
 
   return (

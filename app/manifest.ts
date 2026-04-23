@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Heroes — The Virtual Odyssey',
+    name: 'Heroes — Virtual Challenges Across Japan',
     short_name: 'Heroes',
-    description: 'Transform every step into a journey through Japan.',
+    description: 'Purpose-built virtual challenges across Japan. Every finish delivers a premium medal and plants a tree.',
     start_url: '/',
     display: 'standalone',
     background_color: '#0F1114',

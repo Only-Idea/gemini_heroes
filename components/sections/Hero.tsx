@@ -114,10 +114,30 @@ export default function Hero() {
           className="hero-rise mt-12 flex flex-wrap items-center justify-center gap-4"
           style={{ animationDelay: '1000ms' }}
         >
-          <GradientButton variant="primary" size="lg" aria-label={t('hero.cta_download')}>
+          <GradientButton
+            variant="primary"
+            size="lg"
+            aria-label={t('hero.cta_download')}
+            onClick={() =>
+              document
+                .getElementById('download')
+                ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+          >
             {t('hero.cta_download')}
           </GradientButton>
-          <GradientButton variant="ghost" size="lg" aria-label={t('hero.cta_learn')}>
+          <GradientButton
+            variant="ghost"
+            size="lg"
+            aria-label={t('hero.cta_learn')}
+            onClick={() =>
+              window.open(
+                'https://shop.medalhero.com/collections/all',
+                '_blank',
+                'noopener,noreferrer'
+              )
+            }
+          >
             {t('hero.cta_learn')}
           </GradientButton>
         </div>

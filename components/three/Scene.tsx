@@ -4,7 +4,6 @@ import * as THREE from 'three';
 import { View, Environment, ContactShadows, PerspectiveCamera } from '@react-three/drei';
 import { Suspense, useRef, useEffect } from 'react';
 import { useStore } from '@/store/useStore';
-import LoadingState from './LoadingState';
 
 interface SceneProps {
   children: React.ReactNode;

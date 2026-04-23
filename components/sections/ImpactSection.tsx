@@ -8,11 +8,8 @@ import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SectionLabel from '@/components/ui/SectionLabel';
 import ImpactCounter from '@/components/ui/ImpactCounter';
 import TreeIllustration from '@/components/ui/TreeIllustration';
-import WaveAnimation from '@/components/ui/WaveAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const partners = ['One Tree Planted', 'Ocean Conservancy', 'Re:earth', 'Blue Planet', '4Ocean'];
 
 export default function ImpactSection() {
   const t = useTranslations();
@@ -37,14 +34,6 @@ export default function ImpactSection() {
         duration: 1.2,
         ease: 'power3.out',
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
-      });
-      gsap.from('.partner-logo', {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: '.partner-row', start: 'top 85%' },
       });
     },
     () => {
@@ -77,66 +66,41 @@ export default function ImpactSection() {
               accentColor="teal"
             />
 
-            <div className="mt-12 grid w-full grid-cols-1 gap-10">
+            <div className="mt-12 w-full">
               <ImpactCounter
-                value="10250"
+                value="1000"
+                unit={t('common.unit_ki')}
                 label={t('impact.trees')}
+                eyebrow={t('impact.goal_eyebrow')}
+                progressLabel={t('impact.goal_note')}
                 accent="teal"
-                progress={0.68}
-                progressLabel={t('impact.goal_trees')}
               />
-              <div className="relative isolate overflow-hidden rounded-3xl border border-coral/10 bg-coral/[0.03] p-6">
-                <WaveAnimation className="-z-10 opacity-80" colorVar="--color-coral" />
-                <ImpactCounter
-                  value="580"
-                  label={t('impact.ocean')}
-                  unit="kg"
-                  accent="coral"
-                  progress={0.42}
-                  progressLabel={t('impact.goal_ocean')}
-                />
-              </div>
             </div>
 
-            <button className="mt-12 rounded-full border border-foreground/15 px-8 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/60 hover:bg-foreground/5">
+            <a
+              href="https://morinoproject.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-12 inline-flex items-center gap-2 rounded-full border border-foreground/15 px-8 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/60 hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+            >
               {t('impact.button')}
-            </button>
+              <span aria-hidden="true" className="text-base leading-none">→</span>
+            </a>
           </div>
 
-          {/* Viz column — slides from right */}
+          {/* Viz column — tree illustration slides from right */}
           <div
             ref={vizRef}
-            className="relative aspect-square lg:aspect-[4/5] rounded-[40px] overflow-hidden bg-gradient-to-b from-teal/[0.05] to-coral/[0.05] border border-foreground/5 flex items-center justify-center"
+            className="relative aspect-square lg:aspect-[4/5] rounded-[40px] overflow-hidden bg-gradient-to-b from-teal/[0.06] to-teal/[0.02] border border-foreground/5 flex items-center justify-center"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-teal/[0.03] to-coral/[0.03]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-teal/[0.04] to-transparent" />
             <TreeIllustration
               triggerRef={vizRef as React.RefObject<Element | null>}
               className="relative z-10 h-[85%] w-[85%]"
             />
-            {/* Horizon line */}
-            <div className="absolute bottom-[14%] left-0 right-0 h-px bg-foreground/5" />
-            {/* Subtle wave along the horizon (ocean stat visual callback) */}
-            <div className="absolute bottom-0 left-0 right-0 h-[16%]">
-              <WaveAnimation className="opacity-60" colorVar="--color-coral" />
-            </div>
+            {/* Ground line */}
+            <div className="absolute bottom-[14%] left-[12%] right-[12%] h-px bg-foreground/10" />
           </div>
-        </div>
-
-        {/* Partner logos row */}
-        <div className="partner-row mt-24 border-t border-foreground/5 pt-10">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-muted text-center">
-            {t('impact.partners_heading')}
-          </p>
-          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {partners.map((name) => (
-              <li
-                key={name}
-                className="partner-logo font-display text-sm font-bold tracking-tight text-foreground/40 transition-colors hover:text-foreground"
-              >
-                {name}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>

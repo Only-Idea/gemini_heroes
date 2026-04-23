@@ -1,20 +1,22 @@
 {
   "metadata": {
-    "title": "Heroes — The Virtual Odyssey",
-    "description": "Transform every step into a journey. Discover Japan's most iconic routes through an interactive 3D experience and earn real premium medals.",
-    "ogTitle": "Heroes — Every step becomes a journey.",
-    "ogDescription": "A purpose-driven virtual challenge platform. Move through Japan's history in 3D and leave a lasting legacy."
+    "title": "Heroes — Virtual Challenges Across Japan",
+    "description": "Mt. Fuji, the 47 Ronin trail, Japan's railways. Purpose-built virtual challenges that fit your lifestyle. Every finish delivers a premium medal and plants a tree in Japan.",
+    "ogTitle": "Heroes — Walk, run, ride — at your own pace.",
+    "ogDescription": "Challenges that keep you moving. Community that keeps you going. Achievements that take physical form."
   },
   "common": {
     "loading": "Loading…",
     "initializing_3d": "Initializing Hardware…",
-    "crafting_medal": "Crafting Your Reward…",
+    "crafting_medal": "Preparing Your Medal…",
     "calibrating": "Calibrating 3D Environment",
     "ready": "Ready",
     "feature_label": "Feature",
     "challenge_label": "Challenge",
     "unit_km": "km",
     "unit_days": "days",
+    "unit_ki": "trees",
+    "unit_mai": "medals",
     "distance": "Distance",
     "duration": "Duration",
     "dismiss": "Dismiss"
@@ -24,116 +26,113 @@
   },
   "nav": {
     "challenges": "Challenges",
-    "features": "Features",
-    "impact": "Impact",
+    "features": "App",
+    "impact": "Trees",
     "contact": "Contact",
     "download": "Download"
   },
   "hero": {
-    "label": "The Virtual Odyssey · 2026",
-    "title": "Every step becomes a journey.",
-    "subtitle": "Discover Japan's most iconic routes through an interactive 3D experience. Move through history, earn real rewards, and leave a lasting legacy.",
-    "cta_download": "Get Started",
-    "cta_learn": "Explore Routes",
-    "scroll": "Begin the Ascent"
+    "label": "Heroes · Virtual Challenges",
+    "title": "Japan's most beautiful places, at your own pace.",
+    "subtitle": "Walk, run, cycle. A virtual challenge that fits your lifestyle. Every finish earns a premium, built-to-last medal — and plants a real tree in Japan.",
+    "cta_download": "Start for Free",
+    "cta_learn": "See the Challenges",
+    "scroll": "Begin the journey"
   },
   "stats": {
-    "routes": "Legendary Routes",
+    "routes": "Challenge Courses",
     "activities": "Ways to Move",
-    "countries": "Global Community"
+    "countries": "Prefectures Reached"
   },
   "medal": {
     "label": "A Token of Achievement",
-    "title": "Beyond the digital screen.",
-    "description": "True achievements deserve more than a badge. Complete your odyssey and receive a premium physical medal, crafted with precision and shipped to your door.",
-    "scroll_hint": "Scroll to Rotate · Gold → Silver → Bronze",
-    "cta": "Earn Your Medal"
+    "title": "A real medal — made to last.",
+    "description": "Every finish is commemorated with a weighty, beautifully-packaged medal shipped to your door. Not a mass-produced trinket — a keepsake worth the effort.",
+    "scroll_hint": "Scroll to Rotate · Gold → Silver → Bronze"
   },
   "features": {
-    "label": "02 / Experience",
-    "section_title": "The Digital Companion",
+    "label": "02 / The App",
+    "section_title": "Simple enough to keep doing",
     "maps": {
-      "title": "Interactive Maps",
-      "description": "Explore Japan with high-fidelity Mapbox maps in three distinct styles."
+      "title": "Virtual Map",
+      "description": "At every checkpoint, learn the story and culture of the place. Discover Japan's beauty along the way."
     },
     "impact": {
-      "title": "Real-time Impact",
-      "description": "Track your steps as they translate into trees planted and plastic removed."
+      "title": "Tree Planting",
+      "description": "Every completed challenge plants one real tree in Japan, in partnership with local forest regeneration projects."
     },
     "medals": {
-      "title": "Physical Medals",
-      "description": "Earn premium physical artifacts shipped globally upon completion."
+      "title": "Premium Medals",
+      "description": "A weighty, crafted medal and a special package for every challenge — a finish worth keeping."
     },
     "teams": {
-      "title": "Team Journeys",
-      "description": "Collaborate with friends in real-time chat and shared leaderboards."
+      "title": "Community",
+      "description": "Go it alone, or move together. Team up with family and friends, or meet new Heroes who share your goal."
     },
     "achievements": {
-      "title": "Global Achievements",
-      "description": "Unlock 10 categories of achievements with 5 rarity tiers."
+      "title": "Achievements",
+      "description": "Unlock in-app achievements by distance, activity type, and streak. A collection that keeps you motivated."
     },
     "inclusivity": {
-      "title": "12 Activity Types",
-      "description": "Whether you walk, run, or roll, every movement counts."
+      "title": "Any movement counts",
+      "description": "Walking, running, cycling, wheelchair. Whatever suits your body, at your own pace."
     }
   },
   "challenges": {
-    "label": "01 / Explore",
-    "description": "Choose your path through the heart of Japan. Each route is a unique journey of discovery.",
+    "label": "01 / Challenges",
+    "description": "Purpose-built routes through Japan. Each course carries its own story and cultural thread.",
     "difficulty": {
-      "easy": "Easy",
-      "moderate": "Moderate",
-      "epic": "Epic"
+      "easy": "Beginner",
+      "moderate": "Intermediate",
+      "epic": "Advanced"
     },
     "fuji": {
       "title": "Mt. Fuji",
-      "subtitle": "Conquer the sacred peak of Japan."
+      "subtitle": "Sacred peak, primeval forest, five lakes — a 74 km pilgrimage at your pace."
     },
     "ronin": {
-      "title": "Ronin",
-      "subtitle": "Follow the path of the masterless warrior."
+      "title": "47 Ronin",
+      "subtitle": "From Akō's gates to Sengaku-ji — 1,404 km of loyalty, step by step."
     },
     "rail": {
-      "title": "Railway",
-      "subtitle": "Journey through the historic rail routes."
+      "title": "Japan Rail",
+      "subtitle": "Wakkanai to Makurazaki — 3,170 km along Japan's rail spine."
     },
     "sakura": {
       "title": "Sakura",
-      "subtitle": "A seasonal journey through cherry blossoms."
+      "subtitle": "A seasonal walk beneath the cherry blossoms."
     }
   },
   "impact": {
-    "eyebrow": "Path of Purpose",
-    "title": "Every Step, A Lasting Legacy.",
-    "description": "Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations so your sweat equity translates into real-world change.",
-    "trees": "Forests Restored",
-    "ocean": "Oceans Protected",
-    "goal_trees": "2030 Goal · 15,000 Trees",
-    "goal_ocean": "2030 Goal · 1,400 kg",
-    "button": "View Audit Report",
-    "partners_heading": "In Partnership With"
+    "eyebrow": "Forest Project",
+    "title": "Every finish grows a forest.",
+    "description": "No vague donation model. Each completed challenge plants one real tree in Japan, in partnership with a transparent forest regeneration project. A clear, honest connection between your effort and real change.",
+    "trees": "Tree-planting Goal",
+    "goal_eyebrow": "2026 — This Year's Target",
+    "goal_note": "Launching soon",
+    "button": "About the Forest Project"
   },
   "activities": {
     "eyebrow": "12 Activities · 12種類",
-    "message": "Movement is your canvas"
+    "message": "Any movement, at your own pace."
   },
   "cta": {
-    "eyebrow": "The Final Step · 最後の一歩",
-    "title": "Your odyssey begins here.",
-    "subline": "32+ countries · 10,000+ travellers · The next hero could be you.",
-    "primary": "Start Your Odyssey",
+    "eyebrow": "Start today",
+    "title": "The reason to keep going is here.",
+    "subline": "Challenges that stay fun. Community that stays close. Progress you can see. Achievements you can hold.",
+    "primary": "Install for Free",
     "qr_label": "Scan to Download"
   },
   "contact": {
     "number": "06",
-    "title": "Let's Talk.",
-    "description": "Questions, partnerships, or a story to share? We read every message and love hearing from travellers and organisers alike.",
+    "title": "Let's talk.",
+    "description": "Questions, partnerships, or a story to share — we read every message and love hearing from Heroes and organisers alike.",
     "name": "Name",
     "email": "Email",
     "message": "Message",
-    "submit": "Submit",
+    "submit": "Send",
     "sending": "Sending…",
-    "success": "Sent — Thank you",
+    "success": "Sent — thank you",
     "error": "Something went wrong — please try again.",
     "validation_required": "Required",
     "validation_invalid_email": "Invalid email",
@@ -147,9 +146,9 @@
   },
   "download_bar": {
     "app_name": "Heroes App",
-    "label": "Download for Free"
+    "label": "Install for Free"
   },
   "transition": {
-    "brand": "Heroes · Virtual Odyssey"
+    "brand": "Heroes · Virtual Challenges"
   }
 }
