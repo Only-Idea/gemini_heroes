@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { useTranslations } from 'next-intl';
 import DifficultyBadge, { DifficultyLevel } from '@/components/ui/DifficultyBadge';
@@ -9,6 +10,7 @@ import { useStore } from '@/store/useStore';
 interface ChallengeCardProps {
   title: string;
   subtitle: string;
+  imageSrc: string;
   imageAlt: string;
   accentColor: 'teal' | 'amber' | 'coral';
   index: number;
@@ -21,6 +23,8 @@ interface ChallengeCardProps {
 export default function ChallengeCard({
   title,
   subtitle,
+  imageSrc,
+  imageAlt,
   accentColor,
   index,
   distanceKm,
@@ -159,12 +163,16 @@ export default function ChallengeCard({
           </dl>
         </div>
 
-        {/* Visual placeholder — phone-frame motif (border-radius: 44px). */}
-        <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-[44px] border border-white/10 bg-foreground/[0.03] transition-colors group-hover:bg-foreground/[0.06]">
+        {/* Challenge visual — 1:1 square matches the 1206×1206 source artwork. */}
+        <div className="relative mt-8 aspect-square overflow-hidden rounded-[44px] border border-white/10 bg-foreground/[0.03] transition-colors group-hover:bg-foreground/[0.06]">
           <div className={`absolute inset-0 ${visualGradientClass[accentColor]}`} />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <RouteGlyph accentColor={accentColor} />
-          </div>
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 450px"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+          />
           <div
             className={`absolute bottom-0 left-0 h-[2px] w-0 ${barShadowClass[accentColor]} transition-all duration-700 group-hover:w-full`}
           />
@@ -174,32 +182,3 @@ export default function ChallengeCard({
   );
 }
 
-function RouteGlyph({ accentColor }: { accentColor: 'teal' | 'amber' | 'coral' }) {
-  return (
-    <svg
-      viewBox="0 0 120 80"
-      fill="none"
-      className="h-2/3 w-2/3 text-foreground/15 transition-transform duration-700 group-hover:scale-105"
-      aria-hidden="true"
-    >
-      <path
-        d="M6 70 L28 46 L42 56 L66 20 L90 44 L114 28"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="6" cy="70" r="3" fill={`var(--color-${accentColor})`} />
-      <circle cx="114" cy="28" r="4" fill={`var(--color-${accentColor})`} />
-      <circle
-        cx="114"
-        cy="28"
-        r="9"
-        fill="none"
-        stroke={`var(--color-${accentColor})`}
-        strokeWidth="1"
-        opacity="0.35"
-      />
-    </svg>
-  );
-}

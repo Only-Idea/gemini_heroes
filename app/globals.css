@@ -157,6 +157,23 @@ button, a, [role="button"] {
   50%      { box-shadow: 0 0 0 10px rgba(236,122,92,0),   0 0 0 22px rgba(242,190,94,0); }
 }
 
+@keyframes medal-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-6px, -8px, 0); }
+}
+
+@keyframes medal-spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medal-dust,
+  .medal-conic {
+    animation: none !important;
+  }
+}
+
 .hero-rise {
   opacity: 0;
   transform: translateY(20px);

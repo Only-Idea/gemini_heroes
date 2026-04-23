@@ -1,0 +1,462 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Heroes — Brand Icon Generation Brief",
+  "version": "1.0.0",
+  "last_updated": "2026-04-23",
+  "usage": "Paste `meta_prompt` into Midjourney / DALL·E / Stable Diffusion / Recraft. Append the per-icon `prompt` field when generating each icon. Generate in batches of the same category (e.g. all 12 activity icons in one session) so lighting and line character stay consistent.",
+
+  "brand": {
+    "name": "Heroes",
+    "product": "バーチャルチャレンジ (virtual challenge) app — walk, run, cycle across iconic Japanese routes; every completion earns a premium shipped medal and plants a tree in Japan.",
+    "voice": [
+      "calm, grounded, purposeful — never shouty or 'epic'",
+      "quietly proud — craft-first, 重厚感 (weighty, substantial)",
+      "Japanese-inflected minimalism — echoes 和 (wa) restraint, woodblock-print clarity, wabi-sabi tolerance for asymmetry",
+      "inclusive — any body, any pace (walking, wheelchair, yoga all belong)",
+      "honest about numbers — shows what is, not hype"
+    ],
+    "do_not_reference": [
+      "odyssey / mythic quest framing",
+      "hyper-gamified fitness (no flames, no lightning bolts, no exclamation marks)",
+      "generic 'app startup' clichés (no swooshes, no 3D bevel chrome)",
+      "clinical medical imagery"
+    ],
+    "palette": {
+      "base_ivory": "#F7F4F0",
+      "base_charcoal": "#1A1C1E",
+      "muted_stone": "#707478",
+      "accent_coral": "#EC7A5C",
+      "accent_amber": "#F2BE5E",
+      "accent_teal": "#375E65",
+      "usage_note": "Icons are monotone charcoal (#1A1C1E) on ivory (#F7F4F0) by default. One accent element per icon — either a single filled dot/shape, a stroke terminus, or a small-area color pop — chosen per icon from coral / amber / teal."
+    },
+    "typography_context": "Site type-pair: Noto Sans JP for Japanese, Apple SF fallback for Latin. Icons must sit cleanly beside small-caps mono labels (tracking ≈ 0.3em) without optically crowding them."
+  },
+
+  "icon_system": {
+    "grid": "24×24 keyline grid, 20×20 artwork safe area, 2px padding on all sides",
+    "stroke": {
+      "primary_weight": "1.75px at 24×24 (scales to 3.5px at 48, 7px at 96)",
+      "secondary_weight": "1.25px for supporting lines only",
+      "caps": "round",
+      "joins": "round",
+      "pixel_align": "snap to half-pixel grid; no sub-pixel stroke widths"
+    },
+    "corners": {
+      "external_radius": "2px (round but not soft)",
+      "internal_radius": "1px"
+    },
+    "fills": {
+      "strategy": "Stroked outline as the primary form. Add ONE small solid fill (≤ ~18% of icon area) as an accent moment — typically a small circle, a single leaf/ribbon, or a blunt terminus cap.",
+      "gradients": "Avoid. Use flat color only. If absolutely required, only the Heroes three-stop gradient (teal → amber → coral) at 45°."
+    },
+    "composition": {
+      "baseline": "All icons sit on a shared optical baseline; subjects occupy 70–85% of the safe area.",
+      "negative_space": "Generous interior white space; never pack to the edge.",
+      "orientation": "Prefer front-facing or slight 3/4 view; no aggressive perspective.",
+      "asymmetry": "Mild asymmetry allowed — a single offset accent dot is encouraged; avoid mirror-symmetry that feels corporate.",
+      "motion_cues": "If the subject is in motion (running, cycling), suggest it with ONE speed line or forward lean — never multiple trailing streaks."
+    },
+    "cultural_inflection": {
+      "allowed": [
+        "brush-like end of a stroke (very subtle tapered terminus)",
+        "one tatami-proportion rectangle hint where a rectangle is needed",
+        "a single plum-blossom 5-petal mark as the 'dot' accent on culturally-Japanese icons (e.g., Fuji, sakura, 47 Ronin)",
+        "simple torii-gate silhouette in the Fuji/pilgrimage family"
+      ],
+      "forbidden": [
+        "stereotyped imagery (no cherry-blossom borders, no rising-sun rays, no geisha silhouettes, no ninja stars)",
+        "kanji stamped inside icons — always use actual typography alongside the icon instead",
+        "overt flags or national symbols"
+      ]
+    },
+    "accessibility": {
+      "minimum_target_size_px": 24,
+      "contrast": "Charcoal-on-ivory ≥ 12:1. When inverted on dark, ensure ≥ 4.5:1 against #0F1114.",
+      "recognizability_at_16px": "Icon must read correctly at 16×16 — strokes may unify into a single silhouette there; hold complexity back so thinning works."
+    }
+  },
+
+  "constraints": {
+    "do": [
+      "ship as SVG with `currentColor` on the monotone stroke paths so the line inherits text color",
+      "put the accent fill on its own <path class='accent'> so it can be recolored per section (teal/coral/amber)",
+      "keep each icon internally consistent: stroke weight, cap style, corner radius identical across the whole set",
+      "leave transparent background; no card, no frame, no drop shadow",
+      "export at 24/48/96 as PNG fallback with 2x pixel density"
+    ],
+    "dont": [
+      "no gradients, no inner shadows, no glow, no emboss",
+      "no 3D, no isometric, no pseudo-perspective",
+      "no text, no numerals, no letters inside the icon",
+      "no filled outer shape containing the icon (no circle/square tile wrapper)",
+      "no skeuomorphism (no leather, no brushed steel, no paper texture)",
+      "no generic 'award ribbon' chrome for the medal icon — that's what our real medal PNGs are for"
+    ]
+  },
+
+  "meta_prompt": "Minimalist 24×24 line icon for a Japanese brand named Heroes. 1.75px rounded stroke, rounded caps and joins, charcoal (#1A1C1E) line on a transparent background. One small accent fill (≤18% area) in either coral #EC7A5C, amber #F2BE5E, or teal #375E65 per icon. Calm and grounded — think Muji / IBM Carbon / Phosphor icon systems with a quiet Japanese woodblock restraint. Front-facing or very slight 3/4 view, generous negative space, mild asymmetry welcome. Subject occupies roughly 75% of a 20×20 safe area. No gradient, no shadow, no 3D, no text, no outer frame, no tile background, no skeuomorphism, no cultural clichés. Pixel-snapped, crisp corners, consistent stroke weight across the whole set.",
+
+  "output_spec": {
+    "primary_format": "SVG",
+    "secondary_format": "PNG at 24, 48, 96 (transparent)",
+    "naming": "heroes-icon-{category}-{id}.svg  (e.g. heroes-icon-activity-run.svg)",
+    "color_strategy": {
+      "monotone_path": "fill=\"currentColor\" or stroke=\"currentColor\"",
+      "accent_path": "class=\"accent\" with fill set via CSS variable (--icon-accent) — default to the icon's suggested accent"
+    },
+    "dimensions": "viewBox=\"0 0 24 24\"",
+    "file_size_target": "≤ 2 KB per SVG (uncompressed)"
+  },
+
+  "icon_specs": [
+    {
+      "id": "activity-walk",
+      "category": "activity",
+      "label_ja": "歩く",
+      "label_en": "Walking",
+      "subject": "person mid-stride, side profile, relaxed posture",
+      "metaphor": "slow deliberate pace — the brand's 自分のペース promise",
+      "accent": "teal",
+      "accent_placement": "single filled dot as the figure's head",
+      "composition": "figure occupies right two-thirds; one small speed line on the left to imply forward motion",
+      "prompt": "A minimalist side-profile walking figure with relaxed arms, one leg forward. Head is a small filled teal circle (only colored element). Body and legs in charcoal 1.75px line, round joints. Add one short charcoal speed line behind the back heel."
+    },
+    {
+      "id": "activity-run",
+      "category": "activity",
+      "label_ja": "走る",
+      "label_en": "Running",
+      "subject": "runner mid-stride, forward lean, arms swinging",
+      "metaphor": "steady effort — not a sprint",
+      "accent": "coral",
+      "accent_placement": "one small coral dot as the hand or a single motion streak behind",
+      "composition": "figure leaning ~15° forward, right arm back, left arm forward",
+      "prompt": "A minimalist runner mid-stride with slight forward lean. Charcoal 1.75px stroke, rounded joints. A single short coral motion line trails behind the back heel — this is the only colored element."
+    },
+    {
+      "id": "activity-bike",
+      "category": "activity",
+      "label_ja": "自転車",
+      "label_en": "Cycling",
+      "subject": "cyclist from side, two wheels, simple frame, rider upright",
+      "accent": "amber",
+      "accent_placement": "small amber dot as the front hub",
+      "composition": "two circles as wheels, triangular frame, simple rider silhouette",
+      "prompt": "A minimalist side-view bicycle with a small upright cyclist. Two perfect charcoal circle wheels, triangular frame, round handlebars. Front wheel hub is a filled amber dot — only colored element."
+    },
+    {
+      "id": "activity-swim",
+      "category": "activity",
+      "label_ja": "水泳",
+      "label_en": "Swimming",
+      "subject": "swimmer's head and arm breaking through three horizontal wave lines",
+      "accent": "teal",
+      "accent_placement": "one wavelet filled teal",
+      "composition": "three parallel horizontal charcoal wavelets lower half; swimmer head + one extended arm upper half",
+      "prompt": "A minimalist swimmer icon: a small charcoal circle head with one extended arm breaking through three horizontal wave lines. Middle wave is filled teal — only colored element."
+    },
+    {
+      "id": "activity-hike",
+      "category": "activity",
+      "label_ja": "登山",
+      "label_en": "Hiking",
+      "subject": "figure with hiking pole ascending a single mountain silhouette",
+      "accent": "coral",
+      "accent_placement": "small filled coral dot as the summit marker",
+      "composition": "triangular mountain right half, figure silhouette with pole on the left ascending slope",
+      "prompt": "A minimalist hiker icon: small walking figure with a diagonal hiking pole, climbing the left slope of a single triangular mountain. A small filled coral dot sits on the summit — only colored element."
+    },
+    {
+      "id": "activity-wheelchair",
+      "category": "activity",
+      "label_ja": "車椅子",
+      "label_en": "Wheelchair",
+      "subject": "active wheelchair user, side view, leaning forward with momentum",
+      "metaphor": "inclusion — any body, any pace",
+      "accent": "amber",
+      "accent_placement": "amber dot as the pusher's head",
+      "composition": "large wheel right, frame, pusher figure with extended arm to the rim",
+      "prompt": "A minimalist active wheelchair user icon, side view, mid-push. Charcoal 1.75px stroke, one large wheel, simple frame, small figure with extended arm touching the wheel rim. Head is a filled amber dot — only colored element."
+    },
+    {
+      "id": "activity-row",
+      "category": "activity",
+      "label_ja": "ボート",
+      "label_en": "Rowing",
+      "subject": "rower in a thin boat with a single oar angled in water",
+      "accent": "teal",
+      "accent_placement": "small teal horizontal wavelet under the boat",
+      "composition": "boat silhouette centered, oar extended right, horizontal water line beneath",
+      "prompt": "A minimalist rowing icon: slender boat silhouette with a small rower figure, single oar angled into the water on the right. One short horizontal teal wavelet sits under the hull — only colored element."
+    },
+    {
+      "id": "activity-elliptical",
+      "category": "activity",
+      "label_ja": "エリプティカル",
+      "label_en": "Elliptical",
+      "subject": "figure on a simplified elliptical trainer with oval pedal path",
+      "accent": "coral",
+      "accent_placement": "coral dot at the rear flywheel",
+      "composition": "oval base, vertical handle, small figure stepping",
+      "prompt": "A minimalist elliptical trainer icon: oval pedal path base, vertical handle on the right, small charcoal figure standing on it. Rear flywheel is a filled coral dot — only colored element."
+    },
+    {
+      "id": "activity-stairs",
+      "category": "activity",
+      "label_ja": "階段",
+      "label_en": "Stairs",
+      "subject": "figure ascending a simple three-step staircase",
+      "accent": "amber",
+      "accent_placement": "amber dot as the figure's head",
+      "composition": "three ascending rectangular steps diagonally, figure on the top step, arm raised",
+      "prompt": "A minimalist stair-climbing icon: three ascending rectangular steps in charcoal 1.75px stroke, a small figure on the top step with one foot lifted. Figure's head is a filled amber dot — only colored element."
+    },
+    {
+      "id": "activity-crossfit",
+      "category": "activity",
+      "label_ja": "クロスフィット",
+      "label_en": "Crossfit",
+      "subject": "barbell with two weight plates, centered",
+      "accent": "coral",
+      "accent_placement": "tiny coral dot at the left weight plate center",
+      "composition": "horizontal bar, two rounded weight plates, short inner line",
+      "prompt": "A minimalist barbell icon: horizontal bar with two rounded weight plates on each side, plus short inner collars. Left plate has a small filled coral dot at its center — only colored element."
+    },
+    {
+      "id": "activity-yoga",
+      "category": "activity",
+      "label_ja": "ヨガ",
+      "label_en": "Yoga",
+      "subject": "figure in a seated meditation / simple asana pose",
+      "accent": "teal",
+      "accent_placement": "small teal circle behind the head (implied halo / breath)",
+      "composition": "cross-legged seated figure, hands resting on knees, upright spine",
+      "prompt": "A minimalist yoga icon: seated cross-legged figure, hands resting on knees, calm upright spine. A small teal filled circle sits centered behind the head as a quiet breath halo — only colored element."
+    },
+    {
+      "id": "activity-pilates",
+      "category": "activity",
+      "label_ja": "ピラティス",
+      "label_en": "Pilates",
+      "subject": "figure in a plank or bridge pose on a mat line",
+      "accent": "amber",
+      "accent_placement": "amber dot at the figure's hand or head",
+      "composition": "horizontal mat line at bottom, figure in simple bridge pose above",
+      "prompt": "A minimalist pilates icon: horizontal mat line at the bottom, a charcoal figure in a simple bridge pose above it (hips lifted, feet and shoulders on the mat). Head is a filled amber dot — only colored element."
+    },
+
+    {
+      "id": "feature-map",
+      "category": "feature",
+      "label_en": "Virtual Map",
+      "subject": "folded map with a single pinned route node",
+      "accent": "teal",
+      "accent_placement": "teal pin/drop on the map",
+      "composition": "trifold map outline, one short dashed route line, single pin",
+      "prompt": "A minimalist folded map icon: trifold rectangular outline with light creases, one short dashed route line wandering across it, and a single teal pin/drop marking a node — pin is the only colored element."
+    },
+    {
+      "id": "feature-tree",
+      "category": "feature",
+      "label_en": "Tree Planting",
+      "subject": "young sapling with two leaves rising from a simple base",
+      "accent": "teal",
+      "accent_placement": "one teal leaf",
+      "composition": "vertical stem, two leaves, short ground line",
+      "prompt": "A minimalist sapling icon: vertical charcoal stem with two leaves (one left, one right) above a short horizontal ground line. Right leaf is filled teal — only colored element."
+    },
+    {
+      "id": "feature-medal",
+      "category": "feature",
+      "label_en": "Premium Medal",
+      "subject": "medal disc with short ribbon loop",
+      "accent": "amber",
+      "accent_placement": "amber dot in the center of the disc",
+      "composition": "circle with a small ribbon loop on top; optional inner concentric circle",
+      "prompt": "A minimalist medal icon: a clean circular disc with a short ribbon loop above it. Thin inner concentric circle inside the disc. A small amber dot sits in the exact center — only colored element."
+    },
+    {
+      "id": "feature-community",
+      "category": "feature",
+      "label_en": "Community",
+      "subject": "three overlapping profile silhouettes (two in back, one in front)",
+      "accent": "coral",
+      "accent_placement": "coral dot as the front figure's head",
+      "composition": "three head-and-shoulders silhouettes overlapping, front one slightly larger",
+      "prompt": "A minimalist community icon: three overlapping head-and-shoulder silhouettes in charcoal stroke, front figure slightly larger and centered. Front figure's head is a filled coral dot — only colored element."
+    },
+    {
+      "id": "feature-achievement",
+      "category": "feature",
+      "label_en": "Achievement",
+      "subject": "five-pointed star rendered as a simple outline",
+      "accent": "amber",
+      "accent_placement": "single amber dot in the center",
+      "composition": "clean 5-point star outline",
+      "prompt": "A minimalist achievement icon: a clean 5-pointed star outline in charcoal 1.75px stroke with rounded corners. A small amber filled dot sits at the exact center — only colored element."
+    },
+    {
+      "id": "feature-inclusivity",
+      "category": "feature",
+      "label_en": "Inclusivity",
+      "subject": "circle with four small motion glyphs arranged around it (walker, runner, wheelchair, yoga)",
+      "accent": "coral",
+      "accent_placement": "one accent dot at the center of the ring",
+      "composition": "central hollow circle, four micro-glyphs at N/E/S/W",
+      "prompt": "A minimalist inclusivity icon: a hollow central circle with four very tiny charcoal motion glyphs (walker, runner, wheelchair, yoga) placed at top/right/bottom/left. A filled coral dot sits in the center of the circle — only colored element. Keep glyphs extremely simplified."
+    },
+
+    {
+      "id": "challenge-fuji",
+      "category": "challenge",
+      "label_ja": "富士山",
+      "subject": "Mt. Fuji silhouette with snow cap",
+      "accent": "teal",
+      "accent_placement": "small teal dot as the summit lantern/marker",
+      "composition": "trapezoidal mountain with a cleft snow line; horizon line below",
+      "prompt": "A minimalist Mt. Fuji icon: a flat-topped trapezoidal mountain silhouette in charcoal stroke with a small cleft (snow cap) indicated by two short interior lines. Short horizontal horizon line below. A tiny teal filled dot sits just above the summit — only colored element. No sun, no rays, no clouds."
+    },
+    {
+      "id": "challenge-ronin",
+      "category": "challenge",
+      "label_en": "47 Ronin",
+      "subject": "single horizontal sword (katana) above a torii gate outline",
+      "accent": "coral",
+      "accent_placement": "one coral hilt-wrap accent on the katana",
+      "composition": "katana horizontally on top, simplified torii gate below",
+      "prompt": "A minimalist 47 Ronin icon: a horizontal katana with a straight blade and round guard on top, and a simplified torii gate outline beneath it. A short coral wrap segment on the hilt is the only colored element. Clean geometry, no decorative flourish."
+    },
+    {
+      "id": "challenge-rail",
+      "category": "challenge",
+      "label_en": "Japan Rail",
+      "subject": "shinkansen nose in 3/4 with a pair of rails beneath",
+      "accent": "amber",
+      "accent_placement": "small amber dot as the headlight",
+      "composition": "rounded-nose train front, two perspective rails below",
+      "prompt": "A minimalist shinkansen icon: rounded-nose train front view in charcoal 1.75px stroke with a small forward window outline. Two short perspective rails beneath it. A filled amber dot sits where the headlight would be — only colored element."
+    },
+    {
+      "id": "challenge-sakura",
+      "category": "challenge",
+      "label_ja": "桜",
+      "subject": "single five-petal sakura blossom (stylized, not ornate)",
+      "accent": "coral",
+      "accent_placement": "filled coral dot as the blossom center",
+      "composition": "five rounded petals radiating evenly from a small center",
+      "prompt": "A minimalist sakura blossom icon: five soft rounded petals in charcoal stroke radiating from a small center. The center is a filled coral dot — only colored element. Single bloom, no branch, no leaves."
+    },
+
+    {
+      "id": "ui-menu",
+      "category": "ui",
+      "subject": "two horizontal lines",
+      "accent": "none",
+      "prompt": "Minimalist menu icon: two horizontal charcoal lines, upper slightly longer than lower, rounded caps. No colored accent."
+    },
+    {
+      "id": "ui-close",
+      "category": "ui",
+      "subject": "two crossed lines forming an X",
+      "accent": "none",
+      "prompt": "Minimalist close icon: two crossed charcoal lines at 45°, rounded caps, balanced center. No colored accent."
+    },
+    {
+      "id": "ui-chevron-down",
+      "category": "ui",
+      "subject": "downward chevron",
+      "accent": "none",
+      "prompt": "Minimalist downward chevron: V-shape in charcoal 1.75px stroke, rounded apex, clean angles. No colored accent."
+    },
+    {
+      "id": "ui-arrow-right",
+      "category": "ui",
+      "subject": "rightward arrow",
+      "accent": "teal",
+      "accent_placement": "teal arrowhead only, stem charcoal",
+      "prompt": "Minimalist rightward arrow: horizontal charcoal stem with a clean triangular arrowhead on the right. The arrowhead (only the tip shape) is filled teal — stem stays charcoal."
+    },
+    {
+      "id": "ui-search",
+      "category": "ui",
+      "subject": "magnifying glass",
+      "accent": "none",
+      "prompt": "Minimalist magnifying glass: a clean circle with a short angled handle at the bottom-right, both in charcoal 1.75px stroke, rounded caps. No colored accent."
+    },
+    {
+      "id": "ui-globe-lang",
+      "category": "ui",
+      "subject": "simple globe with one latitude and one meridian",
+      "accent": "teal",
+      "accent_placement": "single teal dot at the intersection",
+      "prompt": "Minimalist language-globe icon: a charcoal circle with one horizontal latitude line and one vertical meridian line. A filled teal dot sits where they cross — only colored element."
+    },
+
+    {
+      "id": "social-x",
+      "category": "social",
+      "subject": "Twitter/X mark: two crossed diagonals",
+      "accent": "none",
+      "prompt": "Minimalist X social icon: two crossed diagonal strokes forming an X, charcoal 1.75px, rounded caps, balanced weight."
+    },
+    {
+      "id": "social-instagram",
+      "category": "social",
+      "subject": "rounded square with inner circle and small top-right dot",
+      "accent": "coral",
+      "accent_placement": "top-right dot filled coral",
+      "prompt": "Minimalist Instagram mark: rounded-square outline with a concentric circle inside it and a tiny dot in the top-right corner. The top-right dot is filled coral — only colored element."
+    },
+
+    {
+      "id": "store-apple",
+      "category": "store",
+      "subject": "Apple silhouette with leaf",
+      "accent": "none",
+      "note": "Use generic silhouette only; the official Apple logo is trademarked — prefer real asset in production.",
+      "prompt": "A generic minimalist apple silhouette icon: simple rounded apple body with a small leaf tilted right, all charcoal 1.75px stroke. No bite. Intended as a placeholder — the real App Store badge SVG should be used in production."
+    },
+    {
+      "id": "store-play",
+      "category": "store",
+      "subject": "right-pointing triangular play glyph",
+      "accent": "none",
+      "note": "Use generic triangle only; the official Google Play logo is trademarked.",
+      "prompt": "A generic minimalist right-pointing triangular play glyph, charcoal 1.75px stroke, rounded corners. Intended as a placeholder — the real Google Play badge SVG should be used in production."
+    }
+  ],
+
+  "consistency_checklist": [
+    "Generate each category (activity/feature/challenge/ui/social) in one session so lighting and stroke character match.",
+    "Check that stroke weight measures identically across all icons when overlaid in Figma.",
+    "Confirm baseline alignment: place all icons at the same optical center when lined up horizontally.",
+    "Verify accent-to-base ratio stays ≤ 18% — a single small shape, never a flood.",
+    "Test at 16×16: if any icon collapses into unreadable noise, simplify the composition.",
+    "Confirm `currentColor` works: drop the SVG into a `text-coral` parent and verify the monotone lines inherit coral."
+  ],
+
+  "per_generator_tips": {
+    "midjourney_v6": "Append ` --style raw --ar 1:1 --stylize 50 --no gradient, shadow, 3d, text, frame, tile, skeuomorphism`. Generate 4 variants per subject; pick the one with the cleanest single-accent composition.",
+    "dalle_3": "Natural language is fine. Prefix with 'Single icon, transparent background,' and explicitly say 'SVG-style flat line art'.",
+    "recraft_v3": "Use the 'Icon' model and set the foreground color to #1A1C1E and the accent color to the per-icon accent hex. Great for keeping stroke weight consistent across a batch.",
+    "ideogram_v2": "Prompt text is reliable but it tends to add subtle gradients — include 'absolutely flat color, no gradient, no shading' in the negative section.",
+    "stable_diffusion_xl": "Use a 'flat icon' LoRA. Set CFG 6–8, 35 steps, width/height 1024. Prompt weights: (minimalist:1.2), (flat:1.2), (line icon:1.1). Negative: gradient, shadow, 3d, chrome, realistic, text, frame."
+  },
+
+  "post_generation_pipeline": [
+    "Open raster output in Figma or Illustrator; trace to vector (auto-trace OR manual redraw — manual is often cleaner).",
+    "Normalize stroke weight to exactly 1.75px at 24×24 viewbox; replace any raster stroke with a true vector path.",
+    "Remove backgrounds; ensure all fills on the monotone path are `currentColor`.",
+    "Add `class=\"accent\"` to the accent path and parameterize via CSS `--icon-accent`.",
+    "Run through SVGO with `{removeViewBox: false, cleanupIDs: true, mergePaths: false}`.",
+    "Drop into `public/icons/heroes-icon-{category}-{id}.svg`.",
+    "Register in `components/ui/IconRegistry.tsx` (create if needed) with a typed key so TypeScript autocompletes icon names."
+  ],
+
+  "integration_hints": {
+    "react_usage": "Build a single `<Icon name=\"activity-run\" accent=\"coral\" />` component that imports the SVG sprite. Monotone lines inherit `color` from the parent; the accent path reads `--icon-accent` which the component sets based on the `accent` prop.",
+    "theming": "For the features grid, pass the per-card accent prop. For the activity ribbon, accent cycles per row. For navigation and UI icons, leave accent unset so the icon is fully monotone.",
+    "dark_mode_prep": "Design tokens already use `currentColor`. When/if a dark theme ships, the foreground becomes ivory and the accent stays the same saturated accent — the three accent hexes have been chosen to read on both backgrounds."
+  }
+}

@@ -17,6 +17,7 @@ export default function Challenges() {
         id: 'fuji',
         title: t('fuji.title'),
         subtitle: t('fuji.subtitle'),
+        image: '/images/cards/fuji.png',
         color: 'teal' as const,
         distanceKm: 74,
         days: 60,
@@ -26,6 +27,7 @@ export default function Challenges() {
         id: 'ronin',
         title: t('ronin.title'),
         subtitle: t('ronin.subtitle'),
+        image: '/images/cards/ronin.png',
         color: 'amber' as const,
         distanceKm: 1404,
         days: 270,
@@ -35,6 +37,7 @@ export default function Challenges() {
         id: 'rail',
         title: t('rail.title'),
         subtitle: t('rail.subtitle'),
+        image: '/images/cards/rail.png',
         color: 'coral' as const,
         distanceKm: 3170,
         days: 365,
@@ -62,7 +65,7 @@ export default function Challenges() {
         />
       </div>
 
-      <div className="lg:h-[60vh] flex items-center">
+      <div className="lg:min-h-[70vh] flex items-center">
         <HorizontalScrollContainer
           className="flex flex-col lg:flex-row gap-8 px-6 lg:px-[15vw] w-full lg:w-max"
           stopMode="center"
@@ -73,13 +76,14 @@ export default function Challenges() {
               key={challenge.id}
               title={challenge.title}
               subtitle={challenge.subtitle}
-              accentColor={challenge.color}
+              imageSrc={challenge.image}
               imageAlt={challenge.title}
+              accentColor={challenge.color}
               index={i}
               distanceKm={challenge.distanceKm}
               days={challenge.days}
               difficulty={challenge.difficulty}
-              className="challenge-card w-full lg:w-[450px] aspect-[4/5] lg:aspect-auto lg:h-[500px] shrink-0"
+              className="challenge-card w-full lg:w-[450px] lg:h-[640px] shrink-0"
             />
           ))}
         </HorizontalScrollContainer>

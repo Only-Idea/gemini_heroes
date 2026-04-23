@@ -1,60 +1,24 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import dynamic from 'next/dynamic';
-import { useStore } from '@/store/useStore';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
 import SectionLabel from '@/components/ui/SectionLabel';
+import MedalCarousel from '@/components/sections/MedalCarousel';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
-const MedalScene = dynamic(() => import('@/components/three/MedalScene'), { ssr: false });
 
 export default function MedalShowcase() {
   const t = useTranslations();
   const sectionRef = useRef<HTMLElement>(null);
-  const [shouldMountScene, setShouldMountScene] = useState(false);
-  const isWebGLReady = useStore((state) => state.isWebGLReady);
-  const setMedalScrollProgress = useStore((state) => state.setMedalScrollProgress);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShouldMountScene(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '100px' }
-    );
-    observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   useReducedMotionAnimation(
     sectionRef,
     () => {
-      // Medal scroll-scrub: feeds the MedalScene rotation/scale through the store.
-      gsap.to(
-        {},
-        {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-            onUpdate: (self) => setMedalScrollProgress(self.progress),
-          },
-        }
-      );
-
-      // Copy fades IN at the scroll midpoint while the medal keeps rotating.
+      // Copy fades in at the scroll midpoint while the carousel keeps its own motion.
       gsap.from('.medal-reveal-title .char', {
         opacity: 0,
         x: -20,
@@ -70,7 +34,6 @@ export default function MedalShowcase() {
         ease: 'power3.out',
         scrollTrigger: { trigger: sectionRef.current, start: 'center 70%' },
       });
-
     },
     () => {
       gsap.from('.medal-reveal-title, .medal-reveal-desc', {
@@ -80,7 +43,6 @@ export default function MedalShowcase() {
         ease: 'power2.out',
         scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
       });
-      setMedalScrollProgress(0);
     }
   );
 
@@ -108,33 +70,15 @@ export default function MedalShowcase() {
         />
 
         <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes overflow-hidden group">
-          <div
-            className={`w-full h-full transition-opacity duration-1000 ${
-              shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            {shouldMountScene && (
-              <Scene cameraPos={[0, 0, 5]} shadows={false}>
-                <MedalScene />
-              </Scene>
-            )}
-          </div>
-          {!(shouldMountScene && isWebGLReady) && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
-              <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
-                {t('common.crafting_medal')}
-              </span>
-            </div>
-          )}
+          <MedalCarousel />
 
-          {/* Interactive Hint */}
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-stone">
+          {/* Interactive hint that reveals on hover */}
+          <div className="pointer-events-none absolute bottom-[13%] left-1/2 -translate-x-1/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone">
               {t('medal.scroll_hint')}
             </p>
           </div>
         </div>
-
       </div>
     </section>
   );

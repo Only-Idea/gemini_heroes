@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
 export default function Footer() {
@@ -10,8 +11,17 @@ export default function Footer() {
       <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
           {/* Logo/Brand */}
-          <div className="font-display text-[24px] font-bold tracking-tight text-foreground">
-            Heroes
+          <div className="inline-flex items-center gap-3">
+            <Image
+              src="/images/logo/logo.png"
+              alt="Heroes"
+              width={96}
+              height={96}
+              className="h-10 w-10 object-contain"
+            />
+            <span className="font-display text-[24px] font-bold tracking-tight text-foreground">
+              Heroes
+            </span>
           </div>
 
           {/* Links */}

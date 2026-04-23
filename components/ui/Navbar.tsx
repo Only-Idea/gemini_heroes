@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import GradientButton from '@/components/ui/GradientButton';
@@ -59,9 +60,20 @@ export default function Navbar() {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="justify-self-start font-display text-[20px] font-bold tracking-tight text-foreground"
+            aria-label="Heroes — home"
+            className="justify-self-start inline-flex items-center gap-2"
           >
-            Heroes
+            <Image
+              src="/images/logo/logo.png"
+              alt="Heroes"
+              width={96}
+              height={96}
+              priority
+              className="h-9 w-9 object-contain"
+            />
+            <span className="font-display text-[20px] font-bold tracking-tight text-foreground">
+              Heroes
+            </span>
           </a>
 
           {/* Desktop nav links — center column, always centered regardless of side widths */}

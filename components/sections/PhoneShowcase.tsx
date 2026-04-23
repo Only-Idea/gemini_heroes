@@ -1,24 +1,28 @@
 'use client';
 
 import { useRef, useEffect, useState, useMemo } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import dynamic from 'next/dynamic';
-import { useStore } from '@/store/useStore';
 import { usePlatform } from '@/hooks/usePlatform';
 import SectionLabel from '@/components/ui/SectionLabel';
 import FeatureCard from '@/components/sections/FeatureCard';
 import AppBadge from '@/components/ui/AppBadge';
 
-const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
-const PhoneModel = dynamic(() => import('@/components/three/PhoneModel'), { ssr: false });
-
 gsap.registerPlugin(ScrollTrigger);
+
+const FEATURE_IMAGES = [
+  '/images/phone/1.png',
+  '/images/phone/2.png',
+  '/images/phone/3.png',
+  '/images/phone/4.png',
+  '/images/phone/5.png',
+  '/images/phone/6.png',
+] as const;
 
 export default function PhoneShowcase() {
   const t = useTranslations('features');
-  const tCommon = useTranslations('common');
   const platform = usePlatform();
   const showApple = platform === 'ios' || platform === 'other';
   const showGoogle = platform === 'android' || platform === 'other';
@@ -26,8 +30,6 @@ export default function PhoneShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
   const bentoRef = useRef<HTMLDivElement>(null);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
-  const [shouldMountScene, setShouldMountScene] = useState(false);
-  const isWebGLReady = useStore((state) => state.isWebGLReady);
 
   const features: {
     id: string;
@@ -68,22 +70,6 @@ export default function PhoneShowcase() {
     ],
     [t]
   );
-
-  // Lazy-mount the Scene once the section is close to view.
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShouldMountScene(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '100px' }
-    );
-    observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   // Scroll-driven active feature: the card whose vertical midpoint is
   // closest to viewport center is highlighted.
@@ -195,30 +181,34 @@ export default function PhoneShowcase() {
         />
 
         <div ref={containerRef} className="grid lg:grid-cols-2 gap-24 items-start">
-          {/* Sticky Phone Viewport */}
+          {/* Sticky Phone Viewport — 2D mockup showing the real app screenshots. */}
           <div
             data-phone-viewport
-            className="lg:sticky lg:top-[20vh] h-[60vh] lg:h-[70vh] w-full rounded-3xl overflow-hidden glass border border-white/10 shadow-heroes"
+            className="lg:sticky lg:top-[20vh] flex h-[60vh] lg:h-[70vh] w-full items-center justify-center"
             style={{ transformStyle: 'preserve-3d', perspective: '1200px' }}
           >
-            <div
-              className={`w-full h-full transition-opacity duration-1000 ${
-                shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              {shouldMountScene && (
-                <Scene cameraPos={[0, 0, 8]}>
-                  <PhoneModel activeFeatureIndex={activeFeatureIndex} />
-                </Scene>
-              )}
-            </div>
-            {!(shouldMountScene && isWebGLReady) && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
-                <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
-                  {tCommon('initializing_3d')}
-                </span>
+            <div className="relative h-full aspect-[1206/2622] max-h-full">
+              {/* Phone frame */}
+              <div className="absolute inset-0 rounded-[48px] bg-[#0f1114] shadow-heroes ring-1 ring-white/10" />
+              {/* Screen */}
+              <div className="absolute inset-[10px] overflow-hidden rounded-[40px] bg-background">
+                {features.map((feature, i) => (
+                  <Image
+                    key={feature.id}
+                    src={FEATURE_IMAGES[i] ?? FEATURE_IMAGES[0]}
+                    alt={feature.title}
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 420px"
+                    priority={i === 0}
+                    className={`object-cover transition-opacity duration-700 ease-out ${
+                      activeFeatureIndex === i ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                ))}
               </div>
-            )}
+              {/* Notch */}
+              <div className="pointer-events-none absolute left-1/2 top-[22px] h-6 w-28 -translate-x-1/2 rounded-full bg-[#0f1114]" />
+            </div>
           </div>
 
           {/* Bento Grid Features */}

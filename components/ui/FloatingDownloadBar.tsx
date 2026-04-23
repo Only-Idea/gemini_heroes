@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { usePlatform } from '@/hooks/usePlatform';
+import { STORE_LINKS } from '@/lib/storeLinks';
 
 const DISMISS_KEY = 'heroes-download-bar-dismissed';
 
@@ -72,10 +74,14 @@ export default function FloatingDownloadBar() {
         />
 
         <div className="flex items-center gap-3 px-4 py-3 pl-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-heroes p-[2px]">
-            <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-background">
-              <span className="font-display text-base font-bold text-foreground">H</span>
-            </div>
+          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white">
+            <Image
+              src="/images/logo/logo.png"
+              alt="Heroes"
+              width={40}
+              height={40}
+              className="h-full w-full object-contain"
+            />
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col leading-tight">
@@ -87,20 +93,36 @@ export default function FloatingDownloadBar() {
 
           {showApple && (
             <a
-              href="#"
+              href={STORE_LINKS.apple}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Download on the App Store"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 bg-foreground text-background transition-colors hover:bg-foreground/90"
+              className="inline-flex items-center transition-transform duration-300 hover:-translate-y-0.5"
             >
-              <AppleGlyph />
+              <Image
+                src="/images/buttons/ios_button.webp"
+                alt="Download on the App Store"
+                width={314}
+                height={100}
+                className="h-9 w-auto"
+              />
             </a>
           )}
           {showGoogle && (
             <a
-              href="#"
+              href={STORE_LINKS.google}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Get it on Google Play"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 bg-white text-foreground transition-colors hover:bg-foreground/5"
+              className="inline-flex items-center transition-transform duration-300 hover:-translate-y-0.5"
             >
-              <PlayGlyph />
+              <Image
+                src="/images/buttons/android_button.webp"
+                alt="Get it on Google Play"
+                width={336}
+                height={100}
+                className="h-9 w-auto"
+              />
             </a>
           )}
 
@@ -129,29 +151,3 @@ export default function FloatingDownloadBar() {
   );
 }
 
-function AppleGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-      <path d="M16.5 1.5c0 1.2-.5 2.3-1.3 3.1-.9.9-2.2 1.6-3.3 1.5-.1-1.1.4-2.3 1.2-3.1.9-.9 2.2-1.5 3.4-1.5zM20 17.8c-.5 1.1-1.1 2.2-1.9 3.1-1 1.2-2 2-3.4 2-1.3 0-1.8-.8-3.3-.8-1.6 0-2.1.8-3.4.9-1.3 0-2.4-1.1-3.3-2.2C2 18.6 1.2 14.4 3 11.6c.9-1.4 2.3-2.2 3.9-2.2 1.3 0 2.5.8 3.3.8.7 0 2.3-1 3.9-.8.7 0 2.6.3 3.9 2.1-.1 0-2.3 1.3-2.3 4 0 3.1 2.7 4.1 2.3 2.3z" />
-    </svg>
-  );
-}
-
-function PlayGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4">
-      <defs>
-        <linearGradient id="fdb-play" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#375E65" />
-          <stop offset="1" stopColor="#F2BE5E" />
-        </linearGradient>
-      </defs>
-      <path
-        fill="url(#fdb-play)"
-        d="M3.5 2.5 14.3 12 3.5 21.5c-.3-.2-.5-.5-.5-.9V3.4c0-.4.2-.7.5-.9z"
-      />
-      <path fill="#EC7A5C" d="M17.7 8.6 14.3 12l3.4 3.4 2.7-1.5c1-.6 1-2.1 0-2.7z" />
-      <path fill="#F2BE5E" d="m14.3 12-10.8 9.5c.3.2.7.2 1 0l10.2-5.8z" />
-    </svg>
-  );
-}

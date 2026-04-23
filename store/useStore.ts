@@ -7,8 +7,6 @@ interface AppState {
   setPerfLevel: (level: number) => void;
   isReducedMotion: boolean;
   setReducedMotion: (reduced: boolean) => void;
-  medalScrollProgress: number;
-  setMedalScrollProgress: (progress: number) => void;
   heroScrollProgress: number;
   setHeroScrollProgress: (progress: number) => void;
   isIntroComplete: boolean;
@@ -22,8 +20,6 @@ export const useStore = create<AppState>((set) => ({
   setPerfLevel: (level) => set({ perfLevel: level }),
   isReducedMotion: false,
   setReducedMotion: (reduced) => set({ isReducedMotion: reduced }),
-  medalScrollProgress: 0,
-  setMedalScrollProgress: (progress) => set({ medalScrollProgress: progress }),
   heroScrollProgress: 0,
   setHeroScrollProgress: (progress) => set({ heroScrollProgress: progress }),
   isIntroComplete: false,
