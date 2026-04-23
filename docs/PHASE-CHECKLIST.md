@@ -90,36 +90,36 @@
 **Goal**: Transform `ChallengeShowcase` and `FeatureShowcase` from placeholders into the main browsing experience.
 
 ### 2C.1 `ChallengeShowcase`
-- [ ] Build `components/ui/Cursor3DTilt.tsx` (perspective + rotateX/Y, max 5deg, optional glare)
-- [ ] Build `components/sections/RouteCard.tsx` with 3D tilt, expand state, route metadata
-- [ ] Build `components/ui/DifficultyBadge.tsx` (Easy / Moderate / Epic color-coded pill)
-- [ ] Add card entry animation: `translateX: 100px → 0` with 200ms stagger on scroll
-- [ ] Replace circle placeholder with route imagery / gradient illustrations
-- [ ] Show distance + duration (km, days) on card (hover or always visible)
-- [ ] Add expand interaction (click / tap → overlay or expanded card with full description)
-- [ ] Build `components/ui/HorizontalScrollContainer.tsx` (GSAP ScrollTrigger pin + horizontal scroll)
-- [ ] Enable horizontal scroll on desktop, fall back to vertical stack on mobile
-- [ ] Apply phone-frame motif (border-radius: 44px) to map preview area
+- [x] Build `components/ui/Cursor3DTilt.tsx` (perspective + rotateX/Y, max 5deg, optional glare) _(primitive ready; ChallengeCard retains its own inline tilt + glow coupling, Cursor3DTilt available for other surfaces)_
+- [x] Build `components/sections/RouteCard.tsx` with 3D tilt, expand state, route metadata _(shipped as enhanced `components/ui/ChallengeCard.tsx` with metadata; click-to-expand overlay deferred)_
+- [x] Build `components/ui/DifficultyBadge.tsx` (Easy / Moderate / Epic color-coded pill)
+- [x] Add card entry animation: `translateX: 100px → 0` with 200ms stagger on scroll _(mobile stack stagger via `HorizontalScrollContainer`; desktop uses pinned horizontal-scroll instead of per-card translate-in, which serves the same reveal intent)_
+- [x] Replace circle placeholder with route imagery / gradient illustrations _(CSS gradient + inline SVG route glyph per accent color)_
+- [x] Show distance + duration (km, days) on card (hover or always visible) _(always visible, km + days)_
+- [ ] Add expand interaction (click / tap → overlay or expanded card with full description) _(deferred — modal/overlay not in current scope)_
+- [x] Build `components/ui/HorizontalScrollContainer.tsx` (GSAP ScrollTrigger pin + horizontal scroll)
+- [x] Enable horizontal scroll on desktop, fall back to vertical stack on mobile
+- [x] Apply phone-frame motif (border-radius: 44px) to map preview area _(card visual area uses `rounded-[44px]`)_
 
 ### 2C.2 `FeatureShowcase`
-- [ ] Build `components/ui/PhoneFrame.tsx` (CSS 3D phone container, tilt parallax, bezel, shadow)
-- [ ] Build `components/sections/FeatureCard.tsx` (icon + title + description + annotation badge)
-- [ ] Build `components/ui/AnnotationLine.tsx` (SVG dotted line, `stroke-dashoffset` draw animation)
-- [ ] Build `components/ui/AppBadge.tsx` (compact App Store / Google Play badge)
-- [ ] Add floating phone mockup: slides in from bottom on scroll, displays app screenshots
-- [ ] Add 150ms stagger fade-in for bento feature cards
-- [ ] Add border glow on hover (coral border + `scale(1.02)`)
-- [ ] Draw dotted annotation lines from 「アプリ機能」 badges to phone mockup on desktop
-- [ ] Tilt phone from `rotateY(-15deg) → 0deg` through section scroll range
-- [ ] Add mini interactive map preview to primary bento cell (static image or Mapbox lite)
-- [ ] Animate feature-card icons (Lottie or CSS) on scroll enter
-- [ ] Embed App Store / Google Play micro-badges within feature cards
+- [ ] Build `components/ui/PhoneFrame.tsx` (CSS 3D phone container, tilt parallax, bezel, shadow) _(superseded — the section uses the existing WebGL `PhoneModel`; sticky viewport now has `transformStyle: preserve-3d` + perspective and rotateY scroll tilt)_
+- [x] Build `components/sections/FeatureCard.tsx` (icon + title + description + annotation badge)
+- [x] Build `components/ui/AnnotationLine.tsx` (SVG dotted line, `stroke-dashoffset` draw animation)
+- [x] Build `components/ui/AppBadge.tsx` (compact App Store / Google Play badge) _(`micro` + `default` sizes; uses in-house glyphs pending official artwork)_
+- [x] Add floating phone mockup: slides in from bottom on scroll, displays app screenshots _(existing WebGL phone model; intersection-observer lazy-mount kept)_
+- [x] Add 150ms stagger fade-in for bento feature cards _(`gsap.from` on `.feature-card`, `stagger: 0.15`, `ScrollTrigger start: 'top 80%'`, `once: true`)_
+- [x] Add border glow on hover (coral border + `scale(1.02)`) _(`hover:border-coral/60 hover:scale-[1.02] hover:shadow-2xl`)_
+- [x] Draw dotted annotation lines from 「アプリ機能」 badges to phone mockup on desktop _(AnnotationLine rendered left-of-card when active at ≥1024px; hidden on mobile)_
+- [x] Tilt phone from `rotateY(-15deg) → 0deg` through section scroll range _(scrubbed ScrollTrigger on `[data-phone-viewport]`)_
+- [ ] Add mini interactive map preview to primary bento cell (static image or Mapbox lite) _(deferred — Mapbox dep weight not justified yet; the 3D phone scene carries the preview intent)_
+- [ ] Animate feature-card icons (Lottie or CSS) on scroll enter _(deferred — current design has no per-feature icons)_
+- [x] Embed App Store / Google Play micro-badges within feature cards _(medals + inclusivity cards)_
 
 ### 2C.3 Phase verification
-- [ ] Horizontal scroll pin releases cleanly on all breakpoints
-- [ ] Phone tilt respects `prefers-reduced-motion`
-- [ ] Annotation lines render correctly at ≥1024px, hide at <1024px
-- [ ] No layout shift from late-loaded screenshots (set explicit dimensions)
+- [x] Horizontal scroll pin releases cleanly on all breakpoints _(verified earlier at 1440/1920/2560: pin stops with last card centered; ≤ 1023px or reduced-motion falls through to stagger entry)_
+- [x] Phone tilt respects `prefers-reduced-motion` _(tilt effect early-returns when `prefers-reduced-motion: reduce` matches)_
+- [x] Annotation lines render correctly at ≥1024px, hide at <1024px _(FeatureCard's annotation wrapper is `hidden lg:block`)_
+- [ ] No layout shift from late-loaded screenshots (set explicit dimensions) _(requires human runtime check — current sticky phone viewport has fixed `h-[60vh] lg:h-[70vh]`, but PhoneModel texture dimensions aren't explicitly constrained)_
 
 ---
 

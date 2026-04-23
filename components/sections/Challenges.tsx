@@ -1,71 +1,53 @@
 'use client';
 
 import ChallengeCard from '@/components/ui/ChallengeCard';
+import HorizontalScrollContainer from '@/components/ui/HorizontalScrollContainer';
 import SectionLabel from '@/components/ui/SectionLabel';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useRef } from 'react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useMemo, useRef } from 'react';
+import type { DifficultyLevel } from '@/components/ui/DifficultyBadge';
 
 export default function Challenges() {
   const t = useTranslations('challenges');
   const sectionRef = useRef<HTMLElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const scrollContainer = scrollRef.current;
-    if (!section || !scrollContainer) return;
-
-    const mm = gsap.matchMedia();
-
-    mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
-      const lastCard = scrollContainer.lastElementChild as HTMLElement | null;
-      if (!lastCard) return;
-      const lastCardCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2;
-      const amountToScroll = lastCardCenter - window.innerWidth / 2;
-      if (amountToScroll <= 0) return;
-      gsap.to(scrollContainer, {
-        x: -amountToScroll,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: `+=${amountToScroll}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-    });
-
-    mm.add('(max-width: 1023px), (prefers-reduced-motion: reduce)', () => {
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      gsap.from('.challenge-card', {
-        opacity: 0,
-        y: reduced ? 0 : 40,
-        stagger: 0.2,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: section, start: 'top 80%' },
-      });
-    });
-
-    return () => mm.revert();
-  }, []);
-
-  const challenges = useMemo(() => [
-    { title: t('fuji.title'), subtitle: t('fuji.subtitle'), color: 'teal' as const },
-    { title: t('ronin.title'), subtitle: t('ronin.subtitle'), color: 'amber' as const },
-    { title: t('rail.title'), subtitle: t('rail.subtitle'), color: 'coral' as const }
-  ], [t]);
+  const challenges = useMemo(
+    () => [
+      {
+        id: 'fuji',
+        title: t('fuji.title'),
+        subtitle: t('fuji.subtitle'),
+        color: 'teal' as const,
+        distanceKm: 120,
+        days: 14,
+        difficulty: 'Epic' as DifficultyLevel,
+      },
+      {
+        id: 'ronin',
+        title: t('ronin.title'),
+        subtitle: t('ronin.subtitle'),
+        color: 'amber' as const,
+        distanceKm: 86,
+        days: 10,
+        difficulty: 'Moderate' as DifficultyLevel,
+      },
+      {
+        id: 'rail',
+        title: t('rail.title'),
+        subtitle: t('rail.subtitle'),
+        color: 'coral' as const,
+        distanceKm: 60,
+        days: 7,
+        difficulty: 'Easy' as DifficultyLevel,
+      },
+    ],
+    [t]
+  );
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="challenges" 
+    <section
+      ref={sectionRef}
+      id="challenges"
       className="relative min-h-screen flex flex-col justify-center overflow-hidden py-[var(--space-section-y)] lg:py-0"
       role="region"
       aria-label={t('label')}
@@ -81,21 +63,26 @@ export default function Challenges() {
       </div>
 
       <div className="lg:h-[60vh] flex items-center">
-        <div 
-          ref={scrollRef}
+        <HorizontalScrollContainer
           className="flex flex-col lg:flex-row gap-8 px-6 lg:px-[15vw] w-full lg:w-max"
+          stopMode="center"
+          mobileEntrySelector=".challenge-card"
         >
-          {challenges.map((challenge) => (
+          {challenges.map((challenge, i) => (
             <ChallengeCard
-              key={challenge.title}
+              key={challenge.id}
               title={challenge.title}
               subtitle={challenge.subtitle}
               accentColor={challenge.color}
               imageAlt={challenge.title}
+              index={i}
+              distanceKm={challenge.distanceKm}
+              days={challenge.days}
+              difficulty={challenge.difficulty}
               className="challenge-card w-full lg:w-[450px] aspect-[4/5] lg:aspect-auto lg:h-[500px] shrink-0"
             />
           ))}
-        </div>
+        </HorizontalScrollContainer>
       </div>
     </section>
   );

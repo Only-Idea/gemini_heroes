@@ -2,12 +2,18 @@
 
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import DifficultyBadge, { DifficultyLevel } from '@/components/ui/DifficultyBadge';
+import { useStore } from '@/store/useStore';
 
 interface ChallengeCardProps {
   title: string;
   subtitle: string;
   imageAlt: string;
   accentColor: 'teal' | 'amber' | 'coral';
+  index: number;
+  distanceKm: number;
+  days: number;
+  difficulty: DifficultyLevel;
   className?: string;
 }
 
@@ -15,27 +21,38 @@ export default function ChallengeCard({
   title,
   subtitle,
   accentColor,
+  index,
+  distanceKm,
+  days,
+  difficulty,
   className = '',
 }: ChallengeCardProps) {
   const cardRef = useRef<HTMLButtonElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const isReducedMotion = useStore((s) => s.isReducedMotion);
 
   useEffect(() => {
     const card = cardRef.current;
-    if (!card) return;
+    if (!card || isReducedMotion) return;
 
     const xTo = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power2.out' });
     const yTo = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power2.out' });
-    const glowXTo = gsap.quickTo(glowRef.current, 'xPercent', { duration: 0.5, ease: 'power2.out' });
-    const glowYTo = gsap.quickTo(glowRef.current, 'yPercent', { duration: 0.5, ease: 'power2.out' });
+    const glowXTo = gsap.quickTo(glowRef.current, 'xPercent', {
+      duration: 0.5,
+      ease: 'power2.out',
+    });
+    const glowYTo = gsap.quickTo(glowRef.current, 'yPercent', {
+      duration: 0.5,
+      ease: 'power2.out',
+    });
 
     const handleMouseMove = (e: MouseEvent) => {
       const { left, top, width, height } = card.getBoundingClientRect();
       const x = (e.clientX - left) / width - 0.5;
       const y = (e.clientY - top) / height - 0.5;
-
-      xTo(x * 15);
-      yTo(-y * 15);
+      // Max tilt 5° per spec 2C.1
+      xTo(x * 10);
+      yTo(-y * 10);
       glowXTo(x * 100);
       glowYTo(y * 100);
     };
@@ -49,12 +66,11 @@ export default function ChallengeCard({
 
     card.addEventListener('mousemove', handleMouseMove);
     card.addEventListener('mouseleave', handleMouseLeave);
-
     return () => {
       card.removeEventListener('mousemove', handleMouseMove);
       card.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [isReducedMotion]);
 
   const colorClasses = {
     teal: 'from-teal/20 to-teal/5 border-teal/20',
@@ -68,7 +84,6 @@ export default function ChallengeCard({
       className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-8 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
       style={{ transformStyle: 'preserve-3d' }}
     >
-      {/* Dynamic Glow Effect */}
       <div
         ref={glowRef}
         className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -83,27 +98,90 @@ export default function ChallengeCard({
         }}
       />
 
-      <div className="relative z-10 flex flex-col h-full justify-between" style={{ transform: 'translateZ(50px)' }}>
+      <div
+        className="relative z-10 flex h-full flex-col justify-between"
+        style={{ transform: 'translateZ(40px)' }}
+      >
         <div>
-          <span className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-${accentColor}`}>
-            Challenge / 01
-          </span>
-          <h3 className="mt-4 font-display text-subhead font-bold tracking-tight text-foreground">
+          <div className="flex items-center justify-between gap-3">
+            <span
+              className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-${accentColor}`}
+            >
+              Challenge / 0{index + 1}
+            </span>
+            <DifficultyBadge level={difficulty} />
+          </div>
+
+          <h3 className="mt-5 font-display text-subhead font-bold tracking-tight text-foreground">
             {title}
           </h3>
-          <p className="mt-2 text-sm font-medium text-muted">
-            {subtitle}
-          </p>
+          <p className="mt-2 text-sm font-medium text-muted">{subtitle}</p>
+
+          <dl className="mt-5 flex gap-6 text-left">
+            <div>
+              <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-muted">
+                Distance
+              </dt>
+              <dd className="mt-1 font-display text-lg font-bold text-foreground">
+                {distanceKm}
+                <span className="ml-1 text-xs font-medium text-muted">km</span>
+              </dd>
+            </div>
+            <div>
+              <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-muted">
+                Duration
+              </dt>
+              <dd className="mt-1 font-display text-lg font-bold text-foreground">
+                {days}
+                <span className="ml-1 text-xs font-medium text-muted">days</span>
+              </dd>
+            </div>
+          </dl>
         </div>
 
-        <div className="mt-12 aspect-[4/3] rounded-2xl bg-foreground/[0.03] border border-white/5 flex items-center justify-center group-hover:bg-foreground/[0.05] transition-colors overflow-hidden">
-           {/* Visual placeholder */}
-           <div className={`h-1 w-0 bg-${accentColor} transition-all duration-700 group-hover:w-full absolute bottom-0 left-0 shadow-[0_0_20px_var(--color-${accentColor})]`} />
-           <div className="text-foreground/10 font-display text-4xl font-bold opacity-20 group-hover:scale-110 transition-transform duration-700">
-             {title[0]}
-           </div>
+        {/* Visual placeholder — phone-frame motif (border-radius: 44px). */}
+        <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-[44px] border border-white/10 bg-foreground/[0.03] transition-colors group-hover:bg-foreground/[0.06]">
+          <div
+            className={`absolute inset-0 bg-gradient-to-br from-${accentColor}/25 via-transparent to-${accentColor}/5`}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <RouteGlyph accentColor={accentColor} />
+          </div>
+          <div
+            className={`absolute bottom-0 left-0 h-[2px] w-0 bg-${accentColor} transition-all duration-700 group-hover:w-full shadow-[0_0_20px_var(--color-${accentColor})]`}
+          />
         </div>
       </div>
     </button>
+  );
+}
+
+function RouteGlyph({ accentColor }: { accentColor: 'teal' | 'amber' | 'coral' }) {
+  return (
+    <svg
+      viewBox="0 0 120 80"
+      fill="none"
+      className="h-2/3 w-2/3 text-foreground/15 transition-transform duration-700 group-hover:scale-105"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 70 L28 46 L42 56 L66 20 L90 44 L114 28"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="6" cy="70" r="3" fill={`var(--color-${accentColor})`} />
+      <circle cx="114" cy="28" r="4" fill={`var(--color-${accentColor})`} />
+      <circle
+        cx="114"
+        cy="28"
+        r="9"
+        fill="none"
+        stroke={`var(--color-${accentColor})`}
+        strokeWidth="1"
+        opacity="0.35"
+      />
+    </svg>
   );
 }

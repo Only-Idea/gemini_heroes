@@ -7,9 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
 import SectionLabel from '@/components/ui/SectionLabel';
-import GlassCard from '@/components/ui/GlassCard';
+import FeatureCard from '@/components/sections/FeatureCard';
+import AppBadge from '@/components/ui/AppBadge';
 
-// Dynamic imports for 3D components
 const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
 const PhoneModel = dynamic(() => import('@/components/three/PhoneModel'), { ssr: false });
 
@@ -19,49 +19,52 @@ export default function PhoneShowcase() {
   const t = useTranslations('features');
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const bentoRef = useRef<HTMLDivElement>(null);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
   const [shouldMountScene, setShouldMountScene] = useState(false);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
 
-  const features: { id: string; title: string; description: string; accent: 'teal' | 'coral' | 'amber' }[] = useMemo(() => [
-    {
-      id: 'maps',
-      title: t('maps.title'),
-      description: t('maps.description'),
-      accent: 'teal',
-    },
-    {
-      id: 'impact',
-      title: t('impact.title'),
-      description: t('impact.description'),
-      accent: 'coral',
-    },
-    {
-      id: 'medals',
-      title: t('medals.title'),
-      description: t('medals.description'),
-      accent: 'amber',
-    },
-    {
-      id: 'teams',
-      title: t('teams.title'),
-      description: t('teams.description'),
-      accent: 'teal',
-    },
-    {
-      id: 'achievements',
-      title: t('achievements.title'),
-      description: t('achievements.description'),
-      accent: 'amber',
-    },
-    {
-      id: 'inclusivity',
-      title: t('inclusivity.title'),
-      description: t('inclusivity.description'),
-      accent: 'coral',
-    },
-  ], [t]);
+  const features: {
+    id: string;
+    title: string;
+    description: string;
+    accent: 'teal' | 'coral' | 'amber';
+    showAppBadges?: boolean;
+  }[] = useMemo(
+    () => [
+      { id: 'maps', title: t('maps.title'), description: t('maps.description'), accent: 'teal' },
+      {
+        id: 'impact',
+        title: t('impact.title'),
+        description: t('impact.description'),
+        accent: 'coral',
+      },
+      {
+        id: 'medals',
+        title: t('medals.title'),
+        description: t('medals.description'),
+        accent: 'amber',
+        showAppBadges: true,
+      },
+      { id: 'teams', title: t('teams.title'), description: t('teams.description'), accent: 'teal' },
+      {
+        id: 'achievements',
+        title: t('achievements.title'),
+        description: t('achievements.description'),
+        accent: 'amber',
+      },
+      {
+        id: 'inclusivity',
+        title: t('inclusivity.title'),
+        description: t('inclusivity.description'),
+        accent: 'coral',
+        showAppBadges: true,
+      },
+    ],
+    [t]
+  );
 
+  // Lazy-mount the Scene once the section is close to view.
   useEffect(() => {
     if (!sectionRef.current) return;
     const observer = new IntersectionObserver(
@@ -77,6 +80,8 @@ export default function PhoneShowcase() {
     return () => observer.disconnect();
   }, []);
 
+  // Scroll-driven active feature: the card whose vertical midpoint is
+  // closest to viewport center is highlighted.
   useEffect(() => {
     const section = sectionRef.current;
     const container = containerRef.current;
@@ -113,10 +118,63 @@ export default function PhoneShowcase() {
     return () => ctx.revert();
   }, [features]);
 
+  // 150ms stagger fade-in on first entry into the viewport.
+  // `clearProps: 'all'` is important so the scroll-driven active/inactive
+  // Tailwind classes (opacity-100 vs opacity-40) regain control after entry.
+  useEffect(() => {
+    const section = sectionRef.current;
+    const bento = bentoRef.current;
+    if (!section || !bento) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ctx = gsap.context(() => {
+      gsap.from(bento.querySelectorAll('.feature-card'), {
+        opacity: 0,
+        y: reduced ? 0 : 30,
+        duration: 0.9,
+        stagger: 0.15,
+        ease: 'power3.out',
+        clearProps: 'all',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  // Phone tilt: rotateY from -15 → 0 through section scroll range.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    const phoneViewport = section.querySelector<HTMLElement>('[data-phone-viewport]');
+    if (!phoneViewport) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        phoneViewport,
+        { rotateY: -15 },
+        {
+          rotateY: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            end: 'center center',
+            scrub: 0.6,
+          },
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section 
-      ref={sectionRef} 
-      id="features" 
+    <section
+      ref={sectionRef}
+      id="features"
       className="relative bg-foreground/[0.02] py-32 lg:py-64"
       role="region"
       aria-label={t('section_title')}
@@ -133,8 +191,16 @@ export default function PhoneShowcase() {
 
         <div ref={containerRef} className="grid lg:grid-cols-2 gap-24 items-start">
           {/* Sticky Phone Viewport */}
-          <div className="lg:sticky lg:top-[20vh] h-[60vh] lg:h-[70vh] w-full rounded-3xl overflow-hidden glass border border-white/10 shadow-heroes">
-            <div className={`w-full h-full transition-opacity duration-1000 ${shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
+          <div
+            data-phone-viewport
+            className="lg:sticky lg:top-[20vh] h-[60vh] lg:h-[70vh] w-full rounded-3xl overflow-hidden glass border border-white/10 shadow-heroes"
+            style={{ transformStyle: 'preserve-3d', perspective: '1200px' }}
+          >
+            <div
+              className={`w-full h-full transition-opacity duration-1000 ${
+                shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
               {shouldMountScene && (
                 <Scene cameraPos={[0, 0, 8]}>
                   <PhoneModel activeFeatureIndex={activeFeatureIndex} />
@@ -151,32 +217,24 @@ export default function PhoneShowcase() {
           </div>
 
           {/* Bento Grid Features */}
-          <div className="flex flex-col gap-12 lg:gap-32">
+          <div ref={bentoRef} className="flex flex-col gap-12 lg:gap-32">
             {features.map((feature, index) => (
-              <GlassCard
+              <FeatureCard
                 key={feature.id}
-                glowColor={feature.accent}
-                data-feature-card
-                className={`transition-all duration-700 ${
-                  activeFeatureIndex === index ? 'opacity-100 translate-x-4 border-white/40 shadow-2xl scale-105' : 'opacity-40 border-white/5 grayscale'
-                }`}
+                id={feature.id}
+                index={index}
+                title={feature.title}
+                description={feature.description}
+                accent={feature.accent}
+                active={activeFeatureIndex === index}
               >
-                <div id={`feature-${feature.id}`} className="absolute top-0 left-0 w-full h-1" />
-                <span className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-${feature.accent}`}>
-                  Feature / 0{index + 1}
-                </span>
-                <h3 className="mt-4 font-display text-subhead font-bold text-foreground">
-                  {feature.title}
-                </h3>
-                <p className="mt-4 max-w-md text-muted font-medium leading-relaxed">
-                  {feature.description}
-                </p>
-                
-                {/* Indicator dot */}
-                <div className={`absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-500 bg-${feature.accent} ${
-                  activeFeatureIndex === index ? 'scale-150 shadow-[0_0_15px_rgba(var(--glow-rgb),0.5)]' : 'scale-0'
-                }`} />
-              </GlassCard>
+                {feature.showAppBadges && (
+                  <div className="flex flex-wrap gap-2">
+                    <AppBadge store="apple" size="micro" />
+                    <AppBadge store="google" size="micro" />
+                  </div>
+                )}
+              </FeatureCard>
             ))}
           </div>
         </div>
