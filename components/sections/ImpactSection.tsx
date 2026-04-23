@@ -5,112 +5,138 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
-import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import SectionLabel from '@/components/ui/SectionLabel';
+import ImpactCounter from '@/components/ui/ImpactCounter';
+import TreeIllustration from '@/components/ui/TreeIllustration';
+import WaveAnimation from '@/components/ui/WaveAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const partners = ['One Tree Planted', 'Ocean Conservancy', 'Re:earth', 'Blue Planet', '4Ocean'];
+
 export default function ImpactSection() {
-  const t = useTranslations('nav');
+  const t = useTranslations();
   const sectionRef = useRef<HTMLElement>(null);
+  const vizRef = useRef<HTMLDivElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
 
   useReducedMotionAnimation(
     sectionRef,
     () => {
-      gsap.from('.impact-reveal', {
+      // Split-layout entry: copy slides from left, viz from right.
+      gsap.from(copyRef.current, {
+        x: -60,
         opacity: 0,
-        y: 40,
-        stagger: 0.1,
-        duration: 1,
+        duration: 1.2,
         ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
       });
-      gsap.from('.impact-viz', {
-        scale: 0.8,
+      gsap.from(vizRef.current, {
+        x: 60,
         opacity: 0,
-        duration: 1.5,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 60%' },
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+      });
+      gsap.from('.partner-logo', {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.partner-row', start: 'top 85%' },
       });
     },
     () => {
-      gsap.from('.impact-reveal, .impact-viz', {
+      gsap.from([copyRef.current, vizRef.current], {
         opacity: 0,
-        duration: 1,
+        duration: 0.8,
         stagger: 0.1,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
       });
-    },
+    }
   );
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="impact" 
+    <section
+      ref={sectionRef}
+      id="impact"
       className="relative px-6 py-32 lg:py-48 bg-white overflow-hidden"
       role="region"
-      aria-label={t('impact')}
+      aria-label={t('impact.title')}
     >
       <div className="mx-auto max-w-[1400px]">
         <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
-          {/* Visual Side */}
-          <div className="impact-viz relative aspect-square lg:aspect-[4/5] rounded-[40px] overflow-hidden bg-foreground/[0.03] flex items-center justify-center">
-             <div className="absolute inset-0 bg-gradient-to-br from-teal/5 to-coral/5 opacity-50" />
-             
-             {/* Simple geometric representation of "Impact" */}
-             <div className="relative w-2/3 h-2/3">
-                <div className="absolute top-0 left-0 w-full h-full rounded-full border border-teal/20 animate-[spin_20s_linear_infinite]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 rounded-full border border-coral/20 animate-[spin_15s_linear_infinite_reverse]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                   <div className="h-20 w-20 rounded-full bg-gradient-heroes opacity-20 blur-2xl animate-pulse" />
-                   <span className="font-display text-4xl font-black text-foreground opacity-10 uppercase tracking-tighter">Impact</span>
-                </div>
-             </div>
-          </div>
-
-          {/* Copy Side */}
-          <div className="flex flex-col items-start">
+          {/* Copy column — slides from left */}
+          <div ref={copyRef} className="flex flex-col items-start">
             <SectionLabel
               number="03"
               label="Path of Purpose"
-              title={<>Every Step, <br />A Lasting Legacy.</>}
-              description="Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations to ensure your sweat equity translates into real-world change."
+              title={<>{t('impact.title')}</>}
+              description="Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations so your sweat equity translates into real-world change."
               accentColor="teal"
-              itemClassName="impact-reveal"
             />
 
-            <div className="mt-16 grid grid-cols-2 gap-8 w-full">
-              <div className="impact-reveal group">
-                <span className="block font-display text-[64px] font-bold text-foreground leading-none">
-                  <AnimatedCounter value="10250" duration={2.5} />
-                </span>
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="h-1.5 w-1.5 rounded-full bg-teal shadow-[0_0_8px_var(--color-teal)]" />
-                  <p className="font-mono text-[11px] font-bold tracking-widest text-muted uppercase">
-                    Trees Planted
-                  </p>
-                </div>
-              </div>
-
-              <div className="impact-reveal group">
-                <span className="block font-display text-[64px] font-bold text-foreground leading-none">
-                  <AnimatedCounter value="580" duration={2} />
-                  <span className="text-2xl ml-1 text-stone">kg</span>
-                </span>
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="h-1.5 w-1.5 rounded-full bg-coral shadow-[0_0_8px_var(--color-coral)]" />
-                  <p className="font-mono text-[11px] font-bold tracking-widest text-muted uppercase">
-                    Plastic Removed
-                  </p>
-                </div>
+            <div className="mt-12 grid w-full grid-cols-1 gap-10">
+              <ImpactCounter
+                value="10250"
+                label={t('impact.trees')}
+                accent="teal"
+                progress={0.68}
+                progressLabel="2030 Goal · 15,000 Trees"
+              />
+              <div className="relative isolate overflow-hidden rounded-3xl border border-coral/10 bg-coral/[0.03] p-6">
+                <WaveAnimation className="-z-10 opacity-80" colorVar="--color-coral" />
+                <ImpactCounter
+                  value="580"
+                  label={t('impact.ocean')}
+                  unit="kg"
+                  accent="coral"
+                  progress={0.42}
+                  progressLabel="2030 Goal · 1,400 kg"
+                />
               </div>
             </div>
 
-            <button className="impact-reveal mt-16 rounded-full border border-foreground/10 px-10 py-4 font-mono text-button font-bold tracking-widest text-foreground transition-all duration-300 hover:border-foreground hover:bg-foreground/5">
+            <button className="mt-12 rounded-full border border-foreground/15 px-8 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/60 hover:bg-foreground/5">
               View Audit Report
             </button>
           </div>
+
+          {/* Viz column — slides from right */}
+          <div
+            ref={vizRef}
+            className="relative aspect-square lg:aspect-[4/5] rounded-[40px] overflow-hidden bg-gradient-to-b from-teal/[0.05] to-coral/[0.05] border border-foreground/5 flex items-center justify-center"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-teal/[0.03] to-coral/[0.03]" />
+            <TreeIllustration
+              triggerRef={vizRef as React.RefObject<Element | null>}
+              className="relative z-10 h-[85%] w-[85%]"
+            />
+            {/* Horizon line */}
+            <div className="absolute bottom-[14%] left-0 right-0 h-px bg-foreground/5" />
+            {/* Subtle wave along the horizon (ocean stat visual callback) */}
+            <div className="absolute bottom-0 left-0 right-0 h-[16%]">
+              <WaveAnimation className="opacity-60" colorVar="--color-coral" />
+            </div>
+          </div>
+        </div>
+
+        {/* Partner logos row */}
+        <div className="partner-row mt-24 border-t border-foreground/5 pt-10">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-muted text-center">
+            In Partnership With
+          </p>
+          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {partners.map((name) => (
+              <li
+                key={name}
+                className="partner-logo font-display text-sm font-bold tracking-tight text-foreground/40 transition-colors hover:text-foreground"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

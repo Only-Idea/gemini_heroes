@@ -78,6 +78,24 @@ export default function ChallengeCard({
     coral: 'from-coral/20 to-coral/5 border-coral/20',
   };
 
+  const barShadowClass = {
+    teal: 'bg-teal shadow-[0_0_20px_var(--color-teal)]',
+    amber: 'bg-amber shadow-[0_0_20px_var(--color-amber)]',
+    coral: 'bg-coral shadow-[0_0_20px_var(--color-coral)]',
+  };
+
+  const visualGradientClass = {
+    teal: 'bg-gradient-to-br from-teal/25 via-transparent to-teal/5',
+    amber: 'bg-gradient-to-br from-amber/25 via-transparent to-amber/5',
+    coral: 'bg-gradient-to-br from-coral/25 via-transparent to-coral/5',
+  };
+
+  const labelTextClass = {
+    teal: 'text-teal',
+    amber: 'text-amber',
+    coral: 'text-coral',
+  };
+
   return (
     <button
       ref={cardRef}
@@ -105,7 +123,7 @@ export default function ChallengeCard({
         <div>
           <div className="flex items-center justify-between gap-3">
             <span
-              className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-${accentColor}`}
+              className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] ${labelTextClass[accentColor]}`}
             >
               Challenge / 0{index + 1}
             </span>
@@ -141,14 +159,12 @@ export default function ChallengeCard({
 
         {/* Visual placeholder — phone-frame motif (border-radius: 44px). */}
         <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-[44px] border border-white/10 bg-foreground/[0.03] transition-colors group-hover:bg-foreground/[0.06]">
-          <div
-            className={`absolute inset-0 bg-gradient-to-br from-${accentColor}/25 via-transparent to-${accentColor}/5`}
-          />
+          <div className={`absolute inset-0 ${visualGradientClass[accentColor]}`} />
           <div className="absolute inset-0 flex items-center justify-center">
             <RouteGlyph accentColor={accentColor} />
           </div>
           <div
-            className={`absolute bottom-0 left-0 h-[2px] w-0 bg-${accentColor} transition-all duration-700 group-hover:w-full shadow-[0_0_20px_var(--color-${accentColor})]`}
+            className={`absolute bottom-0 left-0 h-[2px] w-0 ${barShadowClass[accentColor]} transition-all duration-700 group-hover:w-full`}
           />
         </div>
       </div>

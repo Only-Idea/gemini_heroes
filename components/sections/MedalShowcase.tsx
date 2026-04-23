@@ -3,19 +3,24 @@
 import { useTranslations } from 'next-intl';
 import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
 import SectionLabel from '@/components/ui/SectionLabel';
+import GradientButton from '@/components/ui/GradientButton';
+import AppBadge from '@/components/ui/AppBadge';
 
-// Dynamic import for 3D component
+gsap.registerPlugin(ScrollTrigger);
+
 const Scene = dynamic(() => import('@/components/three/Scene'), { ssr: false });
 const MedalScene = dynamic(() => import('@/components/three/MedalScene'), { ssr: false });
 
 export default function MedalShowcase() {
   const t = useTranslations();
   const sectionRef = useRef<HTMLElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
   const [shouldMountScene, setShouldMountScene] = useState(false);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
   const setMedalScrollProgress = useStore((state) => state.setMedalScrollProgress);
@@ -38,53 +43,68 @@ export default function MedalShowcase() {
   useReducedMotionAnimation(
     sectionRef,
     () => {
+      // Medal scroll-scrub: feeds the MedalScene rotation/scale through the store.
+      gsap.to(
+        {},
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+            onUpdate: (self) => setMedalScrollProgress(self.progress),
+          },
+        }
+      );
+
+      // Copy fades IN at the scroll midpoint while the medal keeps rotating.
       gsap.from('.medal-reveal-title .char', {
-        scrollTrigger: { trigger: '.medal-reveal-title', start: 'top 80%' },
         opacity: 0,
         x: -20,
         stagger: 0.02,
         duration: 0.8,
         ease: 'power2.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'center 70%' },
       });
       gsap.from('.medal-reveal-desc', {
-        scrollTrigger: { trigger: '.medal-reveal-desc', start: 'top 85%' },
         opacity: 0,
         y: 20,
         duration: 1,
         ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'center 70%' },
       });
-      gsap.to({}, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-          onUpdate: (self) => setMedalScrollProgress(self.progress),
-        },
+
+      // CTA rises a beat after the copy.
+      gsap.from(ctaRef.current, {
+        opacity: 0,
+        y: 24,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'center 60%' },
       });
     },
     () => {
-      gsap.from('.medal-reveal-title, .medal-reveal-desc', {
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+      gsap.from('.medal-reveal-title, .medal-reveal-desc, .medal-cta', {
         opacity: 0,
         duration: 1,
         stagger: 0.2,
         ease: 'power2.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
       });
       setMedalScrollProgress(0);
-    },
+    }
   );
 
   return (
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       className="px-6 py-48 relative overflow-hidden"
       role="region"
       aria-label={t('medal.label')}
       suppressHydrationWarning
     >
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber/5 blur-[150px] rounded-full pointer-events-none" />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber/5 blur-[150px] rounded-full" />
 
       <div className="mx-auto max-w-[1400px] text-center relative z-10" suppressHydrationWarning>
         <SectionLabel
@@ -97,11 +117,15 @@ export default function MedalShowcase() {
           titleClassName="medal-reveal-title"
           descriptionClassName="medal-reveal-desc"
         />
-        
+
         <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes overflow-hidden group">
-          <div className={`w-full h-full transition-opacity duration-1000 ${shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'}`}>
+          <div
+            className={`w-full h-full transition-opacity duration-1000 ${
+              shouldMountScene && isWebGLReady ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
             {shouldMountScene && (
-              <Scene cameraPos={[0, 0, 5]} shadows={true}>
+              <Scene cameraPos={[0, 0, 5]} shadows={false}>
                 <MedalScene />
               </Scene>
             )}
@@ -113,12 +137,22 @@ export default function MedalShowcase() {
               </span>
             </div>
           )}
-          
+
           {/* Interactive Hint */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <p className="font-mono text-[10px] uppercase tracking-widest text-stone">
-              Scroll to Rotate
+              Scroll to Rotate · Gold → Silver → Bronze
             </p>
+          </div>
+        </div>
+
+        <div ref={ctaRef} className="medal-cta mx-auto mt-16 flex max-w-2xl flex-col items-center gap-6">
+          <GradientButton variant="primary" size="lg">
+            Earn Your Medal
+          </GradientButton>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <AppBadge store="apple" />
+            <AppBadge store="google" />
           </div>
         </div>
       </div>

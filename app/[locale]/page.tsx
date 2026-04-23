@@ -12,7 +12,7 @@ const PhoneShowcase = dynamic(() => import('@/components/sections/PhoneShowcase'
 const ImpactSection = dynamic(() => import('@/components/sections/ImpactSection'), {
   loading: () => <div className="min-h-[50vh] bg-white" />,
 });
-const ActivityRibbon = dynamic(() => import('@/components/ui/ActivityRibbon'), {
+const ActivityRibbon = dynamic(() => import('@/components/sections/ActivityRibbon'), {
   loading: () => <div className="h-24 lg:h-32 bg-white" />,
 });
 const MedalShowcase = dynamic(() => import('@/components/sections/MedalShowcase'), {

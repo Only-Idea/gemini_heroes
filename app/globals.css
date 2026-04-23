@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Restrict content detection so stale class strings in `.next/` compiled
+   chunks don't poison the generated CSS. Must list every path that uses
+   Tailwind classes. */
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../hooks/**/*.{ts,tsx}";
+
 /* =========================================
    Heroes Design System — Modern Light Aesthetic
    ========================================= */

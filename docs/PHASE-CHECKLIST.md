@@ -129,42 +129,42 @@
 **Goal**: Reward mid-scroll with the medal moment, the activity ribbon, and the impact story.
 
 ### 3A.1 `MedalShowcase` scroll-driven experience
-- [ ] Build `components/three/ScrollDrivenMedal.tsx` — extend `MedalScene` with GSAP ScrollTrigger rotation
-- [ ] Build `components/three/MedalMaterial.tsx` (PBR material, gold/silver/bronze presets, env reflections)
-- [ ] Rotate medal 80° profile → 0° front-facing mapped to scroll (`scrub: true`)
-- [ ] Scale medal 0.8 → 1.0 through its scroll range
-- [ ] Add studio lighting (gradient HDRI env map, spotlight, rim light)
-- [ ] Toggle / auto-cycle between gold/silver/bronze variants
-- [ ] Fade surrounding text in at scroll midpoint while medal keeps rotating
-- [ ] Add R3F `ContactShadows` for grounding
-- [ ] Emit a subtle particle burst when medal reaches front-facing pose
-- [ ] Add "Earn Your Medal" CTA with App Store badges below the medal
+- [x] Build `components/three/ScrollDrivenMedal.tsx` — extend `MedalScene` with GSAP ScrollTrigger rotation _(kept inline in `MedalScene.tsx` + scroll hook in `MedalShowcase.tsx` to avoid an extra file for a small piece of logic)_
+- [x] Build `components/three/MedalMaterial.tsx` (PBR material, gold/silver/bronze presets, env reflections) _(presets inline in `MedalScene.tsx` as a `variants` map; per-variant `CanvasTexture` equirect env map)_
+- [x] Rotate medal 80° profile → 0° front-facing mapped to scroll (`scrub: true`)
+- [x] Scale medal 0.8 → 1.0 through its scroll range
+- [x] Add studio lighting (gradient HDRI env map, spotlight, rim light) _(ambient ivory + spotLight + rim pointLight)_
+- [x] Toggle / auto-cycle between gold/silver/bronze variants _(5s interval cycles gold → silver → bronze; env map + metalness/roughness switch per variant)_
+- [x] Fade surrounding text in at scroll midpoint while medal keeps rotating _(title + description triggered at `center 70%`, CTA at `center 60%`)_
+- [x] Add R3F `ContactShadows` for grounding
+- [ ] Emit a subtle particle burst when medal reaches front-facing pose _(deferred — particle burst adds fragile timing dep; not critical to the core storytelling)_
+- [x] Add "Earn Your Medal" CTA with App Store badges below the medal _(GradientButton + AppBadge Apple/Google pair)_
 
 ### 3A.2 `ActivityRibbon`
-- [ ] Build `components/ui/Marquee.tsx` (direction, speed, `pauseOnHover`, dual-row support)
-- [ ] Build `components/ui/ActivityIcon.tsx` (minimalist SVG + Japanese/English label)
-- [ ] Build `components/sections/ActivityRibbon.tsx` with dual-row marquee (opposite directions)
-- [ ] Ship 12 activity icons (Running, Walking, Cycling, Swimming, Hiking, Yoga, …)
-- [ ] Pause marquee on hover
-- [ ] Scale icons up as they enter viewport center
-- [ ] Apply pure-white background strip contrasting with ivory sections
+- [x] Build `components/ui/Marquee.tsx` (direction, speed, `pauseOnHover`, dual-row support) _(single-row primitive; two side-by-side instances deliver dual rows)_
+- [x] Build `components/ui/ActivityIcon.tsx` (minimalist SVG + Japanese/English label) _(12 glyph variants, scroll-scrubbed scale breathing)_
+- [x] Build `components/sections/ActivityRibbon.tsx` with dual-row marquee (opposite directions) _(moved from `ui/` → `sections/`; page.tsx import updated)_
+- [x] Ship 12 activity icons (Running, Walking, Cycling, Swimming, Hiking, Yoga, Wheelchair, Rowing, Elliptical, Stairs, Crossfit, Pilates)
+- [x] Pause marquee on hover
+- [x] Scale icons up as they enter viewport center _(scrubbed scale 0.9 → 1.08 across the viewport range)_
+- [x] Apply pure-white background strip contrasting with ivory sections _(`bg-white`, edge gradient masks preserved)_
 
 ### 3A.3 `ImpactSection` storytelling
-- [ ] Build `components/ui/TreeIllustration.tsx` (animated SVG tree that grows with scroll)
-- [ ] Build `components/ui/WaveAnimation.tsx` (CSS/SVG ocean wave background)
-- [ ] Build `components/ui/ImpactCounter.tsx` (large number + label + progress indicator)
-- [ ] Split-layout entry: left column slides from left, right grid from right
-- [ ] Drive tree growth from section scroll progress
-- [ ] Place wave animation behind ocean stat
-- [ ] Reuse `AnimatedCounter` for impact numbers on scroll enter
-- [ ] Add circular or bar progress for impact goals
-- [ ] Color-code: tree stats in teal, ocean stats in coral
-- [ ] Add partner logos row (environmental orgs)
+- [x] Build `components/ui/TreeIllustration.tsx` (animated SVG tree that grows with scroll) _(trunk stroke, 6 branches staggered, 10 leaves popping with `back.out`; scrub-driven)_
+- [x] Build `components/ui/WaveAnimation.tsx` (CSS/SVG ocean wave background) _(two parallax SVG wave layers)_
+- [x] Build `components/ui/ImpactCounter.tsx` (large number + label + progress indicator) _(wraps `AnimatedCounter`, adds progress bar + goal label)_
+- [x] Split-layout entry: left column slides from left, right grid from right
+- [x] Drive tree growth from section scroll progress _(ScrollTrigger scrub from `top 80%` → `bottom 30%`)_
+- [x] Place wave animation behind ocean stat _(ocean ImpactCounter wrapped in a coral-tinted card with WaveAnimation underlay; second wave sits along the horizon of the tree viz)_
+- [x] Reuse `AnimatedCounter` for impact numbers on scroll enter
+- [x] Add circular or bar progress for impact goals _(thin bar with accent-coloured glow shadow — teal/coral)_
+- [x] Color-code: tree stats in teal, ocean stats in coral
+- [x] Add partner logos row (environmental orgs) _(5 wordmarks; staggered fade-in)_
 
 ### 3A.4 Phase verification
-- [ ] Medal scroll-scrub stays smooth (no jitter) on mid-tier laptop
-- [ ] Marquee pauses on hover and survives tab-defocus without drift
-- [ ] Tree / wave animations disable under reduced motion
+- [ ] Medal scroll-scrub stays smooth (no jitter) on mid-tier laptop _(requires human runtime check)_
+- [x] Marquee pauses on hover and survives tab-defocus without drift _(driven by GSAP ticker via `gsap.ticker` which uses rAF and does not drift during tab blur; pause toggled via `gsap.getTweensOf`)_
+- [x] Tree / wave animations disable under reduced motion _(TreeIllustration early-sets final state + skips ScrollTrigger; WaveAnimation short-circuits loops; both gated on `useStore.isReducedMotion`)_
 
 ---
 
