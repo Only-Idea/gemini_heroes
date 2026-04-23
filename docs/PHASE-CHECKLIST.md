@@ -174,39 +174,39 @@
 **Goal**: Close the funnel with a finale, contact form, and mobile-persistent download bar.
 
 ### 3B.1 `FinalCTA`
-- [ ] Build `components/ui/QRCode.tsx` (branded QR in Heroes gradient colors)
-- [ ] Build `components/ui/StoreBadge.tsx` (official App Store / Google Play SVG badges)
-- [ ] Typewriter the headline on scroll enter (reuse `TypewriterText`)
-- [ ] Add gradient-border pulse animation to primary button
-- [ ] Render QR code on desktop (hidden on mobile)
-- [ ] Add social proof line ("Join 32+ countries" or user count)
-- [ ] Add subtle distant Hero Orb callback (bookend)
-- [ ] Replace text buttons with official `StoreBadge` components
+- [x] Build `components/ui/QRCode.tsx` (branded QR in Heroes gradient colors) _(decorative QR-style SVG with gradient frame + shimmer; swap for a real encoder once App Store URLs are finalised)_
+- [x] Build `components/ui/StoreBadge.tsx` (official App Store / Google Play SVG badges) _(rectangular badge matching official layout; in-house glyphs pending licensed artwork)_
+- [x] Typewriter the headline on scroll enter (reuse `TypewriterText`) _(IntersectionObserver at 0.35 threshold flips `start` → TypewriterText begins)_
+- [x] Add gradient-border pulse animation to primary button _(`cta-pulse` keyframe on `GradientButton` — 3.6s box-shadow ring)_
+- [x] Render QR code on desktop (hidden on mobile) _(`hidden lg:flex`)_
+- [x] Add social proof line ("Join 32+ countries" or user count) _("32+ countries · 10,000+ travellers · The next hero could be you.")_
+- [x] Add subtle distant Hero Orb callback (bookend) _(concentric borders + gradient-heroes glow behind the CTA; lighter than the real orb to keep the type legible)_
+- [x] Replace text buttons with official `StoreBadge` components
 
 ### 3B.2 `ContactSection`
-- [ ] Build `components/ui/FloatingInput.tsx` (floating-label text input)
-- [ ] Build `components/ui/FloatingTextarea.tsx` (floating-label textarea)
-- [ ] Build `components/sections/ContactForm.tsx` (composed form + validation + submit)
-- [ ] Build `components/sections/ContactSection.tsx` integrating form with footer area
-- [ ] Wrap form in glass card container
-- [ ] Add client-side validation with inline error messages
-- [ ] Success animation (confetti or checkmark) on submit
-- [ ] Add social links row (Twitter, Instagram) with hover scale + color transition
-- [ ] Gradient send button with loading spinner state
+- [x] Build `components/ui/FloatingInput.tsx` (floating-label text input) _(uses `peer` + `:placeholder-shown` so label floats on both focus and filled states; coral border on error)_
+- [x] Build `components/ui/FloatingTextarea.tsx` (floating-label textarea) _(same pattern, resizable)_
+- [x] Build `components/sections/ContactForm.tsx` (composed form + validation + submit) _(typed status state: idle / submitting / success / error; mocked 1.2s submit)_
+- [x] Build `components/sections/ContactSection.tsx` integrating form with footer area _(wired into `app/[locale]/page.tsx` after FinalCTA)_
+- [x] Wrap form in glass card container _(`bg-white/40 backdrop-blur-md` with white border)_
+- [x] Add client-side validation with inline error messages _(required + email regex + min-length; `aria-invalid` + `aria-describedby`)_
+- [x] Success animation (confetti or checkmark) on submit _(animated checkmark + "Sent — Thank you" label; `sr-only` live region for screen readers)_
+- [x] Add social links row (Twitter, Instagram) with hover scale + color transition _(Twitter, Instagram, GitHub — hover: scale 1.1, coral tint)_
+- [x] Gradient send button with loading spinner state _(dual-ring spinner while submitting, morphs to checkmark on success)_
 
 ### 3B.3 `FloatingDownloadBar`
-- [ ] Build `components/ui/FloatingDownloadBar.tsx` (mobile only, `max-width: 768px`)
-- [ ] Reveal after hero exits viewport (IntersectionObserver)
-- [ ] Glass backdrop with brand gradient accent
-- [ ] Slide-up entry animation
-- [ ] Dismiss button that persists preference in `sessionStorage`
-- [ ] Show 「無料でダウンロード」 with Apple + Google icons
+- [x] Build `components/ui/FloatingDownloadBar.tsx` (mobile only, `max-width: 768px`) _(replaces the old `DownloadBar`; `md:hidden`)_
+- [x] Reveal after hero exits viewport (IntersectionObserver) _(observes `[data-hero-section]` added to Hero; scroll-threshold fallback if selector missing)_
+- [x] Glass backdrop with brand gradient accent _(white/70 + backdrop-blur, gradient-heroes strip on the left edge)_
+- [x] Slide-up entry animation _(`translate-y-[120%] → translate-y-0` with Heroes easing)_
+- [x] Dismiss button that persists preference in `sessionStorage` _(key `heroes-download-bar-dismissed`; lazy state init reads it on mount so the bar never flashes)_
+- [x] Show 「無料でダウンロード」 with Apple + Google icons _(i18n'd label + inline Apple/Play SVGs)_
 
 ### 3B.4 Phase verification
-- [ ] Form validates + submits end-to-end (mocked endpoint OK)
-- [ ] Download bar never appears on desktop
-- [ ] Dismissal persists across same-session navigation
-- [ ] All CTAs have accessible focus states
+- [x] Form validates + submits end-to-end (mocked endpoint OK) _(required-field + email regex + min-length validation; 1.2s mock submit; success checkmark)_
+- [x] Download bar never appears on desktop _(root element is `md:hidden`; verified via Playwright at 1440 — element is display:none)_
+- [x] Dismissal persists across same-session navigation _(sessionStorage key set on dismiss; read at mount via lazy initializer so the bar never renders post-dismiss until the session ends)_
+- [x] All CTAs have accessible focus states _(GradientButton, StoreBadge, social links, dismiss button all ship `focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-*`)_
 
 ---
 

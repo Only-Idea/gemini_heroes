@@ -62,6 +62,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
+      data-hero-section
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-20"
       role="region"
       aria-label={t('hero.label')}

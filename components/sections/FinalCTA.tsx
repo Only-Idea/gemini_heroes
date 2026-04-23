@@ -1,81 +1,142 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
-import SplitText from '@/components/ui/SplitText';
-import Magnetic from '@/components/ui/Magnetic';
+import TypewriterText from '@/components/ui/TypewriterText';
+import StoreBadge from '@/components/ui/StoreBadge';
+import QRCode from '@/components/ui/QRCode';
+import GradientButton from '@/components/ui/GradientButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function FinalCTA() {
   const t = useTranslations('cta');
   const sectionRef = useRef<HTMLElement>(null);
+  const [headlineReady, setHeadlineReady] = useState(false);
+
+  // Gate the typewriter on the section being in view (not mount).
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setHeadlineReady(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   useReducedMotionAnimation(
     sectionRef,
     () => {
-      gsap.from('.cta-title .char', {
-        scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
+      gsap.from('.cta-subline', {
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
         opacity: 0,
-        stagger: 0.05,
-        duration: 0.1,
-        ease: 'none',
+        y: 16,
+        duration: 0.9,
+        ease: 'power3.out',
+        delay: 0.6,
       });
-      gsap.from('.cta-button-container', {
-        scrollTrigger: { trigger: '.cta-button-container', start: 'top 90%' },
+      gsap.from('.cta-primary', {
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
         opacity: 0,
-        y: 20,
+        y: 24,
         duration: 1,
         ease: 'power3.out',
+        delay: 0.8,
+      });
+      gsap.from('.cta-store', {
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+        opacity: 0,
+        y: 24,
+        stagger: 0.1,
+        duration: 0.9,
+        ease: 'power3.out',
+        delay: 1.0,
+      });
+      gsap.from('.cta-qr', {
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 65%' },
+        opacity: 0,
+        scale: 0.9,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 1.2,
       });
     },
     () => {
-      gsap.from('.cta-title, .cta-button-container', {
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
+      gsap.from('.cta-subline, .cta-primary, .cta-store, .cta-qr', {
         opacity: 0,
         duration: 1,
-        stagger: 0.2,
-        ease: 'power2.out',
+        stagger: 0.08,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' },
       });
-    },
+    }
   );
 
   return (
-    <section 
-      ref={sectionRef} 
-      className="relative flex min-h-[80vh] flex-col items-center justify-center px-6 py-32 overflow-hidden bg-background"
+    <section
+      ref={sectionRef}
+      className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden bg-background px-6 py-32"
       role="region"
       aria-label={t('title')}
     >
-      {/* Subtle Background Glow */}
-      <div className="absolute inset-0 bg-gradient-heroes opacity-5" />
-      
-      <div className="relative z-10 mx-auto max-w-5xl text-center">
-        <h2 className="cta-title font-display text-[clamp(40px,8vw,80px)] font-bold leading-[1.1] tracking-tight text-foreground">
-          <SplitText>{t('title')}</SplitText>
-        </h2>
-
-        <div className="cta-button-container mt-16 flex flex-wrap justify-center gap-6">
-          <Magnetic strength={0.15}>
-            <button className="rounded-full bg-foreground px-12 py-5 font-mono text-button font-bold tracking-widest text-background shadow-2xl transition-all duration-400 hover:scale-105 active:scale-95">
-              App Store
-            </button>
-          </Magnetic>
-          
-          <Magnetic strength={0.15}>
-            <button className="rounded-full border border-foreground/10 bg-white px-12 py-5 font-mono text-button font-bold tracking-widest text-foreground shadow-xl transition-all duration-400 hover:scale-105 active:scale-95">
-              Google Play
-            </button>
-          </Magnetic>
-        </div>
+      {/* Distant Hero Orb callback — a subtle gradient orb bookending the journey */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-heroes opacity-[0.08] blur-[120px]" />
+        <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/10" />
+        <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground/5" />
       </div>
 
-      {/* Decorative Gradient Blob */}
-      <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-teal/10 blur-[100px]" />
-      <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-coral/10 blur-[100px]" />
+      {/* Decorative side glows */}
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-teal/10 blur-[100px]" />
+      <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-coral/10 blur-[100px]" />
+
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
+        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-teal">
+          The Final Step · 最後の一歩
+        </p>
+
+        <h2 className="mt-6 font-display text-[clamp(40px,8vw,88px)] font-bold leading-[1.05] tracking-tight text-foreground">
+          <TypewriterText start={headlineReady} speed={55} cursor>
+            {t('title')}
+          </TypewriterText>
+        </h2>
+
+        <p className="cta-subline mt-8 max-w-xl text-body-lg font-medium text-muted">
+          32+ countries · 10,000+ travellers · The next hero could be you.
+        </p>
+
+        <div className="cta-primary mt-10">
+          <GradientButton
+            variant="primary"
+            size="lg"
+            className="cta-pulse [animation:cta-pulse_3.6s_ease-in-out_infinite]"
+          >
+            Start Your Odyssey
+          </GradientButton>
+        </div>
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <StoreBadge store="apple" className="cta-store" />
+          <StoreBadge store="google" className="cta-store" />
+        </div>
+
+        {/* Desktop-only QR code */}
+        <div className="cta-qr mt-12 hidden flex-col items-center gap-3 lg:flex">
+          <QRCode className="text-foreground" />
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-muted">
+            Scan to Download
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

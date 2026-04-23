@@ -10,7 +10,7 @@ import SmoothScroll from '@/components/ui/SmoothScroll';
 import ScrollRevealMount from '@/components/ui/ScrollRevealMount';
 import GlobalCanvas from '@/components/three/GlobalCanvas';
 import DevTools from '@/components/three/DevTools';
-import DownloadBar from '@/components/ui/DownloadBar';
+import FloatingDownloadBar from '@/components/ui/FloatingDownloadBar';
 import JsonLd from '@/components/ui/JsonLd';
 import PageTransition from '@/components/ui/PageTransition';
 import '../globals.css';
@@ -111,7 +111,7 @@ export default async function LocaleLayout({
               {children}
               <Footer />
             </div>
-            <DownloadBar />
+            <FloatingDownloadBar />
             <DevTools />
           </SmoothScroll>
         </NextIntlClientProvider>

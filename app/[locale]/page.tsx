@@ -21,6 +21,9 @@ const MedalShowcase = dynamic(() => import('@/components/sections/MedalShowcase'
 const FinalCTA = dynamic(() => import('@/components/sections/FinalCTA'), {
   loading: () => <div className="min-h-[50vh] bg-background" />,
 });
+const ContactSection = dynamic(() => import('@/components/sections/ContactSection'), {
+  loading: () => <div className="min-h-[50vh] bg-background" />,
+});
 
 export default function Home() {
   const applicationJsonLd = {
@@ -48,6 +51,7 @@ export default function Home() {
       <ActivityRibbon />
       <MedalShowcase />
       <FinalCTA />
+      <ContactSection />
     </main>
   );
 }
