@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
 import GlassCard from '@/components/ui/GlassCard';
 import AnnotationLine from '@/components/ui/AnnotationLine';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,7 @@ export default function FeatureCard({
   active,
   children,
 }: FeatureCardProps) {
+  const tCommon = useTranslations('common');
   return (
     <GlassCard
       glowColor={accent}
@@ -62,7 +64,7 @@ export default function FeatureCard({
           `text-${accent}`
         )}
       >
-        Feature / 0{index + 1}
+        {tCommon('feature_label')} / 0{index + 1}
       </span>
 
       <h3 className="mt-4 font-display text-subhead font-bold text-foreground">{title}</h3>

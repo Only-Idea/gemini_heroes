@@ -71,9 +71,9 @@ export default function ImpactSection() {
           <div ref={copyRef} className="flex flex-col items-start">
             <SectionLabel
               number="03"
-              label="Path of Purpose"
+              label={t('impact.eyebrow')}
               title={<>{t('impact.title')}</>}
-              description="Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations so your sweat equity translates into real-world change."
+              description={t('impact.description')}
               accentColor="teal"
             />
 
@@ -83,7 +83,7 @@ export default function ImpactSection() {
                 label={t('impact.trees')}
                 accent="teal"
                 progress={0.68}
-                progressLabel="2030 Goal · 15,000 Trees"
+                progressLabel={t('impact.goal_trees')}
               />
               <div className="relative isolate overflow-hidden rounded-3xl border border-coral/10 bg-coral/[0.03] p-6">
                 <WaveAnimation className="-z-10 opacity-80" colorVar="--color-coral" />
@@ -93,13 +93,13 @@ export default function ImpactSection() {
                   unit="kg"
                   accent="coral"
                   progress={0.42}
-                  progressLabel="2030 Goal · 1,400 kg"
+                  progressLabel={t('impact.goal_ocean')}
                 />
               </div>
             </div>
 
             <button className="mt-12 rounded-full border border-foreground/15 px-8 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/60 hover:bg-foreground/5">
-              View Audit Report
+              {t('impact.button')}
             </button>
           </div>
 
@@ -125,7 +125,7 @@ export default function ImpactSection() {
         {/* Partner logos row */}
         <div className="partner-row mt-24 border-t border-foreground/5 pt-10">
           <p className="font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-muted text-center">
-            In Partnership With
+            {t('impact.partners_heading')}
           </p>
           <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {partners.map((name) => (

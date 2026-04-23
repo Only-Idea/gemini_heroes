@@ -2,11 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { usePlatform } from '@/hooks/usePlatform';
 
 const DISMISS_KEY = 'heroes-download-bar-dismissed';
 
 export default function FloatingDownloadBar() {
   const t = useTranslations('download_bar');
+  const tCommon = useTranslations('common');
+  const platform = usePlatform();
+  const showApple = platform === 'ios' || platform === 'other';
+  const showGoogle = platform === 'android' || platform === 'other';
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
@@ -75,30 +80,34 @@ export default function FloatingDownloadBar() {
 
           <div className="flex min-w-0 flex-1 flex-col leading-tight">
             <span className="font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-muted">
-              Heroes App
+              {t('app_name')}
             </span>
             <span className="truncate font-medium text-sm text-foreground">{t('label')}</span>
           </div>
 
-          <a
-            href="#"
-            aria-label="Download on the App Store"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 bg-foreground text-background transition-colors hover:bg-foreground/90"
-          >
-            <AppleGlyph />
-          </a>
-          <a
-            href="#"
-            aria-label="Get it on Google Play"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 bg-white text-foreground transition-colors hover:bg-foreground/5"
-          >
-            <PlayGlyph />
-          </a>
+          {showApple && (
+            <a
+              href="#"
+              aria-label="Download on the App Store"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 bg-foreground text-background transition-colors hover:bg-foreground/90"
+            >
+              <AppleGlyph />
+            </a>
+          )}
+          {showGoogle && (
+            <a
+              href="#"
+              aria-label="Get it on Google Play"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 bg-white text-foreground transition-colors hover:bg-foreground/5"
+            >
+              <PlayGlyph />
+            </a>
+          )}
 
           <button
             onClick={onDismiss}
             className="flex h-7 w-7 items-center justify-center rounded-full text-foreground/40 transition-colors hover:bg-foreground/5 hover:text-foreground"
-            aria-label="Dismiss"
+            aria-label={tCommon('dismiss')}
           >
             <svg
               width="12"

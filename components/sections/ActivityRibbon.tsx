@@ -39,7 +39,7 @@ export default function ActivityRibbon() {
     >
       <div className="mx-auto mb-10 max-w-[1400px] px-6 text-center">
         <p className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-teal">
-          12 Activities · 12種類
+          {t('eyebrow')}
         </p>
         <h3 className="mt-3 font-display text-section-title font-bold tracking-tight text-foreground">
           {t('message')}

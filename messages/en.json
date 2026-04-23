@@ -5,6 +5,23 @@
     "ogTitle": "Heroes — Every step becomes a journey.",
     "ogDescription": "A purpose-driven virtual challenge platform. Move through Japan's history in 3D and leave a lasting legacy."
   },
+  "common": {
+    "loading": "Loading…",
+    "initializing_3d": "Initializing Hardware…",
+    "crafting_medal": "Crafting Your Reward…",
+    "calibrating": "Calibrating 3D Environment",
+    "ready": "Ready",
+    "feature_label": "Feature",
+    "challenge_label": "Challenge",
+    "unit_km": "km",
+    "unit_days": "days",
+    "distance": "Distance",
+    "duration": "Duration",
+    "dismiss": "Dismiss"
+  },
+  "language": {
+    "aria": "Language"
+  },
   "nav": {
     "challenges": "Challenges",
     "features": "Features",
@@ -28,7 +45,9 @@
   "medal": {
     "label": "A Token of Achievement",
     "title": "Beyond the digital screen.",
-    "description": "True achievements deserve more than a badge. Complete your odyssey and receive a premium physical medal, crafted with precision and shipped to your door."
+    "description": "True achievements deserve more than a badge. Complete your odyssey and receive a premium physical medal, crafted with precision and shipped to your door.",
+    "scroll_hint": "Scroll to Rotate · Gold → Silver → Bronze",
+    "cta": "Earn Your Medal"
   },
   "features": {
     "label": "02 / Experience",
@@ -61,6 +80,11 @@
   "challenges": {
     "label": "01 / Explore",
     "description": "Choose your path through the heart of Japan. Each route is a unique journey of discovery.",
+    "difficulty": {
+      "easy": "Easy",
+      "moderate": "Moderate",
+      "epic": "Epic"
+    },
     "fuji": {
       "title": "Mt. Fuji",
       "subtitle": "Conquer the sacred peak of Japan."
@@ -79,21 +103,41 @@
     }
   },
   "impact": {
-    "title": "The Path of Purpose",
+    "eyebrow": "Path of Purpose",
+    "title": "Every Step, A Lasting Legacy.",
+    "description": "Heroes transcends fitness by weaving environmental stewardship into every challenge. We partner with global reforestation and ocean cleanup organizations so your sweat equity translates into real-world change.",
     "trees": "Forests Restored",
-    "ocean": "Oceans Protected"
+    "ocean": "Oceans Protected",
+    "goal_trees": "2030 Goal · 15,000 Trees",
+    "goal_ocean": "2030 Goal · 1,400 kg",
+    "button": "View Audit Report",
+    "partners_heading": "In Partnership With"
   },
   "activities": {
+    "eyebrow": "12 Activities · 12種類",
     "message": "Movement is your canvas"
   },
   "cta": {
-    "title": "Your odyssey begins here."
+    "eyebrow": "The Final Step · 最後の一歩",
+    "title": "Your odyssey begins here.",
+    "subline": "32+ countries · 10,000+ travellers · The next hero could be you.",
+    "primary": "Start Your Odyssey",
+    "qr_label": "Scan to Download"
   },
   "contact": {
+    "number": "06",
+    "title": "Let's Talk.",
+    "description": "Questions, partnerships, or a story to share? We read every message and love hearing from travellers and organisers alike.",
     "name": "Name",
     "email": "Email",
     "message": "Message",
-    "submit": "Submit"
+    "submit": "Submit",
+    "sending": "Sending…",
+    "success": "Sent — Thank you",
+    "error": "Something went wrong — please try again.",
+    "validation_required": "Required",
+    "validation_invalid_email": "Invalid email",
+    "validation_too_short": "Too short"
   },
   "footer": {
     "privacy": "Privacy",
@@ -102,6 +146,10 @@
     "copyright": "© 2026 Heroes Inc."
   },
   "download_bar": {
+    "app_name": "Heroes App",
     "label": "Download for Free"
+  },
+  "transition": {
+    "brand": "Heroes · Virtual Odyssey"
   }
 }

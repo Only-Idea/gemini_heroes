@@ -9,8 +9,6 @@ import { useStore } from '@/store/useStore';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import SplitText from '@/components/ui/SplitText';
 import SectionLabel from '@/components/ui/SectionLabel';
-import GradientButton from '@/components/ui/GradientButton';
-import AppBadge from '@/components/ui/AppBadge';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +18,6 @@ const MedalScene = dynamic(() => import('@/components/three/MedalScene'), { ssr:
 export default function MedalShowcase() {
   const t = useTranslations();
   const sectionRef = useRef<HTMLElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
   const [shouldMountScene, setShouldMountScene] = useState(false);
   const isWebGLReady = useStore((state) => state.isWebGLReady);
   const setMedalScrollProgress = useStore((state) => state.setMedalScrollProgress);
@@ -74,17 +71,9 @@ export default function MedalShowcase() {
         scrollTrigger: { trigger: sectionRef.current, start: 'center 70%' },
       });
 
-      // CTA rises a beat after the copy.
-      gsap.from(ctaRef.current, {
-        opacity: 0,
-        y: 24,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'center 60%' },
-      });
     },
     () => {
-      gsap.from('.medal-reveal-title, .medal-reveal-desc, .medal-cta', {
+      gsap.from('.medal-reveal-title, .medal-reveal-desc', {
         opacity: 0,
         duration: 1,
         stagger: 0.2,
@@ -133,7 +122,7 @@ export default function MedalShowcase() {
           {!(shouldMountScene && isWebGLReady) && (
             <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
               <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
-                Crafting Your Reward...
+                {t('common.crafting_medal')}
               </span>
             </div>
           )}
@@ -141,20 +130,11 @@ export default function MedalShowcase() {
           {/* Interactive Hint */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <p className="font-mono text-[10px] uppercase tracking-widest text-stone">
-              Scroll to Rotate · Gold → Silver → Bronze
+              {t('medal.scroll_hint')}
             </p>
           </div>
         </div>
 
-        <div ref={ctaRef} className="medal-cta mx-auto mt-16 flex max-w-2xl flex-col items-center gap-6">
-          <GradientButton variant="primary" size="lg">
-            Earn Your Medal
-          </GradientButton>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <AppBadge store="apple" />
-            <AppBadge store="google" />
-          </div>
-        </div>
       </div>
     </section>
   );

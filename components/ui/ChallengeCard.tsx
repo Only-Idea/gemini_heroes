@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useTranslations } from 'next-intl';
 import DifficultyBadge, { DifficultyLevel } from '@/components/ui/DifficultyBadge';
 import { useStore } from '@/store/useStore';
 
@@ -30,6 +31,7 @@ export default function ChallengeCard({
   const cardRef = useRef<HTMLButtonElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
+  const tCommon = useTranslations('common');
 
   useEffect(() => {
     const card = cardRef.current;
@@ -125,7 +127,7 @@ export default function ChallengeCard({
             <span
               className={`font-mono text-[10px] font-bold uppercase tracking-[0.3em] ${labelTextClass[accentColor]}`}
             >
-              Challenge / 0{index + 1}
+              {tCommon('challenge_label')} / 0{index + 1}
             </span>
             <DifficultyBadge level={difficulty} />
           </div>
@@ -138,20 +140,20 @@ export default function ChallengeCard({
           <dl className="mt-5 flex gap-6 text-left">
             <div>
               <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-muted">
-                Distance
+                {tCommon('distance')}
               </dt>
               <dd className="mt-1 font-display text-lg font-bold text-foreground">
                 {distanceKm}
-                <span className="ml-1 text-xs font-medium text-muted">km</span>
+                <span className="ml-1 text-xs font-medium text-muted">{tCommon('unit_km')}</span>
               </dd>
             </div>
             <div>
               <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-muted">
-                Duration
+                {tCommon('duration')}
               </dt>
               <dd className="mt-1 font-display text-lg font-bold text-foreground">
                 {days}
-                <span className="ml-1 text-xs font-medium text-muted">days</span>
+                <span className="ml-1 text-xs font-medium text-muted">{tCommon('unit_days')}</span>
               </dd>
             </div>
           </dl>

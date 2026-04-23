@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
+import { usePlatform } from '@/hooks/usePlatform';
 import TypewriterText from '@/components/ui/TypewriterText';
 import StoreBadge from '@/components/ui/StoreBadge';
 import QRCode from '@/components/ui/QRCode';
@@ -16,6 +17,9 @@ export default function FinalCTA() {
   const t = useTranslations('cta');
   const sectionRef = useRef<HTMLElement>(null);
   const [headlineReady, setHeadlineReady] = useState(false);
+  const platform = usePlatform();
+  const showApple = platform === 'ios' || platform === 'other';
+  const showGoogle = platform === 'android' || platform === 'other';
 
   // Gate the typewriter on the section being in view (not mount).
   useEffect(() => {
@@ -84,7 +88,8 @@ export default function FinalCTA() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden bg-background px-6 py-32"
+      id="download"
+      className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden bg-background px-6 py-32 scroll-mt-24"
       role="region"
       aria-label={t('title')}
     >
@@ -101,7 +106,7 @@ export default function FinalCTA() {
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
         <p className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-teal">
-          The Final Step · 最後の一歩
+          {t('eyebrow')}
         </p>
 
         <h2 className="mt-6 font-display text-[clamp(40px,8vw,88px)] font-bold leading-[1.05] tracking-tight text-foreground">
@@ -111,7 +116,7 @@ export default function FinalCTA() {
         </h2>
 
         <p className="cta-subline mt-8 max-w-xl text-body-lg font-medium text-muted">
-          32+ countries · 10,000+ travellers · The next hero could be you.
+          {t('subline')}
         </p>
 
         <div className="cta-primary mt-10">
@@ -120,21 +125,31 @@ export default function FinalCTA() {
             size="lg"
             className="cta-pulse [animation:cta-pulse_3.6s_ease-in-out_infinite]"
           >
-            Start Your Odyssey
+            {t('primary')}
           </GradientButton>
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <StoreBadge store="apple" className="cta-store" />
-          <StoreBadge store="google" className="cta-store" />
+          {showApple && <StoreBadge store="apple" className="cta-store" />}
+          {showGoogle && <StoreBadge store="google" className="cta-store" />}
         </div>
 
-        {/* Desktop-only QR code */}
-        <div className="cta-qr mt-12 hidden flex-col items-center gap-3 lg:flex">
-          <QRCode className="text-foreground" />
-          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-muted">
-            Scan to Download
-          </p>
+        {/* Desktop-only QR code(s) — platform-aware */}
+        <div className="cta-qr mt-12 hidden items-start justify-center gap-8 lg:flex">
+          {showApple && (
+            <QRCode
+              store="apple"
+              caption={platform === 'other' ? 'App Store' : t('qr_label')}
+              className="text-foreground"
+            />
+          )}
+          {showGoogle && (
+            <QRCode
+              store="google"
+              caption={platform === 'other' ? 'Google Play' : t('qr_label')}
+              className="text-foreground"
+            />
+          )}
         </div>
       </div>
     </section>

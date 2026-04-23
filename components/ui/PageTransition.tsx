@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useStore } from '@/store/useStore';
 
 type Phase = 'visible' | 'exiting' | 'hidden';
 
 export default function PageTransition() {
   const isWebGLReady = useStore((s) => s.isWebGLReady);
+  const t = useTranslations();
   const setIntroComplete = useStore((s) => s.setIntroComplete);
   const [phase, setPhase] = useState<Phase>('visible');
   const [progress, setProgress] = useState(0);
@@ -57,7 +59,7 @@ export default function PageTransition() {
     >
       <div className="flex flex-col items-center gap-5 text-white">
         <span className="font-mono text-[10px] font-bold uppercase tracking-[0.45em] text-white/85">
-          Heroes · Virtual Odyssey
+          {t('transition.brand')}
         </span>
         <div className="h-[2px] w-60 overflow-hidden rounded-full bg-white/25">
           <div
@@ -66,7 +68,7 @@ export default function PageTransition() {
           />
         </div>
         <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/60">
-          {progress < 100 ? 'Calibrating 3D Environment' : 'Ready'}
+          {progress < 100 ? t('common.calibrating') : t('common.ready')}
         </span>
       </div>
     </div>

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import GradientButton from '@/components/ui/GradientButton';
 
 const navLinks = [
   { key: 'challenges', href: '#challenges' },
@@ -35,6 +37,11 @@ export default function Navbar() {
     el?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleDownloadClick = () => {
+    setMobileOpen(false);
+    document.querySelector('#download')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <>
       <nav
@@ -44,21 +51,21 @@ export default function Navbar() {
             : 'bg-transparent py-5 backdrop-blur-none'
         }`}
       >
-        <div className="mx-auto flex items-center justify-between px-6 lg:px-10 max-w-[1400px]">
-          {/* Logo */}
+        <div className="mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 lg:px-10 max-w-[1400px]">
+          {/* Logo — left column */}
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="font-display text-[20px] font-bold tracking-tight text-foreground"
+            className="justify-self-start font-display text-[20px] font-bold tracking-tight text-foreground"
           >
             Heroes
           </a>
 
-          {/* Desktop nav links */}
-          <div className="hidden items-center gap-10 md:flex">
+          {/* Desktop nav links — center column, always centered regardless of side widths */}
+          <div className="hidden justify-self-center items-center gap-10 md:flex">
             {navLinks.map(({ key, href }) => (
               <button
                 key={key}
@@ -70,17 +77,22 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Download button (desktop) */}
-          <button
-            className="hidden rounded-full bg-gradient-heroes px-6 py-2.5 font-mono text-button font-semibold tracking-wider text-white shadow-lg transition-all duration-400 hover:scale-105 active:scale-95 md:block"
-          >
-            {t('download')}
-          </button>
+          {/* Right cluster (desktop) + mobile hamburger — right column */}
+          <div className="hidden justify-self-end items-center gap-4 md:flex">
+            <LanguageSwitcher size="compact" />
+            <GradientButton
+              variant="primary"
+              onClick={handleDownloadClick}
+              className="h-10 px-5 text-xs tracking-wide"
+            >
+              {t('download')}
+            </GradientButton>
+          </div>
 
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex h-12 w-12 items-center justify-center md:hidden relative z-[60]"
+            className="flex h-12 w-12 items-center justify-self-end justify-center md:hidden relative z-[60]"
             aria-label="Toggle menu"
           >
             <div className="relative h-5 w-6">
@@ -122,12 +134,15 @@ export default function Navbar() {
               </span>
             </button>
           ))}
-          <button
-            onClick={() => setMobileOpen(false)}
-            className="mt-8 rounded-full bg-gradient-heroes px-12 py-5 font-mono text-button font-bold tracking-widest text-white shadow-xl active:scale-95 transition-all duration-300"
+          <LanguageSwitcher size="default" className="mt-4" />
+          <GradientButton
+            variant="primary"
+            size="lg"
+            onClick={handleDownloadClick}
+            className="mt-4 px-10"
           >
             {t('download')}
-          </button>
+          </GradientButton>
         </div>
       </div>
     </>

@@ -28,10 +28,10 @@ export default function ContactSection() {
       <div className="relative mx-auto grid max-w-[1400px] gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
         <div className="flex flex-col justify-center">
           <SectionLabel
-            number="06"
+            number={t('contact.number')}
             label={t('nav.contact')}
-            title="Let&rsquo;s Talk."
-            description="Questions, partnerships, or a story to share? We read every message and love hearing from travellers and organisers alike."
+            title={t('contact.title')}
+            description={t('contact.description')}
             accentColor="teal"
           />
 

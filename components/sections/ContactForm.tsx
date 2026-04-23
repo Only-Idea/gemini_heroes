@@ -23,14 +23,14 @@ export default function ContactForm() {
 
   const validate = (): FieldErrors => {
     const next: FieldErrors = {};
-    if (!name.trim()) next.name = 'Required';
+    if (!name.trim()) next.name = t('validation_required');
     if (!email.trim()) {
-      next.email = 'Required';
+      next.email = t('validation_required');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      next.email = 'Invalid email';
+      next.email = t('validation_invalid_email');
     }
-    if (!message.trim()) next.message = 'Required';
-    else if (message.trim().length < 8) next.message = 'Too short';
+    if (!message.trim()) next.message = t('validation_required');
+    else if (message.trim().length < 8) next.message = t('validation_too_short');
     return next;
   };
 
@@ -95,18 +95,18 @@ export default function ContactForm() {
       >
         {status === 'submitting' && <Spinner />}
         {status === 'success' && <CheckMark />}
-        <span>{status === 'success' ? 'Sent — Thank you' : t('submit')}</span>
+        <span>{status === 'success' ? t('success') : t('submit')}</span>
       </button>
 
       {status === 'error' && (
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-coral">
-          Something went wrong — please try again.
+          {t('error')}
         </p>
       )}
 
       {/* Live region for assistive tech */}
       <span className="sr-only" aria-live="polite">
-        {status === 'submitting' ? 'Sending…' : status === 'success' ? 'Message sent.' : ''}
+        {status === 'submitting' ? t('sending') : status === 'success' ? t('success') : ''}
       </span>
     </form>
   );

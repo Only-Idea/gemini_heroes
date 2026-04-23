@@ -5,6 +5,23 @@
     "ogTitle": "Heroes — すべての一歩が、旅になる。",
     "ogDescription": "日本を象徴する伝説のルートを3D体験で巡る、目的のあるバーチャル・チャレンジ。"
   },
+  "common": {
+    "loading": "読み込み中…",
+    "initializing_3d": "3D環境を初期化中…",
+    "crafting_medal": "報酬を制作中…",
+    "calibrating": "3D環境を調整中",
+    "ready": "準備完了",
+    "feature_label": "機能",
+    "challenge_label": "チャレンジ",
+    "unit_km": "km",
+    "unit_days": "日",
+    "distance": "距離",
+    "duration": "期間",
+    "dismiss": "閉じる"
+  },
+  "language": {
+    "aria": "言語"
+  },
   "nav": {
     "challenges": "チャレンジ",
     "features": "機能",
@@ -28,7 +45,9 @@
   "medal": {
     "label": "達成の証",
     "title": "画面を超えて、その手に。",
-    "description": "真の達成は、デジタルバッジだけでは終わりません。冒険を完遂したあなたに、精巧に作られた本物のプレミアムメダルをお届けします。"
+    "description": "真の達成は、デジタルバッジだけでは終わりません。冒険を完遂したあなたに、精巧に作られた本物のプレミアムメダルをお届けします。",
+    "scroll_hint": "スクロールで回転 · 金 → 銀 → 銅",
+    "cta": "あなたのメダルを手に入れる"
   },
   "features": {
     "label": "02 / 体験",
@@ -61,6 +80,11 @@
   "challenges": {
     "label": "01 / 探索",
     "description": "日本の中心部を巡るあなたの道を選んでください。それぞれのルートが独自の発見の旅です。",
+    "difficulty": {
+      "easy": "入門",
+      "moderate": "中級",
+      "epic": "壮大"
+    },
     "fuji": {
       "title": "富士山",
       "subtitle": "日本の聖峰を制覇しましょう。"
@@ -79,21 +103,41 @@
     }
   },
   "impact": {
+    "eyebrow": "目的の道",
     "title": "目的のある歩み",
+    "description": "Heroesはフィットネスを超え、すべての挑戦に環境への責任を織り込みます。植樹団体や海洋保全団体と協働し、あなたの一歩を現実の変化に繋げます。",
     "trees": "再生される森",
-    "ocean": "守られる海"
+    "ocean": "守られる海",
+    "goal_trees": "2030年目標 · 15,000本",
+    "goal_ocean": "2030年目標 · 1,400kg",
+    "button": "監査レポートを見る",
+    "partners_heading": "パートナー団体"
   },
   "activities": {
+    "eyebrow": "12種類 · 12 Activities",
     "message": "動きそのものが、あなたの表現"
   },
   "cta": {
-    "title": "あなたのオデッセイが、ここから始まる。"
+    "eyebrow": "最後の一歩 · The Final Step",
+    "title": "あなたのオデッセイが、ここから始まる。",
+    "subline": "32+ 国 · 10,000+ 旅人 · 次のヒーローはあなた。",
+    "primary": "オデッセイを始める",
+    "qr_label": "スキャンしてダウンロード"
   },
   "contact": {
+    "number": "06",
+    "title": "お話ししましょう。",
+    "description": "ご質問、パートナーシップ、共有したい物語があれば、ぜひお聞かせください。すべてのメッセージに目を通しています。",
     "name": "お名前",
     "email": "メール",
     "message": "メッセージ",
-    "submit": "送信"
+    "submit": "送信",
+    "sending": "送信中…",
+    "success": "送信しました — ありがとうございます",
+    "error": "送信に失敗しました — もう一度お試しください",
+    "validation_required": "必須",
+    "validation_invalid_email": "メール形式が無効",
+    "validation_too_short": "文字数不足"
   },
   "footer": {
     "privacy": "プライバシー",
@@ -102,6 +146,10 @@
     "copyright": "© 2026 Heroes Inc."
   },
   "download_bar": {
+    "app_name": "Heroes アプリ",
     "label": "無料でダウンロード"
+  },
+  "transition": {
+    "brand": "Heroes · バーチャル・オデッセイ"
   }
 }

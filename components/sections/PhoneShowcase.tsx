@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import dynamic from 'next/dynamic';
 import { useStore } from '@/store/useStore';
+import { usePlatform } from '@/hooks/usePlatform';
 import SectionLabel from '@/components/ui/SectionLabel';
 import FeatureCard from '@/components/sections/FeatureCard';
 import AppBadge from '@/components/ui/AppBadge';
@@ -17,6 +18,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function PhoneShowcase() {
   const t = useTranslations('features');
+  const tCommon = useTranslations('common');
+  const platform = usePlatform();
+  const showApple = platform === 'ios' || platform === 'other';
+  const showGoogle = platform === 'android' || platform === 'other';
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const bentoRef = useRef<HTMLDivElement>(null);
@@ -210,7 +215,7 @@ export default function PhoneShowcase() {
             {!(shouldMountScene && isWebGLReady) && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
                 <span className="font-mono text-label font-bold uppercase tracking-widest text-muted/30">
-                  Initializing Hardware...
+                  {tCommon('initializing_3d')}
                 </span>
               </div>
             )}
@@ -230,8 +235,8 @@ export default function PhoneShowcase() {
               >
                 {feature.showAppBadges && (
                   <div className="flex flex-wrap gap-2">
-                    <AppBadge store="apple" size="micro" />
-                    <AppBadge store="google" size="micro" />
+                    {showApple && <AppBadge store="apple" size="micro" />}
+                    {showGoogle && <AppBadge store="google" size="micro" />}
                   </div>
                 )}
               </FeatureCard>
