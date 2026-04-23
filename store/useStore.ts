@@ -9,6 +9,10 @@ interface AppState {
   setReducedMotion: (reduced: boolean) => void;
   medalScrollProgress: number;
   setMedalScrollProgress: (progress: number) => void;
+  heroScrollProgress: number;
+  setHeroScrollProgress: (progress: number) => void;
+  isIntroComplete: boolean;
+  setIntroComplete: (complete: boolean) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -20,4 +24,8 @@ export const useStore = create<AppState>((set) => ({
   setReducedMotion: (reduced) => set({ isReducedMotion: reduced }),
   medalScrollProgress: 0,
   setMedalScrollProgress: (progress) => set({ medalScrollProgress: progress }),
+  heroScrollProgress: 0,
+  setHeroScrollProgress: (progress) => set({ heroScrollProgress: progress }),
+  isIntroComplete: false,
+  setIntroComplete: (complete) => set({ isIntroComplete: complete }),
 }));

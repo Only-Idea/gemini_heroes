@@ -135,6 +135,38 @@ button, a, [role="button"] {
   will-change: opacity, transform;
 }
 
+@keyframes hero-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-rise {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+}
+
+.hero-ready .hero-rise {
+  animation: hero-rise 0.8s var(--ease-heroes) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-shimmer {
+    animation: none !important;
+  }
+  .hero-rise,
+  .hero-ready .hero-rise {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);

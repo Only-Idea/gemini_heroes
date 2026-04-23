@@ -2,43 +2,75 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslations } from 'next-intl';
+import { useStore } from '@/store/useStore';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ScrollHint() {
   const t = useTranslations();
   const pathRef = useRef<SVGPathElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const isIntroComplete = useStore((s) => s.isIntroComplete);
 
+  // Continuous path draw (always running regardless of intro gating)
   useEffect(() => {
-    if (!pathRef.current) return;
-
     const path = pathRef.current;
+    if (!path) return;
     const length = path.getTotalLength();
-
-    gsap.set(path, {
-      strokeDasharray: length,
-      strokeDashoffset: length,
-    });
-
-    const tl = gsap.timeline({ repeat: -1 });
-
-    tl.to(path, {
-      strokeDashoffset: 0,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    })
-    .to(path, {
-      strokeDashoffset: -length,
-      duration: 1.5,
-      ease: 'power2.inOut',
-    });
-
+    gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+    const pathTl = gsap.timeline({ repeat: -1 });
+    pathTl
+      .to(path, { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut' })
+      .to(path, { strokeDashoffset: -length, duration: 1.5, ease: 'power2.inOut' });
     return () => {
-      tl.kill();
+      pathTl.kill();
     };
   }, []);
 
+  // Pre-intro: hold the hint invisible.
+  useEffect(() => {
+    if (!rootRef.current || isIntroComplete) return;
+    gsap.set(rootRef.current, { opacity: 0, y: 16 });
+  }, [isIntroComplete]);
+
+  // Intro fade-up after loader has exited, then scroll-linked fade takes over.
+  useEffect(() => {
+    if (!isIntroComplete || !rootRef.current) return;
+    let fadeTween: gsap.core.Tween | null = null;
+    const intro = gsap.to(rootRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      delay: 1.2,
+      ease: 'power3.out',
+      onComplete: () => {
+        if (!rootRef.current) return;
+        fadeTween = gsap.to(rootRef.current, {
+          opacity: 0,
+          y: 16,
+          ease: 'none',
+          scrollTrigger: {
+            start: 0,
+            end: () => window.innerHeight * 0.5,
+            scrub: 0.4,
+          },
+        });
+      },
+    });
+    return () => {
+      intro.kill();
+      fadeTween?.scrollTrigger?.kill();
+      fadeTween?.kill();
+    };
+  }, [isIntroComplete]);
+
   return (
-    <div className="absolute bottom-12 flex flex-col items-center gap-4 z-10">
+    <div
+      ref={rootRef}
+      className="absolute bottom-12 flex flex-col items-center gap-4 z-10"
+    >
       <span className="font-mono text-[11px] font-bold tracking-[0.3em] text-muted/30 uppercase">
         {t('hero.scroll')}
       </span>

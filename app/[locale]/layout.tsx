@@ -12,6 +12,7 @@ import GlobalCanvas from '@/components/three/GlobalCanvas';
 import DevTools from '@/components/three/DevTools';
 import DownloadBar from '@/components/ui/DownloadBar';
 import JsonLd from '@/components/ui/JsonLd';
+import PageTransition from '@/components/ui/PageTransition';
 import '../globals.css';
 
 const notoSansJP = Noto_Sans_JP({
@@ -98,6 +99,7 @@ export default async function LocaleLayout({
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
         <NextIntlClientProvider messages={messages}>
+          <PageTransition />
           <SmoothScroll>
             <ScrollRevealMount />
             <GlobalCanvas />

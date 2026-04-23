@@ -46,38 +46,41 @@
 **Goal**: Turn the hero into a signature moment and wrap the initial load in an orchestrated sequence.
 
 ### 2B.1 `HeroSection` enhancements
-- [ ] Build `components/ui/AnimatedHeadline.tsx` (clipPath mask reveal, configurable stagger)
-- [ ] Build `components/ui/GradientButton.tsx` with idle → hover → active state machine
-- [ ] Build `components/ui/ScrollHint.tsx` (bouncing chevron, fades on scroll)
-- [ ] Build `components/ui/TypewriterText.tsx` (character-by-character, cursor blink)
-- [ ] Replace hero headline with `AnimatedHeadline` mask reveal
-- [ ] Replace hero CTAs with `GradientButton` variants (primary gradient + ghost)
-- [ ] Type the top eyebrow label with `TypewriterText` (200ms delay, 40ms/char)
-- [ ] Add gradient text shimmer (animated `background-position`) to the gradient headline
-- [ ] Parallax fade: hero content translates up + fades out past 50vh
-- [ ] Orb scales 1.0 → 0.85 and dissolves as user scrolls past hero
+- [x] Build `components/ui/AnimatedHeadline.tsx` (clipPath mask reveal, configurable stagger)
+- [x] Build `components/ui/GradientButton.tsx` with idle → hover → active state machine
+- [x] Build `components/ui/ScrollHint.tsx` (bouncing chevron, fades on scroll) _(animated gradient line + scroll-scrubbed opacity fade)_
+- [x] Build `components/ui/TypewriterText.tsx` (character-by-character, cursor blink)
+- [x] Replace hero headline with `AnimatedHeadline` mask reveal
+- [x] Replace hero CTAs with `GradientButton` variants (primary gradient + ghost)
+- [x] Type the top eyebrow label with `TypewriterText` (200ms delay, 40ms/char)
+- [x] Add gradient text shimmer (animated `background-position`) to the gradient headline
+- [x] Parallax fade: hero content translates up + fades out past 50vh
+- [x] Orb scales 1.0 → 0.85 and dissolves as user scrolls past hero _(via `heroScrollProgress` store wire-up)_
 
 ### 2B.2 Hero Orb 4-layer upgrade (`components/three/HeroOrb.tsx`)
-- [ ] Add inner core: amber icosahedron (`#F2BE5E`), opacity pulse 0.7–1.0 on 4s cycle
-- [ ] Add core glow: custom `ShaderMaterial` with Fresnel, `AdditiveBlending`, `BackSide`
-- [ ] Adjust existing wireframe shell 1: warm ivory at 25% opacity, independent X/Z rotation
-- [ ] Add wireframe shell 2: outer icosahedron at 8% opacity, counter-rotating
-- [ ] Add 400 ambient particles in spherical shell (r: 3–8) with sine/cosine drift
-- [ ] Add 2-point lighting (coral + cool blue) per spec
-- [ ] Hook orb layers into scroll dissolve from 2B.1
+
+> **Reverted by design decision.** The 4-layer build was shipped and working, but the dense amber core + coral glow read as opaque "donut" against the ivory background and fought the headline. Reverted to the original glassy transmissive sphere + single teal wireframe shell, keeping only the scroll-dissolve hook.
+
+- [ ] Add inner core: amber icosahedron (`#F2BE5E`), opacity pulse 0.7–1.0 on 4s cycle _(reverted — clashed with light theme)_
+- [ ] Add core glow: custom `ShaderMaterial` with Fresnel, `AdditiveBlending`, `BackSide` _(reverted — clashed with light theme)_
+- [ ] Adjust existing wireframe shell 1: warm ivory at 25% opacity, independent X/Z rotation _(reverted — kept single teal shell)_
+- [ ] Add wireframe shell 2: outer icosahedron at 8% opacity, counter-rotating _(reverted)_
+- [ ] Add 400 ambient particles in spherical shell (r: 3–8) with sine/cosine drift _(reverted)_
+- [ ] Add 2-point lighting (coral + cool blue) per spec _(reverted — Scene's global rig preferred)_
+- [x] Hook orb layers into scroll dissolve from 2B.1 _(group scale 1.0 → 0.85 + shell opacity fade via `heroScrollProgress`)_
 
 ### 2B.3 `PageTransition` load sequence
-- [ ] Build `components/ui/PageTransition.tsx` full-screen overlay with Heroes gradient
-- [ ] Add minimal loading indicator (bar or orb)
-- [ ] Sync dismissal to `isWebGLReady` signal
-- [ ] Implement exit animation (slide up / fade)
-- [ ] Wire orchestrated entry timeline per spec 09 (0ms grain → 1600ms scroll hint)
+- [x] Build `components/ui/PageTransition.tsx` full-screen overlay with Heroes gradient
+- [x] Add minimal loading indicator (bar or orb) _(progress bar, 0→90% easing while waiting, snaps to 100% on ready)_
+- [x] Sync dismissal to `isWebGLReady` signal _(with 4s safety fallback)_
+- [x] Implement exit animation (slide up / fade)
+- [x] Wire orchestrated entry timeline per spec 09 (0ms grain → 1600ms scroll hint) _(eyebrow@200ms, headline@600ms, subtitle@1000ms, CTAs@1200ms, scroll hint@1600ms)_
 
 ### 2B.4 Phase verification
-- [ ] Hero animation holds 60fps on desktop (Chrome DevTools Performance tab)
-- [ ] Reduced-motion path disables parallax and mask reveal
-- [ ] Load sequence completes under 2s on a warm cache
-- [ ] Lighthouse performance ≥ 85 on `/` desktop
+- [ ] Hero animation holds 60fps on desktop (Chrome DevTools Performance tab) _(requires human runtime check)_
+- [x] Reduced-motion path disables parallax and mask reveal _(AnimatedHeadline/TypewriterText/Hero parallax all branch on `isReducedMotion`; `.hero-rise` no-op under `prefers-reduced-motion: reduce`)_
+- [ ] Load sequence completes under 2s on a warm cache _(requires human runtime check; 4s safety dismissal guards the upper bound)_
+- [ ] Lighthouse performance ≥ 85 on `/` desktop _(requires human runtime check)_
 
 ---
 
