@@ -73,14 +73,32 @@ export default function HorizontalScrollContainer({
     mm.add('(max-width: 1023px), (prefers-reduced-motion: reduce)', () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const sel = mobileEntrySelector ?? ':scope > *';
-      gsap.from(row.querySelectorAll(sel), {
-        opacity: 0,
-        y: reduced ? 0 : 40,
-        stagger: 0.2,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: section, start: 'top 80%' },
-      });
+      const elements = row.querySelectorAll(sel);
+      
+      if (elements.length > 0) {
+        gsap.fromTo(elements, 
+          {
+            opacity: 0,
+            y: reduced ? 0 : 40,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: { 
+              trigger: section, 
+              start: 'top 95%',
+              onEnter: () => ScrollTrigger.refresh(),
+            },
+          }
+        );
+      }
+
+      // Force a refresh after a small delay to handle hydration layout shifts
+      const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+      return () => clearTimeout(timer);
     });
 
     return () => mm.revert();

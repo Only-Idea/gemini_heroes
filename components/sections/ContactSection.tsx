@@ -5,10 +5,9 @@ import SectionLabel from '@/components/ui/SectionLabel';
 import ContactForm from '@/components/sections/ContactForm';
 import { cn } from '@/lib/utils';
 
-const socials: { label: string; href: string; icon: 'twitter' | 'instagram' | 'github' }[] = [
+const socials: { label: string; href: string; icon: 'twitter' | 'instagram' }[] = [
   { label: 'Twitter', href: 'https://twitter.com/medalhero', icon: 'twitter' },
   { label: 'Instagram', href: 'https://instagram.com/medalhero', icon: 'instagram' },
-  { label: 'GitHub', href: 'https://github.com/medalhero', icon: 'github' },
 ];
 
 export default function ContactSection() {
@@ -59,7 +58,7 @@ export default function ContactSection() {
   );
 }
 
-function SocialGlyph({ icon }: { icon: 'twitter' | 'instagram' | 'github' }) {
+function SocialGlyph({ icon }: { icon: 'twitter' | 'instagram' }) {
   if (icon === 'twitter') {
     return (
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]">
@@ -67,26 +66,19 @@ function SocialGlyph({ icon }: { icon: 'twitter' | 'instagram' | 'github' }) {
       </svg>
     );
   }
-  if (icon === 'instagram') {
-    return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-[18px] w-[18px]"
-      >
-        <rect x="3" y="3" width="18" height="18" rx="5" />
-        <circle cx="12" cy="12" r="4" />
-        <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
-      </svg>
-    );
-  }
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]">
-      <path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.7-1.4-2.2-.3-4.5-1.1-4.5-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.8 0 0 .9-.3 2.8 1A9.7 9.7 0 0 1 12 7c.9 0 1.8.1 2.6.4 1.9-1.3 2.8-1 2.8-1 .5 1.5.2 2.5.1 2.8.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.5 5 .4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.5C22 6.5 17.5 2 12 2z" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-[18px] w-[18px]"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
     </svg>
   );
 }

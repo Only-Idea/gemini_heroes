@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotionAnimation } from '@/hooks/useReducedMotionAnimation';
 import { usePlatform } from '@/hooks/usePlatform';
+import { STORE_LINKS } from '@/lib/storeLinks';
 import TypewriterText from '@/components/ui/TypewriterText';
 import StoreBadge from '@/components/ui/StoreBadge';
 import QRCode from '@/components/ui/QRCode';
@@ -20,6 +21,14 @@ export default function FinalCTA() {
   const platform = usePlatform();
   const showApple = platform === 'ios' || platform === 'other';
   const showGoogle = platform === 'android' || platform === 'other';
+
+  const handleInstallClick = () => {
+    if (platform === 'ios') {
+      window.open(STORE_LINKS.apple, '_blank', 'noopener,noreferrer');
+    } else if (platform === 'android') {
+      window.open(STORE_LINKS.google, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   // Gate the typewriter on the section being in view (not mount).
   useEffect(() => {
@@ -119,23 +128,25 @@ export default function FinalCTA() {
           {t('subline')}
         </p>
 
-        <div className="cta-primary mt-10">
-          <GradientButton
-            variant="primary"
-            size="lg"
-            className="cta-pulse [animation:cta-pulse_3.6s_ease-in-out_infinite]"
-          >
-            {t('primary')}
-          </GradientButton>
-        </div>
+        {(platform === 'ios' || platform === 'android') && (
+          <div className="cta-primary mt-10">
+            <GradientButton
+              variant="primary"
+              size="lg"
+              className="cta-pulse [animation:cta-pulse_3.6s_ease-in-out_infinite]"
+              onClick={handleInstallClick}
+            >
+              {t('primary')}
+            </GradientButton>
+          </div>
+        )}
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           {showApple && <StoreBadge store="apple" className="cta-store" />}
           {showGoogle && <StoreBadge store="google" className="cta-store" />}
         </div>
 
-        {/* Desktop-only QR code(s) — platform-aware */}
-        <div className="cta-qr mt-12 hidden items-start justify-center gap-8 lg:flex">
+        <div className="cta-qr mt-12 flex flex-col items-center justify-center gap-10 sm:flex-row sm:items-start sm:gap-12">
           {showApple && (
             <QRCode
               store="apple"

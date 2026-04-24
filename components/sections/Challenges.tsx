@@ -51,7 +51,7 @@ export default function Challenges() {
     <section
       ref={sectionRef}
       id="challenges"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden py-[var(--space-section-y)] lg:py-0"
+      className="relative min-h-0 lg:min-h-screen flex flex-col justify-center overflow-visible lg:overflow-hidden py-[var(--space-section-y)] lg:py-0"
       role="region"
       aria-label={t('label')}
     >
@@ -83,7 +83,7 @@ export default function Challenges() {
               distanceKm={challenge.distanceKm}
               days={challenge.days}
               difficulty={challenge.difficulty}
-              className="challenge-card w-full lg:w-[450px] lg:h-[640px] shrink-0"
+              className="challenge-card w-[90%] max-w-[400px] mx-auto lg:mx-0 lg:w-[450px] lg:h-[640px] shrink-0"
             />
           ))}
         </HorizontalScrollContainer>

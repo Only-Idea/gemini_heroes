@@ -46,9 +46,11 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 z-50 w-full transition-all duration-500 ${
+        className={`fixed top-0 left-0 w-full transition-all duration-500 ${
+          mobileOpen ? 'z-[100]' : 'z-50'
+        } ${
           scrolled
-            ? 'bg-white/40 backdrop-blur-xl py-3 border-b border-white/50 shadow-heroes'
+            ? 'bg-white/40 backdrop-blur-md md:backdrop-blur-xl py-3 border-b border-white/50 shadow-heroes'
             : 'bg-transparent py-5 backdrop-blur-none'
         }`}
       >
@@ -130,7 +132,7 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-50 bg-background/95 backdrop-blur-2xl transition-all duration-700 ease-heroes md:hidden ${
+        className={`fixed inset-0 z-50 bg-background/95 backdrop-blur-lg transition-all duration-700 ease-heroes md:hidden ${
           mobileOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0 translate-y-[-10%]'
         }`}
       >

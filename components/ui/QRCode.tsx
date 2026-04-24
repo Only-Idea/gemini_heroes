@@ -33,7 +33,7 @@ export default function QRCode({ store = 'heroes', caption, className = '' }: QR
             alt={caption ?? `Download Heroes — scan to open ${qr.label}`}
             width={160}
             height={160}
-            className="block h-40 w-40"
+            className="block h-32 w-32 sm:h-40 sm:w-40"
           />
         </div>
       </div>

@@ -105,7 +105,7 @@ export default function ChallengeCard({
   return (
     <button
       ref={cardRef}
-      className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-8 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
+      className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-6 md:p-8 backdrop-blur-md md:backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
       style={{ transformStyle: 'preserve-3d' }}
     >
       <div
@@ -136,17 +136,17 @@ export default function ChallengeCard({
             <DifficultyBadge level={difficulty} />
           </div>
 
-          <h3 className="mt-5 font-display text-subhead font-bold tracking-tight text-foreground">
+          <h3 className="mt-4 md:mt-5 font-display text-[20px] md:text-subhead font-bold tracking-tight text-foreground">
             {title}
           </h3>
           <p className="mt-2 text-sm font-medium text-muted">{subtitle}</p>
 
-          <dl className="mt-5 flex gap-6 text-left">
+          <dl className="mt-4 md:mt-5 flex gap-6 text-left">
             <div>
               <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-muted">
                 {tCommon('distance')}
               </dt>
-              <dd className="mt-1 font-display text-lg font-bold text-foreground">
+              <dd className="mt-1 font-display text-base md:text-lg font-bold text-foreground">
                 {distanceKm}
                 <span className="ml-1 text-xs font-medium text-muted">{tCommon('unit_km')}</span>
               </dd>
@@ -155,7 +155,7 @@ export default function ChallengeCard({
               <dt className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-muted">
                 {tCommon('duration')}
               </dt>
-              <dd className="mt-1 font-display text-lg font-bold text-foreground">
+              <dd className="mt-1 font-display text-base md:text-lg font-bold text-foreground">
                 {days}
                 <span className="ml-1 text-xs font-medium text-muted">{tCommon('unit_days')}</span>
               </dd>
@@ -164,7 +164,7 @@ export default function ChallengeCard({
         </div>
 
         {/* Challenge visual — 1:1 square matches the 1206×1206 source artwork. */}
-        <div className="relative mt-8 aspect-square overflow-hidden rounded-[44px] border border-white/10 bg-foreground/[0.03] transition-colors group-hover:bg-foreground/[0.06]">
+        <div className="relative mt-6 md:mt-8 aspect-[1.2/1] md:aspect-square overflow-hidden rounded-[32px] md:rounded-[44px] border border-white/10 bg-foreground/[0.03] transition-colors group-hover:bg-foreground/[0.06]">
           <div className={`absolute inset-0 ${visualGradientClass[accentColor]}`} />
           <Image
             src={imageSrc}

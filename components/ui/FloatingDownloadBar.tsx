@@ -73,78 +73,86 @@ export default function FloatingDownloadBar() {
           className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-heroes"
         />
 
-        <div className="flex items-center gap-3 px-4 py-3 pl-5">
-          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white">
-            <Image
-              src="/images/logo/logo.png"
-              alt="Heroes"
-              width={40}
-              height={40}
-              className="h-full w-full object-contain"
-            />
+        <div className="flex flex-col gap-3 px-4 py-3 pl-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
+                <Image
+                  src="/images/logo/logo.png"
+                  alt="Heroes"
+                  width={40}
+                  height={40}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+
+              <div className="flex flex-col leading-tight">
+                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-muted">
+                  {t('app_name')}
+                </span>
+                <span className="font-medium text-sm text-foreground">
+                  {t('label')}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={onDismiss}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-foreground/40 transition-colors hover:bg-foreground/5 hover:text-foreground"
+              aria-label={tCommon('dismiss')}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col leading-tight">
-            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-muted">
-              {t('app_name')}
-            </span>
-            <span className="truncate font-medium text-sm text-foreground">{t('label')}</span>
+          <div className="flex items-center justify-end gap-2 pr-1">
+            {showApple && (
+              <a
+                href={STORE_LINKS.apple}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Download on the App Store"
+                className="inline-flex items-center transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                <Image
+                  src="/images/buttons/ios_button.webp"
+                  alt="Download on the App Store"
+                  width={314}
+                  height={100}
+                  className="h-8 w-auto"
+                />
+              </a>
+            )}
+            {showGoogle && (
+              <a
+                href={STORE_LINKS.google}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Get it on Google Play"
+                className="inline-flex items-center transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                <Image
+                  src="/images/buttons/android_button.webp"
+                  alt="Get it on Google Play"
+                  width={336}
+                  height={100}
+                  className="h-8 w-auto"
+                />
+              </a>
+            )}
           </div>
-
-          {showApple && (
-            <a
-              href={STORE_LINKS.apple}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Download on the App Store"
-              className="inline-flex items-center transition-transform duration-300 hover:-translate-y-0.5"
-            >
-              <Image
-                src="/images/buttons/ios_button.webp"
-                alt="Download on the App Store"
-                width={314}
-                height={100}
-                className="h-9 w-auto"
-              />
-            </a>
-          )}
-          {showGoogle && (
-            <a
-              href={STORE_LINKS.google}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Get it on Google Play"
-              className="inline-flex items-center transition-transform duration-300 hover:-translate-y-0.5"
-            >
-              <Image
-                src="/images/buttons/android_button.webp"
-                alt="Get it on Google Play"
-                width={336}
-                height={100}
-                className="h-9 w-auto"
-              />
-            </a>
-          )}
-
-          <button
-            onClick={onDismiss}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-foreground/40 transition-colors hover:bg-foreground/5 hover:text-foreground"
-            aria-label={tCommon('dismiss')}
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>

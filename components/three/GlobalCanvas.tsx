@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import { Canvas, useThree } from '@react-three/fiber';
-import { View, Preload, PerformanceMonitor, Stats } from '@react-three/drei';
+import { View, Preload, PerformanceMonitor } from '@react-three/drei';
 import { useEffect, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { useStore } from '@/store/useStore';
@@ -69,7 +69,6 @@ export default function GlobalCanvas() {
         }}
       >
         <TickerSync />
-        <Stats />
         <PerformanceMonitor 
           onIncline={() => setPerfLevel(3)} 
           onDecline={() => setPerfLevel(1)} 
