@@ -81,8 +81,8 @@ export default async function LocaleLayout({
     'url': 'https://medalhero.com',
     'logo': 'https://medalhero.com/images/logo.png',
     'sameAs': [
-      'https://twitter.com/medalhero',
-      'https://instagram.com/medalhero'
+      'https://x.com/HeroesMedalJp',
+      'https://www.instagram.com/heroesmedal/'
     ]
   };
 

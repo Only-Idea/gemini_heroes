@@ -1,6 +1,5 @@
 'use client';
 
-import * as THREE from 'three';
 import { View, Environment, ContactShadows, PerspectiveCamera } from '@react-three/drei';
 import { Suspense, useRef, useEffect } from 'react';
 import { useStore } from '@/store/useStore';

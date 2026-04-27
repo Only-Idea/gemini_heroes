@@ -42,8 +42,19 @@ export default function ContactForm() {
 
     setStatus('submitting');
     try {
-      // Mocked endpoint — replace with real submission wiring later.
-      await new Promise((r) => setTimeout(r, 1200));
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        setStatus('error');
+        return;
+      }
+
       setStatus('success');
       setName('');
       setEmail('');

@@ -17,6 +17,7 @@ interface ChallengeCardProps {
   distanceKm: number;
   days: number;
   difficulty: DifficultyLevel;
+  href?: string;
   className?: string;
 }
 
@@ -30,9 +31,10 @@ export default function ChallengeCard({
   distanceKm,
   days,
   difficulty,
+  href,
   className = '',
 }: ChallengeCardProps) {
-  const cardRef = useRef<HTMLButtonElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
   const tCommon = useTranslations('common');
@@ -102,10 +104,16 @@ export default function ChallengeCard({
     coral: 'text-coral',
   };
 
+  const Tag = href ? 'a' : 'button';
+  const tagProps = href
+    ? { href, target: '_blank', rel: 'noopener noreferrer', 'aria-label': title }
+    : { type: 'button' as const };
+
   return (
-    <button
-      ref={cardRef}
-      className={`group relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-6 md:p-8 backdrop-blur-md md:backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
+    <Tag
+      ref={cardRef as React.RefObject<HTMLAnchorElement & HTMLButtonElement>}
+      {...tagProps}
+      className={`group relative block overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br ${colorClasses[accentColor]} p-6 md:p-8 backdrop-blur-md md:backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:shadow-2xl perspective-1000 text-left focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-4 focus-visible:ring-offset-background outline-none ${className}`}
       style={{ transformStyle: 'preserve-3d' }}
     >
       <div
@@ -178,7 +186,7 @@ export default function ChallengeCard({
           />
         </div>
       </div>
-    </button>
+    </Tag>
   );
 }
 

@@ -100,6 +100,15 @@ button, a, [role="button"] {
    Utility Classes
    ========================================= */
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .glass {
   background: var(--color-surface);
   backdrop-filter: blur(12px);

@@ -28,6 +28,7 @@
     "challenges": "Challenges",
     "features": "App",
     "impact": "Trees",
+    "mechanism": "How it works",
     "contact": "Contact",
     "download": "Download"
   },
@@ -45,14 +46,14 @@
     "countries": "Prefectures Reached"
   },
   "medal": {
-    "label": "A Token of Achievement",
+    "label": "05 / A Token of Achievement",
     "title": "A real medal — made to last.",
     "description": "Every finish is commemorated with a weighty, beautifully-packaged medal shipped to your door. Not a mass-produced trinket — a keepsake worth the effort.",
     "scroll_hint": "Tap to switch · front ↔ back · 3 medals"
   },
   "features": {
     "label": "02 / The App",
-    "section_title": "Simple enough to keep doing",
+    "section_title": "Adventure in your daily life.",
     "maps": {
       "title": "Virtual Map",
       "description": "At every checkpoint, learn the story and culture of the place. Discover Japan's beauty along the way."
@@ -76,6 +77,50 @@
     "inclusivity": {
       "title": "Any movement counts",
       "description": "Walking, running, cycling, wheelchair. Whatever suits your body, at your own pace."
+    }
+  },
+  "mechanism": {
+    "label": "04 / How it works",
+    "title": "A simple system that ensures you stay on track",
+    "subtitle": "Even if you are new to virtual challenges, you can join with confidence. Follow these 4 steps to build healthy habits and enjoy unique experiences.",
+    "steps": {
+      "choose": {
+        "title": "1. Choose a challenge that fits you",
+        "description": "Select the level and goal that's right for you, from beginner to advanced.",
+        "items": [
+          "Path to Mt. Fuji Summit (74km / Easy)\nFor beginners, 2-3 month goal",
+          "Journey of the 47 Ronin (1,404km / Moderate)\nOngoing challenge, 6-12 month goal",
+          "Great Japan Railway Trek (3,170km / Epic)\nLong-term habit building, 1 year+"
+        ],
+        "footer": ""
+      },
+      "move": {
+        "title": "2. Record your daily activities",
+        "description": "Simply enter your activities manually in the app after your workout.",
+        "items": [
+          "Open the app",
+          "Tap \"Post\"",
+          "Select challenge and activity type",
+          "Enter distance or date",
+          "Tap \"Create Post\""
+        ],
+        "footer": "That's all it takes!"
+      },
+      "discover": {
+        "title": "3. Check progress on the virtual map",
+        "description": "Every time you record an activity, your avatar advances on the virtual map.",
+        "items": [],
+        "footer": ""
+      },
+      "receive": {
+        "title": "4. Receive your medal",
+        "description": "When you finish the challenge",
+        "items": [
+          "High-quality medal delivered",
+          "Participate in tree-planting program"
+        ],
+        "footer": "※Shipping: Sent within 10 business days after finish is verified."
+      }
     }
   },
   "challenges": {
@@ -139,9 +184,6 @@
     "validation_too_short": "Too short"
   },
   "footer": {
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "contact": "Contact",
     "copyright": "© 2026 Heroes Inc."
   },
   "download_bar": {

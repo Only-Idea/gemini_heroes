@@ -22,6 +22,7 @@ export default function Challenges() {
         distanceKm: 74,
         days: 60,
         difficulty: 'Easy' as DifficultyLevel,
+        href: 'https://shop.medalhero.com/products/%E5%AF%8C%E5%A3%AB%E5%B1%B1?variant=52923670102323',
       },
       {
         id: 'ronin',
@@ -32,6 +33,7 @@ export default function Challenges() {
         distanceKm: 1404,
         days: 270,
         difficulty: 'Moderate' as DifficultyLevel,
+        href: 'https://shop.medalhero.com/products/%E5%9B%9B%E5%8D%81%E4%B8%83%E5%A3%AB?variant=52923979497779',
       },
       {
         id: 'rail',
@@ -42,6 +44,7 @@ export default function Challenges() {
         distanceKm: 3170,
         days: 365,
         difficulty: 'Epic' as DifficultyLevel,
+        href: 'https://shop.medalhero.com/products/%E9%89%84%E9%81%93%E6%97%85%E8%B7%AF?variant=52924006400307',
       },
     ],
     [t]
@@ -51,23 +54,25 @@ export default function Challenges() {
     <section
       ref={sectionRef}
       id="challenges"
-      className="relative min-h-0 lg:min-h-screen flex flex-col justify-center overflow-visible lg:overflow-hidden py-[var(--space-section-y)] lg:py-0"
+      className="relative min-h-screen flex flex-col justify-center overflow-visible lg:overflow-visible py-32 lg:py-48"
       role="region"
       aria-label={t('label')}
     >
-      <div className="mx-auto max-w-[1400px] w-full px-6 lg:px-[15vw] mb-12">
-        <SectionLabel
-          number={t('label').split(' / ')[0]}
-          label={t('label').split(' / ')[1]}
-          title={t('label').split(' / ')[1]}
-          description={t('description')}
-          accentColor="coral"
-        />
+      <div className="mx-auto max-w-[1400px] w-full px-6 mb-24">
+        <div className="max-w-2xl lg:w-1/2">
+          <SectionLabel
+            number={t('label').split(' / ')[0]}
+            label={t('label').split(' / ')[1]}
+            title={t('label').split(' / ')[1]}
+            description={t('description')}
+            accentColor="coral"
+          />
+        </div>
       </div>
 
-      <div className="lg:min-h-[70vh] flex items-center">
+      <div className="flex flex-col items-center lg:flex-row">
         <HorizontalScrollContainer
-          className="flex flex-col lg:flex-row gap-8 px-6 lg:px-[15vw] w-full lg:w-max"
+          className="flex flex-col items-center gap-6 px-5 w-full lg:flex-row lg:items-stretch lg:gap-8 lg:px-0 lg:w-max"
           stopMode="center"
           mobileEntrySelector=".challenge-card"
         >
@@ -83,7 +88,8 @@ export default function Challenges() {
               distanceKm={challenge.distanceKm}
               days={challenge.days}
               difficulty={challenge.difficulty}
-              className="challenge-card w-[90%] max-w-[400px] mx-auto lg:mx-0 lg:w-[450px] lg:h-[640px] shrink-0"
+              href={challenge.href}
+              className="challenge-card w-full max-w-[320px] aspect-[7/10] lg:w-[360px] lg:aspect-auto lg:h-[512px] lg:max-w-none lg:shrink-0"
             />
           ))}
         </HorizontalScrollContainer>

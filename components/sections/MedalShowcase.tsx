@@ -59,8 +59,8 @@ export default function MedalShowcase() {
 
       <div className="mx-auto max-w-[1400px] text-center relative z-10" suppressHydrationWarning>
         <SectionLabel
-          number="04"
-          label={t('medal.label')}
+          number="05"
+          label={t('medal.label').split(' / ')[1]}
           title={<SplitText>{t('medal.title')}</SplitText>}
           description={t('medal.description')}
           accentColor="coral"

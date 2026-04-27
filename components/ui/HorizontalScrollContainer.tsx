@@ -46,25 +46,48 @@ export default function HorizontalScrollContainer({
     const mm = gsap.matchMedia();
 
     mm.add(mediaQuery, () => {
-      const lastCard = row.lastElementChild as HTMLElement | null;
-      if (!lastCard) return;
-      let amount: number;
-      if (stopMode === 'center') {
-        amount = lastCard.offsetLeft + lastCard.offsetWidth / 2 - window.innerWidth / 2;
-      } else {
-        amount = lastCard.offsetLeft + lastCard.offsetWidth - window.innerWidth;
-      }
-      if (amount <= 0) return;
+      const children = Array.from(row.children) as HTMLElement[];
+      const firstCard = children[0];
+      const lastCard = children[children.length - 1];
+      
+      if (!firstCard || !lastCard) return;
+
+      // Calculate initial position to center the FIRST card
+      const initialX = window.innerWidth / 2 - (firstCard.offsetLeft + firstCard.offsetWidth / 2);
+      
+      // Calculate final position to center the LAST card
+      const finalX = window.innerWidth / 2 - (lastCard.offsetLeft + lastCard.offsetWidth / 2);
+      
+      const totalAmount = initialX - finalX;
+      if (totalAmount <= 0) return;
+
+      // Set initial state
+      gsap.set(row, { x: initialX });
+
+      // Generate snapping points (one for each card center)
+      const snapPoints = children.map((child) => {
+        const cardCenterX = child.offsetLeft + child.offsetWidth / 2;
+        const targetX = window.innerWidth / 2 - cardCenterX;
+        // Map targetX to a 0-1 progress value based on the total animation range
+        return (initialX - targetX) / totalAmount;
+      });
 
       gsap.to(row, {
-        x: -amount,
+        x: finalX,
         ease: 'none',
         scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: `+=${amount}`,
-          pin: true,
+          trigger: row,
+          start: 'center center',
+          endTrigger: section,
+          end: `+=${totalAmount * 2.0}`,
+          pin: section,
           scrub: 1,
+          snap: {
+            snapTo: snapPoints,
+            duration: { min: 0.2, max: 0.6 },
+            delay: 0.1,
+            ease: 'power2.inOut',
+          },
           invalidateOnRefresh: true,
         },
       });
@@ -72,6 +95,10 @@ export default function HorizontalScrollContainer({
 
     mm.add('(max-width: 1023px), (prefers-reduced-motion: reduce)', () => {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      // If the consumer hasn't forced flex-col (vertical stack), 
+      // we just run the vertical stagger entry. 
+      // The consumer (Challenges.tsx) will now provide horizontal classes for mobile.
       const sel = mobileEntrySelector ?? ':scope > *';
       const elements = row.querySelectorAll(sel);
       
@@ -96,7 +123,6 @@ export default function HorizontalScrollContainer({
         );
       }
 
-      // Force a refresh after a small delay to handle hydration layout shifts
       const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
       return () => clearTimeout(timer);
     });

@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import Hero from '@/components/sections/Hero';
 import StatsBar from '@/components/sections/StatsBar';
+import MechanismSection from '@/components/sections/MechanismSection';
 import Challenges from '@/components/sections/Challenges';
 import JsonLd from '@/components/ui/JsonLd';
 
@@ -48,6 +49,7 @@ export default function Home() {
       <Challenges />
       <PhoneShowcase />
       <ImpactSection />
+      <MechanismSection />
       <ActivityRibbon />
       <MedalShowcase />
       <FinalCTA />

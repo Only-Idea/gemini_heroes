@@ -120,14 +120,14 @@ export default function PhoneShowcase() {
     const ctx = gsap.context(() => {
       gsap.from(bento.querySelectorAll('.feature-card'), {
         opacity: 0,
-        y: reduced ? 0 : 30,
-        duration: 0.9,
-        stagger: 0.15,
-        ease: 'power3.out',
+        y: reduced ? 0 : 24,
+        duration: 0.5,
+        stagger: 0.07,
+        ease: 'power2.out',
         clearProps: 'all',
         scrollTrigger: {
           trigger: section,
-          start: 'top 80%',
+          start: 'top 90%',
           toggleActions: 'play none none none',
         },
       });

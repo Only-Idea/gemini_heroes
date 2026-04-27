@@ -10,6 +10,7 @@ const navLinks = [
   { key: 'challenges', href: '#challenges' },
   { key: 'features', href: '#features' },
   { key: 'impact', href: '#impact' },
+  { key: 'mechanism', href: '#mechanism' },
   { key: 'contact', href: '#contact' },
 ] as const;
 
