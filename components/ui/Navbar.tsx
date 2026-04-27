@@ -33,15 +33,30 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  const handleAnchorClick = (href: string) => {
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Real anchors stay crawlable; intercept click for smooth scroll + close menu.
     setMobileOpen(false);
     const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: 'smooth' });
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth' });
+      // Keep the URL hash in sync without a page jump.
+      if (typeof history !== 'undefined') {
+        history.replaceState(null, '', href);
+      }
+    }
   };
 
-  const handleDownloadClick = () => {
+  const handleDownloadClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     setMobileOpen(false);
-    document.querySelector('#download')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const el = document.querySelector('#download');
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (typeof history !== 'undefined') {
+        history.replaceState(null, '', '#download');
+      }
+    }
   };
 
   return (
@@ -82,13 +97,14 @@ export default function Navbar() {
           {/* Desktop nav links — center column, always centered regardless of side widths */}
           <div className="hidden justify-self-center items-center gap-10 md:flex">
             {navLinks.map(({ key, href }) => (
-              <button
+              <a
                 key={key}
-                onClick={() => handleAnchorClick(href)}
+                href={href}
+                onClick={(e) => handleAnchorClick(e, href)}
                 className="font-body text-nav font-medium tracking-wide text-muted transition-colors duration-300 hover:text-foreground"
               >
                 {t(key)}
-              </button>
+              </a>
             ))}
           </div>
 
@@ -97,6 +113,7 @@ export default function Navbar() {
             <LanguageSwitcher size="compact" />
             <GradientButton
               variant="primary"
+              href="#download"
               onClick={handleDownloadClick}
               className="h-10 px-5 text-xs tracking-wide"
             >
@@ -139,20 +156,22 @@ export default function Navbar() {
       >
         <div className="flex h-full flex-col items-center justify-center gap-12">
           {navLinks.map(({ key, href }) => (
-            <button
+            <a
               key={key}
-              onClick={() => handleAnchorClick(href)}
+              href={href}
+              onClick={(e) => handleAnchorClick(e, href)}
               className="font-display text-[40px] font-bold tracking-tight text-foreground/40 transition-all duration-500 hover:text-foreground active:scale-95"
             >
               <span className={mobileOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}>
                 {t(key)}
               </span>
-            </button>
+            </a>
           ))}
           <LanguageSwitcher size="default" className="mt-4" />
           <GradientButton
             variant="primary"
             size="lg"
+            href="#download"
             onClick={handleDownloadClick}
             className="mt-4 px-10"
           >

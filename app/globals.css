@@ -60,13 +60,20 @@
   --color-muted: var(--color-muted);
   --color-surface: var(--color-surface);
   --color-border: var(--color-border);
-  
+
   --color-coral: var(--color-coral);
   --color-amber: var(--color-amber);
   --color-teal: var(--color-teal);
 
   /* Shadows */
   --shadow-heroes: 0 10px 40px -10px var(--color-shadow);
+
+  /* Font families — `--font-noto-sans-jp` is set on <html> by next/font in layout.tsx.
+     Display + body share the same face; mono falls back to system mono since we don't
+     load a JP-aware monospace. */
+  --font-display: var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+  --font-body: var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* Font sizes — Type Scale */
   --font-size-hero: clamp(48px, 9vw, 112px);
@@ -85,8 +92,8 @@
 body {
   background-color: var(--color-ivory);
   color: var(--color-charcoal);
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
-  font-weight: 300;
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

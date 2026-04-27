@@ -50,8 +50,7 @@ export default function MedalShowcase() {
     <section
       ref={sectionRef}
       className="px-6 py-48 relative overflow-hidden"
-      role="region"
-      aria-label={t('medal.label')}
+      aria-labelledby="medal-heading"
       suppressHydrationWarning
     >
       {/* Background Glow */}
@@ -67,6 +66,7 @@ export default function MedalShowcase() {
           align="center"
           titleClassName="medal-reveal-title"
           descriptionClassName="medal-reveal-desc"
+          headingId="medal-heading"
         />
 
         <div className="relative mx-auto mt-20 flex aspect-square max-w-2xl items-center justify-center rounded-full bg-foreground/[0.01] border border-foreground/5 shadow-heroes overflow-hidden group">

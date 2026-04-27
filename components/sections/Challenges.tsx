@@ -5,48 +5,19 @@ import HorizontalScrollContainer from '@/components/ui/HorizontalScrollContainer
 import SectionLabel from '@/components/ui/SectionLabel';
 import { useTranslations } from 'next-intl';
 import { useMemo, useRef } from 'react';
-import type { DifficultyLevel } from '@/components/ui/DifficultyBadge';
+import { CHALLENGES } from '@/lib/challenges';
 
 export default function Challenges() {
   const t = useTranslations('challenges');
   const sectionRef = useRef<HTMLElement>(null);
 
   const challenges = useMemo(
-    () => [
-      {
-        id: 'fuji',
-        title: t('fuji.title'),
-        subtitle: t('fuji.subtitle'),
-        image: '/images/cards/fuji.png',
-        color: 'teal' as const,
-        distanceKm: 74,
-        days: 60,
-        difficulty: 'Easy' as DifficultyLevel,
-        href: 'https://shop.medalhero.com/products/%E5%AF%8C%E5%A3%AB%E5%B1%B1?variant=52923670102323',
-      },
-      {
-        id: 'ronin',
-        title: t('ronin.title'),
-        subtitle: t('ronin.subtitle'),
-        image: '/images/cards/ronin.png',
-        color: 'amber' as const,
-        distanceKm: 1404,
-        days: 270,
-        difficulty: 'Moderate' as DifficultyLevel,
-        href: 'https://shop.medalhero.com/products/%E5%9B%9B%E5%8D%81%E4%B8%83%E5%A3%AB?variant=52923979497779',
-      },
-      {
-        id: 'rail',
-        title: t('rail.title'),
-        subtitle: t('rail.subtitle'),
-        image: '/images/cards/rail.png',
-        color: 'coral' as const,
-        distanceKm: 3170,
-        days: 365,
-        difficulty: 'Epic' as DifficultyLevel,
-        href: 'https://shop.medalhero.com/products/%E9%89%84%E9%81%93%E6%97%85%E8%B7%AF?variant=52924006400307',
-      },
-    ],
+    () =>
+      CHALLENGES.map((c) => ({
+        ...c,
+        title: t(`${c.id}.title`),
+        subtitle: t(`${c.id}.subtitle`),
+      })),
     [t]
   );
 
@@ -55,8 +26,7 @@ export default function Challenges() {
       ref={sectionRef}
       id="challenges"
       className="relative min-h-screen flex flex-col justify-center overflow-visible lg:overflow-visible py-32 lg:py-48"
-      role="region"
-      aria-label={t('label')}
+      aria-labelledby="challenges-heading"
     >
       <div className="mx-auto max-w-[1400px] w-full px-6 mb-24">
         <div className="max-w-2xl lg:w-1/2">
@@ -66,6 +36,7 @@ export default function Challenges() {
             title={t('label').split(' / ')[1]}
             description={t('description')}
             accentColor="coral"
+            headingId="challenges-heading"
           />
         </div>
       </div>
@@ -82,7 +53,7 @@ export default function Challenges() {
               title={challenge.title}
               subtitle={challenge.subtitle}
               imageSrc={challenge.image}
-              imageAlt={challenge.title}
+              imageAlt={`${challenge.title} virtual challenge — ${challenge.distanceKm}km route across Japan`}
               accentColor={challenge.color}
               index={i}
               distanceKm={challenge.distanceKm}

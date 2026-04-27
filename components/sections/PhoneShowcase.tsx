@@ -167,8 +167,7 @@ export default function PhoneShowcase() {
       ref={sectionRef}
       id="features"
       className="relative bg-foreground/[0.02] py-32 lg:py-64"
-      role="region"
-      aria-label={t('section_title')}
+      aria-labelledby="features-heading"
       suppressHydrationWarning
     >
       <div className="mx-auto max-w-[1400px] px-6" suppressHydrationWarning>
@@ -178,6 +177,7 @@ export default function PhoneShowcase() {
           title={t('section_title')}
           accentColor="teal"
           className="mb-24"
+          headingId="features-heading"
         />
 
         <div ref={containerRef} className="grid lg:grid-cols-2 gap-24 items-start">
@@ -196,7 +196,7 @@ export default function PhoneShowcase() {
                   <Image
                     key={feature.id}
                     src={FEATURE_IMAGES[i] ?? FEATURE_IMAGES[0]}
-                    alt={feature.title}
+                    alt={`Heroes app screenshot — ${feature.title}: ${feature.description}`}
                     fill
                     sizes="(max-width: 1024px) 90vw, 420px"
                     priority={i === 0}

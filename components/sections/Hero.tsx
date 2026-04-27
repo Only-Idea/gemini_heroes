@@ -64,8 +64,7 @@ export default function Hero() {
       ref={sectionRef}
       data-hero-section
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-20"
-      role="region"
-      aria-label={t('hero.label')}
+      aria-labelledby="hero-heading"
     >
       <div
         className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -95,7 +94,7 @@ export default function Hero() {
           </TypewriterText>
         </p>
 
-        <h1 className="mt-8 font-display text-hero font-bold leading-[1.05] tracking-tight text-foreground">
+        <h1 id="hero-heading" className="mt-8 font-display text-hero font-bold leading-[1.05] tracking-tight text-foreground">
           <span className="animate-hero-shimmer bg-gradient-heroes bg-[length:200%_200%] bg-clip-text text-transparent [animation:hero-shimmer_8s_ease-in-out_infinite]">
             <AnimatedHeadline start={isIntroComplete} delay={420} stagger={0.035}>
               {t('hero.title')}
@@ -117,26 +116,26 @@ export default function Hero() {
           <GradientButton
             variant="primary"
             size="lg"
+            href="#download"
             aria-label={t('hero.cta_download')}
-            onClick={() =>
-              document
-                .getElementById('download')
-                ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }
+            onClick={(e) => {
+              const el = document.getElementById('download');
+              if (el) {
+                e.preventDefault();
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', '#download');
+              }
+            }}
           >
             {t('hero.cta_download')}
           </GradientButton>
           <GradientButton
             variant="ghost"
             size="lg"
+            href="https://shop.medalhero.com/collections/all"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label={t('hero.cta_learn')}
-            onClick={() =>
-              window.open(
-                'https://shop.medalhero.com/collections/all',
-                '_blank',
-                'noopener,noreferrer'
-              )
-            }
           >
             {t('hero.cta_learn')}
           </GradientButton>

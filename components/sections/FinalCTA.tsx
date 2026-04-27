@@ -99,8 +99,7 @@ export default function FinalCTA() {
       ref={sectionRef}
       id="download"
       className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden bg-background px-6 py-32 scroll-mt-24"
-      role="region"
-      aria-label={t('title')}
+      aria-labelledby="cta-heading"
     >
       {/* Distant Hero Orb callback — a subtle gradient orb bookending the journey */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -118,7 +117,7 @@ export default function FinalCTA() {
           {t('eyebrow')}
         </p>
 
-        <h2 className="mt-6 font-display text-[clamp(40px,8vw,88px)] font-bold leading-[1.05] tracking-tight text-foreground">
+        <h2 id="cta-heading" className="mt-6 font-display text-[clamp(40px,8vw,88px)] font-bold leading-[1.05] tracking-tight text-foreground">
           <TypewriterText start={headlineReady} speed={55} cursor>
             {t('title')}
           </TypewriterText>

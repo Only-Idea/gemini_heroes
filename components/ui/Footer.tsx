@@ -2,12 +2,13 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { SOCIAL } from '@/lib/site';
 
 export default function Footer() {
   const t = useTranslations('footer');
 
   return (
-    <footer id="contact" className="reveal border-t border-foreground/5 bg-background px-6 pt-16 pb-28 md:py-16 lg:px-10">
+    <footer className="reveal border-t border-foreground/5 bg-background px-6 pt-16 pb-28 md:py-16 lg:px-10">
       <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
           {/* Logo/Brand */}
@@ -27,7 +28,7 @@ export default function Footer() {
           {/* Social */}
           <div className="relative z-10 flex gap-6">
             <a
-              href="https://x.com/HeroesMedalJp"
+              href={SOCIAL.twitter}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground/10 text-muted transition-all duration-300 hover:border-foreground hover:text-foreground"
@@ -39,7 +40,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="https://www.instagram.com/heroesmedal/"
+              href={SOCIAL.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground/10 text-muted transition-all duration-300 hover:border-foreground hover:text-foreground"

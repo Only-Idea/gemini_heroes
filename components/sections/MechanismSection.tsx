@@ -1,17 +1,15 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import SectionLabel from '@/components/ui/SectionLabel';
 import MechanismCard from '@/components/ui/MechanismCard';
 
 const STEP_KEYS = ['choose', 'move', 'discover', 'receive'] as const;
 
-export default function MechanismSection() {
-  const t = useTranslations('mechanism');
+export default async function MechanismSection() {
+  const t = await getTranslations('mechanism');
 
   return (
-    <section 
-      id="mechanism" 
+    <section
+      id="mechanism"
       className="relative py-32 lg:py-48 overflow-hidden bg-background"
     >
       <div className="mx-auto max-w-[1400px] w-full px-6">
@@ -29,15 +27,10 @@ export default function MechanismSection() {
         {/* Card grid with consistent container width */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {STEP_KEYS.map((key, index) => (
-            <MechanismCard 
-              key={key} 
-              stepKey={key} 
-              index={index} 
-            />
+            <MechanismCard key={key} stepKey={key} index={index} />
           ))}
         </div>
       </div>
     </section>
   );
 }
-

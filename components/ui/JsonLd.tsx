@@ -1,5 +1,3 @@
-'use client';
-
 export default function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script

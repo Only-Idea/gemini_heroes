@@ -51,8 +51,7 @@ export default function ImpactSection() {
       ref={sectionRef}
       id="impact"
       className="relative px-6 py-32 lg:py-48 bg-white overflow-hidden"
-      role="region"
-      aria-label={t('impact.title')}
+      aria-labelledby="impact-heading"
     >
       <div className="mx-auto max-w-[1400px]">
         <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-center">
@@ -64,6 +63,7 @@ export default function ImpactSection() {
               title={<>{t('impact.title')}</>}
               description={t('impact.description')}
               accentColor="teal"
+              headingId="impact-heading"
             />
 
             <div className="mt-12 w-full">

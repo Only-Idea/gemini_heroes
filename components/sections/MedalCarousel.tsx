@@ -237,7 +237,7 @@ export default function MedalCarousel() {
           >
             <Image
               src={`/images/medals/${medal.id}-front.png`}
-              alt={`${t(titleKey)} medal — front`}
+              alt={`Heroes ${t(titleKey)} virtual challenge finisher medal — front face`}
               fill
               sizes="(max-width: 1024px) 72vw, 480px"
               className="select-none object-contain drop-shadow-[0_30px_45px_rgba(15,17,20,0.35)]"
@@ -256,7 +256,7 @@ export default function MedalCarousel() {
           >
             <Image
               src={`/images/medals/${medal.id}-back.png`}
-              alt={`${t(titleKey)} medal — back`}
+              alt={`Heroes ${t(titleKey)} virtual challenge finisher medal — back face`}
               fill
               sizes="(max-width: 1024px) 72vw, 480px"
               className="select-none object-contain drop-shadow-[0_30px_45px_rgba(15,17,20,0.35)]"

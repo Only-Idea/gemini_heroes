@@ -1,24 +1,22 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import SectionLabel from '@/components/ui/SectionLabel';
 import ContactForm from '@/components/sections/ContactForm';
 import { cn } from '@/lib/utils';
+import { SOCIAL } from '@/lib/site';
 
 const socials: { label: string; href: string; icon: 'twitter' | 'instagram' }[] = [
-  { label: 'Twitter', href: 'https://twitter.com/medalhero', icon: 'twitter' },
-  { label: 'Instagram', href: 'https://instagram.com/medalhero', icon: 'instagram' },
+  { label: 'Twitter', href: SOCIAL.twitter, icon: 'twitter' },
+  { label: 'Instagram', href: SOCIAL.instagram, icon: 'instagram' },
 ];
 
-export default function ContactSection() {
-  const t = useTranslations();
+export default async function ContactSection() {
+  const t = await getTranslations();
 
   return (
     <section
       id="contact"
       className="relative overflow-hidden bg-background px-6 py-32 lg:py-48"
-      role="region"
-      aria-label={t('nav.contact')}
+      aria-labelledby="contact-heading"
     >
       {/* Soft background accent */}
       <div className="pointer-events-none absolute -left-32 top-12 h-72 w-72 rounded-full bg-teal/10 blur-[120px]" />
@@ -29,7 +27,9 @@ export default function ContactSection() {
           <SectionLabel
             number={t('contact.number')}
             label={t('nav.contact')}
-            title={t('contact.title')}
+            title={
+              <span id="contact-heading">{t('contact.title')}</span>
+            }
             description={t('contact.description')}
             accentColor="teal"
           />

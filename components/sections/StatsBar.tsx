@@ -1,23 +1,23 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 
-export default function StatsBar() {
-  const t = useTranslations();
+export default async function StatsBar() {
+  const t = await getTranslations('stats');
 
   const stats = [
-    { value: '3', label: t('stats.routes') },
-    { value: '12', label: t('stats.activities') },
-    { value: '47', label: t('stats.countries') },
+    { value: '3', label: t('routes') },
+    { value: '12', label: t('activities') },
+    { value: '47', label: t('countries') },
   ];
 
   return (
-    <section 
+    <section
       className="reveal py-20 bg-foreground/[0.02] border-y border-foreground/5 relative overflow-hidden"
-      role="region"
-      aria-label="Statistics"
+      aria-labelledby="stats-heading"
     >
+      <h2 id="stats-heading" className="sr-only">
+        Heroes by the numbers
+      </h2>
       {/* Background decoration */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-coral/5 blur-[120px] rounded-full pointer-events-none" />

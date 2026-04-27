@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +15,8 @@ interface SectionLabelProps {
   descriptionClassName?: string;
   titleSize?: 'default' | 'hero';
   as?: 'h1' | 'h2' | 'h3';
+  /** Optional id for the heading element — pair with aria-labelledby on the parent <section>. */
+  headingId?: string;
 }
 
 export default function SectionLabel({
@@ -33,6 +33,7 @@ export default function SectionLabel({
   descriptionClassName = '',
   titleSize = 'default',
   as: Tag = 'h2',
+  headingId,
 }: SectionLabelProps) {
   const colorMap = {
     teal: 'text-teal',
@@ -65,12 +66,15 @@ export default function SectionLabel({
         </p>
       )}
       
-      <Tag className={cn(
-        'font-display font-bold leading-[1.05] tracking-tight text-foreground',
-        sizeMap[titleSize],
-        itemClassName,
-        titleClassName
-      )}>
+      <Tag
+        id={headingId}
+        className={cn(
+          'font-display font-bold leading-[1.05] tracking-tight text-foreground',
+          sizeMap[titleSize],
+          itemClassName,
+          titleClassName
+        )}
+      >
         {title}
       </Tag>
 

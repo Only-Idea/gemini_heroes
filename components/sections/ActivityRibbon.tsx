@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Marquee from '@/components/ui/Marquee';
 import ActivityIcon, { ActivityKey } from '@/components/ui/ActivityIcon';
 
@@ -28,22 +26,24 @@ const rowB: ActivityEntry[] = [
   { activity: 'pilates', ja: 'ピラティス', en: 'Pilates' },
 ];
 
-export default function ActivityRibbon() {
-  const t = useTranslations('activities');
+export default async function ActivityRibbon() {
+  const t = await getTranslations('activities');
 
   return (
     <section
       className="relative w-full bg-white py-16 lg:py-24 border-y border-foreground/5 overflow-hidden"
-      role="region"
-      aria-label={t('message')}
+      aria-labelledby="activities-heading"
     >
       <div className="mx-auto mb-10 max-w-[1400px] px-6 text-center">
         <p className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-teal">
           {t('eyebrow')}
         </p>
-        <h3 className="mt-3 font-display text-section-title font-bold tracking-tight text-foreground">
+        <h2
+          id="activities-heading"
+          className="mt-3 font-display text-section-title font-bold tracking-tight text-foreground"
+        >
           {t('message')}
-        </h3>
+        </h2>
       </div>
 
       <div className="relative">

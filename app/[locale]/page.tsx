@@ -1,12 +1,12 @@
-'use client';
-
 import dynamic from 'next/dynamic';
 import Hero from '@/components/sections/Hero';
 import StatsBar from '@/components/sections/StatsBar';
 import MechanismSection from '@/components/sections/MechanismSection';
 import Challenges from '@/components/sections/Challenges';
-import JsonLd from '@/components/ui/JsonLd';
 
+// Below-the-fold sections are code-split to keep initial JS lean. They still
+// SSR (no `ssr: false`), so their text content is in the initial HTML for
+// crawlers — only the JS payload is deferred.
 const PhoneShowcase = dynamic(() => import('@/components/sections/PhoneShowcase'), {
   loading: () => <div className="min-h-[50vh] bg-foreground/[0.02]" />,
 });
@@ -27,23 +27,8 @@ const ContactSection = dynamic(() => import('@/components/sections/ContactSectio
 });
 
 export default function Home() {
-  const applicationJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'MobileApplication',
-    'name': 'Heroes',
-    'operatingSystem': 'iOS, Android',
-    'applicationCategory': 'HealthApplication, SportsApplication',
-    'description': 'A purpose-driven virtual challenge platform themed around iconic Japanese routes.',
-    'offers': {
-      '@type': 'Offer',
-      'price': '0',
-      'priceCurrency': 'USD'
-    }
-  };
-
   return (
-    <main className="flex-1">
-      <JsonLd data={applicationJsonLd} />
+    <main id="main" className="flex-1">
       <Hero />
       <StatsBar />
       <Challenges />

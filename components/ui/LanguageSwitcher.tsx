@@ -1,6 +1,5 @@
 'use client';
 
-import { useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
@@ -21,10 +20,11 @@ const DEFAULT_LOCALES = [
 const DEFAULT_LOCALE = 'ja';
 
 /**
- * Elegant segmented-pill language switcher. Uses next-intl's locale-aware
- * router so switching to the default locale correctly strips the `/en`
- * prefix (the bug with "JA not working" was the plain Next router fighting
- * the NEXT_LOCALE cookie set by middleware).
+ * Segmented-pill language switcher rendered as real anchors so search
+ * engines see the locale alternates without executing JS. The onClick
+ * just sets the NEXT_LOCALE cookie before the browser follows the link
+ * (full nav, not soft) — that combination is what makes switching back
+ * to the default un-prefixed locale reliable through the middleware.
  */
 export default function LanguageSwitcher({
   locales = DEFAULT_LOCALES,
@@ -34,32 +34,27 @@ export default function LanguageSwitcher({
   const currentLocale = useLocale();
   const t = useTranslations('language');
   const pathname = usePathname(); // locale-stripped path from next-intl
-  const [isPending, startTransition] = useTransition();
 
   const activeIndex = Math.max(
     0,
     locales.findIndex((l) => l.code === currentLocale)
   );
 
-  const go = (targetCode: string) => {
-    if (targetCode === currentLocale) return;
+  const buildHref = (targetCode: string) => {
     const basePath = pathname || '/';
-    const target =
-      targetCode === DEFAULT_LOCALE
-        ? basePath
-        : `/${targetCode}${basePath === '/' ? '' : basePath}`;
+    return targetCode === DEFAULT_LOCALE
+      ? basePath
+      : `/${targetCode}${basePath === '/' ? '' : basePath}`;
+  };
 
-    startTransition(() => {
-      // Use a full navigation so the middleware re-runs with the right
-      // cookie and locale — in-app soft navigation was not reliably
-      // switching back to the default (un-prefixed) locale here.
-      if (typeof window !== 'undefined') {
-        // Write the cookie up-front so the middleware picks up the intent
-        // even during a fast client-side re-request.
-        document.cookie = `NEXT_LOCALE=${targetCode}; Path=/; Max-Age=31536000; SameSite=Lax`;
-        window.location.assign(target);
-      }
-    });
+  const onSwitch = (e: React.MouseEvent<HTMLAnchorElement>, targetCode: string) => {
+    if (targetCode === currentLocale) {
+      e.preventDefault();
+      return;
+    }
+    // Persist preference so subsequent visits land on the right locale.
+    document.cookie = `NEXT_LOCALE=${targetCode}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    // Let the browser follow the href — full navigation runs middleware fresh.
   };
 
   const hPad = size === 'compact' ? 'h-9 p-0.5' : 'h-11 p-[3px]';
@@ -71,7 +66,6 @@ export default function LanguageSwitcher({
     <div
       role="group"
       aria-label={t('aria')}
-      aria-busy={isPending || undefined}
       className={cn(
         'relative inline-flex items-center rounded-full border border-foreground/15 bg-foreground/[0.03] backdrop-blur-sm',
         hPad,
@@ -93,22 +87,21 @@ export default function LanguageSwitcher({
       {locales.map((l) => {
         const isActive = l.code === currentLocale;
         return (
-          <button
+          <a
             key={l.code}
-            type="button"
-            onClick={() => go(l.code)}
-            aria-pressed={isActive}
+            href={buildHref(l.code)}
+            hrefLang={l.code}
+            onClick={(e) => onSwitch(e, l.code)}
+            aria-current={isActive ? 'true' : undefined}
             aria-label={l.label}
-            disabled={isPending}
             className={cn(
               'relative z-10 flex h-full items-center justify-center rounded-full font-mono font-bold uppercase tracking-[0.2em] transition-colors duration-300',
               segW,
-              isActive ? 'text-background' : 'text-muted hover:text-foreground',
-              'disabled:cursor-wait'
+              isActive ? 'text-background' : 'text-muted hover:text-foreground'
             )}
           >
             {l.short}
-          </button>
+          </a>
         );
       })}
     </div>
