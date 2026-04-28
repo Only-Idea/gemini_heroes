@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslations } from 'next-intl';
 import { useStore } from '@/store/useStore';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,9 +14,12 @@ export default function ScrollHint() {
   const pathRef = useRef<SVGPathElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const isIntroComplete = useStore((s) => s.isIntroComplete);
+  const isMobile = useIsMobile();
 
-  // Continuous path draw (always running regardless of intro gating)
+  // Continuous path draw — desktop only. On mobile this 3s ticker runs
+  // forever in the background; the hint fades out shortly anyway.
   useEffect(() => {
+    if (isMobile) return;
     const path = pathRef.current;
     if (!path) return;
     const length = path.getTotalLength();
@@ -27,7 +31,7 @@ export default function ScrollHint() {
     return () => {
       pathTl.kill();
     };
-  }, []);
+  }, [isMobile]);
 
   // Pre-intro: hold the hint invisible.
   useEffect(() => {

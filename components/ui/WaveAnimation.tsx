@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useStore } from '@/store/useStore';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { cn } from '@/lib/utils';
 
 interface WaveAnimationProps {
@@ -21,11 +22,12 @@ export default function WaveAnimation({
   const frontRef = useRef<SVGGElement>(null);
   const backRef = useRef<SVGGElement>(null);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const front = frontRef.current;
     const back = backRef.current;
-    if (!front || !back || isReducedMotion) return;
+    if (!front || !back || isReducedMotion || isMobile) return;
 
     const t1 = gsap.to(front, { xPercent: -50, duration: 16, ease: 'none', repeat: -1 });
     const t2 = gsap.to(back, { xPercent: -50, duration: 26, ease: 'none', repeat: -1 });
@@ -33,7 +35,7 @@ export default function WaveAnimation({
       t1.kill();
       t2.kill();
     };
-  }, [isReducedMotion]);
+  }, [isReducedMotion, isMobile]);
 
   return (
     <svg

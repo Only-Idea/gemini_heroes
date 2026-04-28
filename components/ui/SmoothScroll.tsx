@@ -11,11 +11,18 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // On touch devices, Lenis with syncTouch intercepts native scroll and
+    // lerps each frame — the textbook source of iOS/Android scroll lag.
+    // Let the OS scroll natively on touch.
+    const isTouch =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
+
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
-      syncTouch: true,
-      touchMultiplier: 1.5,
+      syncTouch: false,
       infinite: false,
     });
 

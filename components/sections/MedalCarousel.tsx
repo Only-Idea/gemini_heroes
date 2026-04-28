@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslations } from 'next-intl';
 import { useStore } from '@/store/useStore';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,6 +53,7 @@ export default function MedalCarousel() {
   const [showBack, setShowBack] = useState(false);
   const [hovered, setHovered] = useState(false);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
+  const isMobile = useIsMobile();
   const t = useTranslations();
 
   const medal = medals[variantIdx];
@@ -89,10 +91,11 @@ export default function MedalCarousel() {
     });
   }, [showBack, isReducedMotion]);
 
-  // Scroll-driven scale 0.85 → 1.0 through the section.
+  // Scroll-driven scale 0.85 → 1.0 through the section. Mobile skips the
+  // scrub — too much per-frame work for a tiny visual delta.
   useEffect(() => {
     const stage = stageRef.current;
-    if (!stage || isReducedMotion) return;
+    if (!stage || isReducedMotion || isMobile) return;
     const tween = gsap.fromTo(
       stage,
       { scale: 0.85 },
@@ -111,14 +114,14 @@ export default function MedalCarousel() {
       tween.scrollTrigger?.kill();
       tween.kill();
     };
-  }, [isReducedMotion]);
+  }, [isReducedMotion, isMobile]);
 
   // Mouse tilt + specular shine that tracks the cursor.
   useEffect(() => {
     const root = stageRef.current;
     const tilt = tiltRef.current;
     const shine = shineRef.current;
-    if (!root || !tilt || isReducedMotion) return;
+    if (!root || !tilt || isReducedMotion || isMobile) return;
 
     const xTo = gsap.quickTo(tilt, 'rotationY', { duration: 0.7, ease: 'power2.out' });
     const yTo = gsap.quickTo(tilt, 'rotationX', { duration: 0.7, ease: 'power2.out' });
@@ -151,7 +154,7 @@ export default function MedalCarousel() {
       root.removeEventListener('mousemove', onMove);
       root.removeEventListener('mouseleave', onLeave);
     };
-  }, [isReducedMotion]);
+  }, [isReducedMotion, isMobile]);
 
   return (
     <div
@@ -171,35 +174,41 @@ export default function MedalCarousel() {
         }}
       />
 
-      {/* Slow conic light beam behind the medal */}
-      <div
-        aria-hidden="true"
-        className="medal-conic pointer-events-none absolute inset-[10%] rounded-full opacity-40 transition-colors duration-1000"
-        style={{
-          background: `conic-gradient(from 0deg, transparent 0deg, ${medal.color}55 32deg, transparent 70deg, transparent 200deg, ${medal.color}33 232deg, transparent 270deg)`,
-          animation: 'medal-spin-slow 44s linear infinite',
-          filter: 'blur(8px)',
-        }}
-      />
+      {/* Slow conic light beam behind the medal — desktop only.
+          On mobile a permanently-spinning blurred conic gradient keeps
+          the compositor busy and chips at scroll perf. */}
+      {!isMobile && (
+        <div
+          aria-hidden="true"
+          className="medal-conic pointer-events-none absolute inset-[10%] rounded-full opacity-40 transition-colors duration-1000"
+          style={{
+            background: `conic-gradient(from 0deg, transparent 0deg, ${medal.color}55 32deg, transparent 70deg, transparent 200deg, ${medal.color}33 232deg, transparent 270deg)`,
+            animation: 'medal-spin-slow 44s linear infinite',
+            filter: 'blur(8px)',
+          }}
+        />
+      )}
 
-      {/* Dust particles drifting around */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        {DUST.map((d, i) => (
-          <span
-            key={i}
-            className="medal-dust absolute rounded-full"
-            style={{
-              width: d.size,
-              height: d.size,
-              left: `${d.x}%`,
-              top: `${d.y}%`,
-              background: medal.color,
-              opacity: d.o,
-              animation: `medal-drift ${d.dur}s ease-in-out ${d.delay}s infinite alternate`,
-            }}
-          />
-        ))}
-      </div>
+      {/* Dust particles drifting around — desktop only. */}
+      {!isMobile && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          {DUST.map((d, i) => (
+            <span
+              key={i}
+              className="medal-dust absolute rounded-full"
+              style={{
+                width: d.size,
+                height: d.size,
+                left: `${d.x}%`,
+                top: `${d.y}%`,
+                background: medal.color,
+                opacity: d.o,
+                animation: `medal-drift ${d.dur}s ease-in-out ${d.delay}s infinite alternate`,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Tilt + flip stack — click or keyboard-enter to flip manually */}
       <div

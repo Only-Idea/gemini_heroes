@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { usePlatform } from '@/hooks/usePlatform';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import SectionLabel from '@/components/ui/SectionLabel';
 import FeatureCard from '@/components/sections/FeatureCard';
 import AppBadge from '@/components/ui/AppBadge';
@@ -24,6 +25,7 @@ const FEATURE_IMAGES = [
 export default function PhoneShowcase() {
   const t = useTranslations('features');
   const platform = usePlatform();
+  const isMobile = useIsMobile();
   const showApple = platform === 'ios' || platform === 'other';
   const showGoogle = platform === 'android' || platform === 'other';
   const sectionRef = useRef<HTMLElement>(null);
@@ -72,14 +74,18 @@ export default function PhoneShowcase() {
   );
 
   // Scroll-driven active feature: the card whose vertical midpoint is
-  // closest to viewport center is highlighted.
+  // closest to viewport center is highlighted, and the phone screenshot
+  // advances in step. Runs on every viewport — the rAF throttle below
+  // keeps it ≤1 measurement per frame.
   useEffect(() => {
     const section = sectionRef.current;
     const container = containerRef.current;
     if (!section || !container) return;
 
     const ctx = gsap.context(() => {
+      let pending = false;
       const pickClosestToCenter = () => {
+        pending = false;
         const cards = container.querySelectorAll<HTMLElement>('[data-feature-card]');
         if (cards.length === 0) return;
         const center = window.innerHeight / 2;
@@ -97,11 +103,17 @@ export default function PhoneShowcase() {
         setActiveFeatureIndex(closest);
       };
 
+      const schedule = () => {
+        if (pending) return;
+        pending = true;
+        window.requestAnimationFrame(pickClosestToCenter);
+      };
+
       ScrollTrigger.create({
         trigger: section,
         start: 'top bottom',
         end: 'bottom top',
-        onUpdate: pickClosestToCenter,
+        onUpdate: schedule,
         onRefresh: pickClosestToCenter,
       });
     }, sectionRef);
@@ -136,7 +148,10 @@ export default function PhoneShowcase() {
   }, []);
 
   // Phone tilt: rotateY from -15 → 0 through section scroll range.
+  // Skipped on mobile — the phone isn't sticky there and the scrub adds
+  // scroll-handler work for an effect the user can't see.
   useEffect(() => {
+    if (isMobile) return;
     const section = sectionRef.current;
     if (!section) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -160,7 +175,7 @@ export default function PhoneShowcase() {
       );
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section

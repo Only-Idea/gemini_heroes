@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useStore } from '@/store/useStore';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,6 +25,7 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
   const branchesRef = useRef<SVGGElement>(null);
   const leavesRef = useRef<SVGGElement>(null);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const trunk = trunkRef.current;
@@ -49,33 +51,60 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
       return;
     }
 
+    // Mobile: one-shot timeline triggered on enter (no scrub) — same
+    // visual result without per-scroll work.
     const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerRef?.current ?? svgRef.current,
-        start: 'top 80%',
-        end: 'bottom 30%',
-        scrub: 0.6,
-      },
+      scrollTrigger: isMobile
+        ? {
+            trigger: triggerRef?.current ?? svgRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          }
+        : {
+            trigger: triggerRef?.current ?? svgRef.current,
+            start: 'top 80%',
+            end: 'bottom 30%',
+            scrub: 0.6,
+          },
     });
 
-    tl.to(trunk, { strokeDashoffset: 0, ease: 'none' }, 0);
-    tl.to(branchPaths, { strokeDashoffset: 0, ease: 'none', stagger: 0.08 }, 0.3);
-    tl.to(
-      leafCircles,
-      {
-        scale: 1,
-        ease: 'back.out(1.6)',
-        duration: 0.6,
-        stagger: { amount: 0.8, from: 'center' },
-      },
-      0.5
-    );
+    if (isMobile) {
+      tl.to(trunk, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.out' }, 0);
+      tl.to(
+        branchPaths,
+        { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out', stagger: 0.06 },
+        0.3
+      );
+      tl.to(
+        leafCircles,
+        {
+          scale: 1,
+          ease: 'back.out(1.6)',
+          duration: 0.5,
+          stagger: { amount: 0.5, from: 'center' },
+        },
+        0.6
+      );
+    } else {
+      tl.to(trunk, { strokeDashoffset: 0, ease: 'none' }, 0);
+      tl.to(branchPaths, { strokeDashoffset: 0, ease: 'none', stagger: 0.08 }, 0.3);
+      tl.to(
+        leafCircles,
+        {
+          scale: 1,
+          ease: 'back.out(1.6)',
+          duration: 0.6,
+          stagger: { amount: 0.8, from: 'center' },
+        },
+        0.5
+      );
+    }
 
     return () => {
       tl.scrollTrigger?.kill();
       tl.kill();
     };
-  }, [isReducedMotion, triggerRef]);
+  }, [isReducedMotion, triggerRef, isMobile]);
 
   return (
     <svg

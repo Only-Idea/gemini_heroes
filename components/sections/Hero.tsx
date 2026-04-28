@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useStore } from '@/store/useStore';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import AnimatedHeadline from '@/components/ui/AnimatedHeadline';
 import TypewriterText from '@/components/ui/TypewriterText';
 import GradientButton from '@/components/ui/GradientButton';
@@ -19,15 +20,26 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Hero() {
   const t = useTranslations();
   const isWebGLReady = useStore((s) => s.isWebGLReady);
+  const setWebGLReady = useStore((s) => s.setWebGLReady);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
   const isIntroComplete = useStore((s) => s.isIntroComplete);
   const setHeroScrollProgress = useStore((s) => s.setHeroScrollProgress);
+  const isMobile = useIsMobile();
 
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Parallax fade + drive heroScrollProgress for the orb dissolve.
+  // On mobile we skip the WebGL scene — flag the loader so PageTransition
+  // can finish without waiting for an scene that never mounts.
   useEffect(() => {
+    if (isMobile && !isWebGLReady) setWebGLReady(true);
+  }, [isMobile, isWebGLReady, setWebGLReady]);
+
+  // Parallax fade + drive heroScrollProgress for the orb dissolve.
+  // Skipped on mobile: the orb isn't rendered there and the scrubbed
+  // ScrollTrigger ran scroll-handler work on every frame.
+  useEffect(() => {
+    if (isMobile) return;
     const section = sectionRef.current;
     const content = contentRef.current;
     if (!section || !content) return;
@@ -57,7 +69,7 @@ export default function Hero() {
     }, section);
 
     return () => ctx.revert();
-  }, [isReducedMotion, setHeroScrollProgress]);
+  }, [isReducedMotion, setHeroScrollProgress, isMobile]);
 
   return (
     <section
@@ -66,17 +78,19 @@ export default function Hero() {
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-20"
       aria-labelledby="hero-heading"
     >
-      <div
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          isWebGLReady ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <Scene>
-          <HeroOrb />
-        </Scene>
-      </div>
+      {!isMobile && (
+        <div
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            isWebGLReady ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <Scene>
+            <HeroOrb />
+          </Scene>
+        </div>
+      )}
 
-      {!isWebGLReady && (
+      {(isMobile || !isWebGLReady) && (
         <div className="absolute inset-0 flex items-center justify-center bg-background">
           <div className="h-32 w-32 animate-pulse rounded-full bg-gradient-heroes opacity-5 blur-3xl" />
         </div>

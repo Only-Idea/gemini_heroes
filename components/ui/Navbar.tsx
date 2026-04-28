@@ -167,16 +167,18 @@ export default function Navbar() {
               </span>
             </a>
           ))}
-          <LanguageSwitcher size="default" className="mt-4" />
-          <GradientButton
-            variant="primary"
-            size="lg"
-            href="#download"
-            onClick={handleDownloadClick}
-            className="mt-4 px-10"
-          >
-            {t('download')}
-          </GradientButton>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+            <LanguageSwitcher size="default" />
+            <GradientButton
+              variant="primary"
+              size="lg"
+              href="#download"
+              onClick={handleDownloadClick}
+              className="px-10"
+            >
+              {t('download')}
+            </GradientButton>
+          </div>
         </div>
       </div>
     </>
