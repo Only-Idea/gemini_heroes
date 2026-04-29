@@ -102,7 +102,7 @@ export default function ImpactCounter({
 
       <div className="mt-4 flex items-center gap-3">
         <span className={cn('h-1.5 w-1.5 rounded-full', `bg-${accent}`, dotAccentShadow)} />
-        <p className="font-mono text-[11px] font-bold tracking-widest text-muted uppercase">
+        <p className="font-mono text-[13px] font-bold tracking-widest text-foreground/75 uppercase">
           {label}
         </p>
       </div>
@@ -120,7 +120,7 @@ export default function ImpactCounter({
           {progressLabel && (
             <p
               className={cn(
-                'font-mono text-[9px] uppercase tracking-[0.28em] text-muted',
+                'font-mono text-[12px] font-bold uppercase tracking-[0.28em] text-foreground/70',
                 showBar ? 'mt-2' : 'mt-0'
               )}
             >

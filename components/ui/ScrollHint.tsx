@@ -75,7 +75,7 @@ export default function ScrollHint() {
       ref={rootRef}
       className="absolute bottom-12 flex flex-col items-center gap-4 z-10"
     >
-      <span className="font-mono text-[11px] font-bold tracking-[0.3em] text-muted/30 uppercase">
+      <span className="font-mono text-[13px] font-bold tracking-[0.3em] text-foreground/70 uppercase">
         {t('hero.scroll')}
       </span>
       <div className="relative h-16 w-8 flex items-center justify-center">

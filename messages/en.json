@@ -38,7 +38,7 @@
     "subtitle": "Walk, run, cycle. A virtual challenge that fits your lifestyle. Every finish earns a premium, built-to-last medal — and plants a real tree in Japan.",
     "cta_download": "Start for Free",
     "cta_learn": "See the Challenges",
-    "scroll": "Begin the journey"
+    "scroll": "Begin your journey"
   },
   "stats": {
     "routes": "Challenge Courses",
@@ -68,7 +68,7 @@
     },
     "teams": {
       "title": "Community",
-      "description": "Go it alone, or move together. Team up with family and friends, or meet new Heroes who share your goal."
+      "description": "Go for it alone, or move together. Team up with family and friends, or meet new Heroes who share your goal."
     },
     "achievements": {
       "title": "Achievements",
@@ -82,7 +82,7 @@
   "mechanism": {
     "label": "04 / How it works",
     "title": "A simple system that ensures you stay on track",
-    "subtitle": "Even if you are new to virtual challenges, you can join with confidence. Follow these 4 steps to build healthy habits and enjoy unique experiences.",
+    "subtitle": "Even if you are new to virtual challenges, you can join with confidence. Follow these 4 steps to build healthy habits and enjoy a unique exercise experience.",
     "steps": {
       "choose": {
         "title": "1. Choose a challenge that fits you",
@@ -108,16 +108,19 @@
       },
       "discover": {
         "title": "3. Check progress on the virtual map",
-        "description": "Every time you record an activity, your avatar advances on the virtual map.",
-        "items": [],
+        "description": "Every time you record an activity, your avatar advances on the virtual map. Watch your progress build day by day — visible momentum that keeps you lacing up tomorrow.",
+        "items": [
+          "Track every km as your avatar moves",
+          "Unlock checkpoint stories along the route"
+        ],
         "footer": ""
       },
       "receive": {
         "title": "4. Receive your medal",
-        "description": "When you finish the challenge",
+        "description": "When you finish the challenge, celebrate it. Your medal arrives at your door — snap a photo, share it on social, tag @heroes, and become part of a community that turns finishes into stories.",
         "items": [
-          "High-quality medal delivered",
-          "Participate in tree-planting program"
+          "High-quality medal delivered to your door",
+          "Participate in our tree-planting program"
         ],
         "footer": "※Shipping: Sent within 10 business days after finish is verified."
       }
@@ -150,8 +153,8 @@
   },
   "impact": {
     "eyebrow": "Forest Project",
-    "title": "Every finish grows a forest.",
-    "description": "No vague donation model. Each completed challenge plants one real tree in Japan, in partnership with a transparent forest regeneration project. A clear, honest connection between your effort and real change.",
+    "title": "Every challenge grows a forest",
+    "description": "Each completed challenge plants one real tree in Japan, in partnership with a transparent forest regeneration project. A clear, honest connection between your effort and real change.",
     "trees": "Tree-planting Goal",
     "goal_eyebrow": "2026 — This Year's Target",
     "goal_note": "Launching soon",

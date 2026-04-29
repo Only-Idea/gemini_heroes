@@ -113,7 +113,7 @@ export default function FinalCTA() {
       <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-coral/10 blur-[100px]" />
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
-        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-teal">
+        <p className="font-mono text-[14px] sm:text-[16px] font-bold uppercase tracking-[0.4em] text-teal">
           {t('eyebrow')}
         </p>
 
@@ -123,7 +123,7 @@ export default function FinalCTA() {
           </TypewriterText>
         </h2>
 
-        <p className="cta-subline mt-8 max-w-xl text-body-lg font-medium text-muted">
+        <p className="cta-subline mt-16 max-w-2xl text-[clamp(20px,2.4vw,26px)] font-medium leading-relaxed text-foreground/65">
           {t('subline')}
         </p>
 

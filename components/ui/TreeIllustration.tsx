@@ -14,6 +14,30 @@ interface TreeIllustrationProps {
   className?: string;
 }
 
+interface TreePlacement {
+  /** SVG transform applied to the tree group */
+  transform: string;
+  /** Depth multiplier — back-row trees fade slightly */
+  depth: number;
+}
+
+// Each tree is the original SVG shape, just translated/scaled. We keep the
+// original geometry (trunk path, branch paths, leaf circles) untouched and
+// arrange a small forest around the centerpiece.
+const TREES: TreePlacement[] = [
+  // Hero tree — identity transform, full opacity (the original tree).
+  { transform: 'translate(0 0)', depth: 1.0 },
+  // Mid-flank trees
+  { transform: 'translate(-62 36) scale(0.6)', depth: 0.9 },
+  { transform: 'translate(62 36) scale(0.6)', depth: 0.9 },
+  // Front small trees
+  { transform: 'translate(-30 60) scale(0.4)', depth: 0.8 },
+  { transform: 'translate(30 60) scale(0.4)', depth: 0.8 },
+  // Back row distant trees
+  { transform: 'translate(-82 90) scale(0.32)', depth: 0.65 },
+  { transform: 'translate(82 90) scale(0.32)', depth: 0.65 },
+];
+
 /**
  * Stylised SVG tree that grows (stroke + branches + canopy) as the trigger
  * element scrolls through the viewport. Teal palette by default so it
@@ -21,20 +45,23 @@ interface TreeIllustrationProps {
  */
 export default function TreeIllustration({ triggerRef, className = '' }: TreeIllustrationProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const trunkRef = useRef<SVGPathElement>(null);
+  const trunksRef = useRef<SVGGElement>(null);
   const branchesRef = useRef<SVGGElement>(null);
   const leavesRef = useRef<SVGGElement>(null);
   const isReducedMotion = useStore((s) => s.isReducedMotion);
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    const trunk = trunkRef.current;
+    const trunks = trunksRef.current;
     const branches = branchesRef.current;
     const leaves = leavesRef.current;
-    if (!trunk || !branches || !leaves) return;
+    if (!trunks || !branches || !leaves) return;
 
-    const trunkLen = trunk.getTotalLength();
-    gsap.set(trunk, { strokeDasharray: trunkLen, strokeDashoffset: trunkLen });
+    const trunkPaths = Array.from(trunks.querySelectorAll<SVGPathElement>('path'));
+    trunkPaths.forEach((p) => {
+      const len = p.getTotalLength();
+      gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
+    });
 
     const branchPaths = Array.from(branches.querySelectorAll<SVGPathElement>('path'));
     branchPaths.forEach((p) => {
@@ -45,7 +72,7 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
     gsap.set(leafCircles, { scale: 0, transformOrigin: '50% 50%' });
 
     if (isReducedMotion) {
-      gsap.set(trunk, { strokeDashoffset: 0 });
+      trunkPaths.forEach((p) => gsap.set(p, { strokeDashoffset: 0 }));
       branchPaths.forEach((p) => gsap.set(p, { strokeDashoffset: 0 }));
       gsap.set(leafCircles, { scale: 1 });
       return;
@@ -69,10 +96,14 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
     });
 
     if (isMobile) {
-      tl.to(trunk, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.out' }, 0);
+      tl.to(
+        trunkPaths,
+        { strokeDashoffset: 0, duration: 0.9, ease: 'power2.out', stagger: 0.05 },
+        0
+      );
       tl.to(
         branchPaths,
-        { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out', stagger: 0.06 },
+        { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out', stagger: 0.04 },
         0.3
       );
       tl.to(
@@ -86,8 +117,8 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
         0.6
       );
     } else {
-      tl.to(trunk, { strokeDashoffset: 0, ease: 'none' }, 0);
-      tl.to(branchPaths, { strokeDashoffset: 0, ease: 'none', stagger: 0.08 }, 0.3);
+      tl.to(trunkPaths, { strokeDashoffset: 0, ease: 'none', stagger: 0.04 }, 0);
+      tl.to(branchPaths, { strokeDashoffset: 0, ease: 'none', stagger: 0.04 }, 0.3);
       tl.to(
         leafCircles,
         {
@@ -106,6 +137,20 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
     };
   }, [isReducedMotion, triggerRef, isMobile]);
 
+  // Original leaf cluster — kept exactly as before.
+  const LEAVES = [
+    { cx: 70, cy: 150, r: 9 },
+    { cx: 130, cy: 150, r: 9 },
+    { cx: 68, cy: 118, r: 10 },
+    { cx: 132, cy: 118, r: 10 },
+    { cx: 80, cy: 92, r: 8 },
+    { cx: 120, cy: 92, r: 8 },
+    { cx: 100, cy: 70, r: 14 },
+    { cx: 86, cy: 76, r: 9 },
+    { cx: 114, cy: 76, r: 9 },
+    { cx: 100, cy: 55, r: 10 },
+  ];
+
   return (
     <svg
       ref={svgRef}
@@ -116,9 +161,9 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
     >
       {/* Ground line */}
       <line
-        x1="20"
+        x1="6"
         y1="240"
-        x2="180"
+        x2="194"
         y2="240"
         stroke="var(--color-teal)"
         strokeOpacity="0.2"
@@ -126,48 +171,60 @@ export default function TreeIllustration({ triggerRef, className = '' }: TreeIll
         strokeDasharray="2 4"
       />
 
-      {/* Trunk */}
-      <path
-        ref={trunkRef}
-        d="M100 240 C 100 200, 100 160, 100 60"
-        stroke="var(--color-teal)"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-      />
-
-      {/* Branches */}
-      <g ref={branchesRef} stroke="var(--color-teal)" strokeOpacity="0.75" strokeWidth="1.8" strokeLinecap="round" fill="none">
-        <path d="M100 180 L 70 150" />
-        <path d="M100 180 L 130 150" />
-        <path d="M100 140 L 68 118" />
-        <path d="M100 140 L 132 118" />
-        <path d="M100 105 L 80 92" />
-        <path d="M100 105 L 120 92" />
+      {/* Trunks — one per tree, original path replicated under each transform */}
+      <g ref={trunksRef}>
+        {TREES.map((tree, i) => (
+          <g key={`trunk-${i}`} transform={tree.transform} style={{ transformOrigin: '100px 240px' }}>
+            <path
+              d="M100 240 C 100 200, 100 160, 100 60"
+              stroke="var(--color-teal)"
+              strokeOpacity={tree.depth}
+              strokeWidth="3"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </g>
+        ))}
       </g>
 
-      {/* Leaves (canopy cluster) */}
+      {/* Branches — original 6-path cluster replicated per tree */}
+      <g ref={branchesRef}>
+        {TREES.map((tree, i) => (
+          <g
+            key={`branches-${i}`}
+            transform={tree.transform}
+            style={{ transformOrigin: '100px 240px' }}
+            stroke="var(--color-teal)"
+            strokeOpacity={0.75 * tree.depth}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            fill="none"
+          >
+            <path d="M100 180 L 70 150" />
+            <path d="M100 180 L 130 150" />
+            <path d="M100 140 L 68 118" />
+            <path d="M100 140 L 132 118" />
+            <path d="M100 105 L 80 92" />
+            <path d="M100 105 L 120 92" />
+          </g>
+        ))}
+      </g>
+
+      {/* Leaves — original 10-circle canopy replicated per tree */}
       <g ref={leavesRef}>
-        {[
-          { cx: 70, cy: 150, r: 9 },
-          { cx: 130, cy: 150, r: 9 },
-          { cx: 68, cy: 118, r: 10 },
-          { cx: 132, cy: 118, r: 10 },
-          { cx: 80, cy: 92, r: 8 },
-          { cx: 120, cy: 92, r: 8 },
-          { cx: 100, cy: 70, r: 14 },
-          { cx: 86, cy: 76, r: 9 },
-          { cx: 114, cy: 76, r: 9 },
-          { cx: 100, cy: 55, r: 10 },
-        ].map((l, i) => (
-          <circle
-            key={i}
-            cx={l.cx}
-            cy={l.cy}
-            r={l.r}
-            fill="var(--color-teal)"
-            fillOpacity={0.2 + ((i % 3) * 0.08)}
-          />
+        {TREES.map((tree, i) => (
+          <g key={`leaves-${i}`} transform={tree.transform} style={{ transformOrigin: '100px 240px' }}>
+            {LEAVES.map((l, j) => (
+              <circle
+                key={j}
+                cx={l.cx}
+                cy={l.cy}
+                r={l.r}
+                fill="var(--color-teal)"
+                fillOpacity={(0.2 + ((j % 3) * 0.08)) * tree.depth}
+              />
+            ))}
+          </g>
         ))}
       </g>
     </svg>

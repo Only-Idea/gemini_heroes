@@ -192,6 +192,7 @@ export default function PhoneShowcase() {
           title={t('section_title')}
           accentColor="teal"
           className="mb-24"
+          titleClassName="text-[clamp(44px,6.5vw,80px)]"
           headingId="features-heading"
         />
 
