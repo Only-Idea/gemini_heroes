@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["ASLF6RU97W.io.heroes.app"],
+        "components": [
+          { "/": "/post/*",      "comment": "Open posts in app" },
+          { "/": "/challenge/*", "comment": "Open challenges in app" },
+          { "/": "/",            "comment": "Open home for bare URL" }
+        ]
+      }
+    ]
+  }
+}
