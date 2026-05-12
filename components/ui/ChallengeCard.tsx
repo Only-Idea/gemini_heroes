@@ -99,9 +99,9 @@ export default function ChallengeCard({
   };
 
   const labelTextClass = {
-    teal: 'text-teal',
-    amber: 'text-amber',
-    coral: 'text-coral',
+    teal: 'text-teal-dark',
+    amber: 'text-amber-dark',
+    coral: 'text-coral-dark',
   };
 
   const Tag = href ? 'a' : 'button';

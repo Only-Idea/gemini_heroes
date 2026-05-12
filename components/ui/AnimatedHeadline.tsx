@@ -56,19 +56,21 @@ export default function AnimatedHeadline({
   }, [children, delay, stagger, isReducedMotion, start]);
 
   return (
-    <span ref={rootRef} className={`inline-block ${className}`} aria-label={children}>
-      {Array.from(children).map((ch, i) => (
-        <span
-          key={i}
-          className="ah-mask inline-block overflow-hidden align-bottom leading-[1.05]"
-          style={{ whiteSpace: ch === ' ' ? 'pre' : 'normal' }}
-          aria-hidden="true"
-        >
-          <span className="ah-char inline-block will-change-transform">
-            {ch === ' ' ? ' ' : ch}
+    <span ref={rootRef} className={`relative inline-block ${className}`}>
+      <span className="sr-only">{children}</span>
+      <span aria-hidden="true" className="flex flex-wrap justify-center">
+        {Array.from(children).map((ch, i) => (
+          <span
+            key={i}
+            className="ah-mask inline-block overflow-hidden align-bottom leading-[1.05]"
+            style={{ whiteSpace: ch === ' ' ? 'pre' : 'normal' }}
+          >
+            <span className="ah-char inline-block will-change-transform">
+              {ch === ' ' ? ' ' : ch}
+            </span>
           </span>
-        </span>
-      ))}
+        ))}
+      </span>
     </span>
   );
 }

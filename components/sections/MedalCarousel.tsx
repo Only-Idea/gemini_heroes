@@ -27,10 +27,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 type MedalId = 'fuji' | 'ronin' | 'rail';
 
-const medals: { id: MedalId; color: string; glow: string }[] = [
-  { id: 'fuji', color: '#375E65', glow: 'rgba(55, 94, 101, 0.35)' },
-  { id: 'ronin', color: '#F2BE5E', glow: 'rgba(242, 190, 94, 0.4)' },
-  { id: 'rail', color: '#EC7A5C', glow: 'rgba(236, 122, 92, 0.38)' },
+const medals: { id: MedalId; color: string; colorDark: string; glow: string }[] = [
+  { id: 'fuji', color: '#375E65', colorDark: 'var(--color-teal-dark)', glow: 'rgba(55, 94, 101, 0.35)' },
+  { id: 'ronin', color: '#F2BE5E', colorDark: 'var(--color-amber-dark)', glow: 'rgba(242, 190, 94, 0.4)' },
+  { id: 'rail', color: '#EC7A5C', colorDark: 'var(--color-coral-dark)', glow: 'rgba(236, 122, 92, 0.38)' },
 ];
 
 const DUST = [
@@ -301,7 +301,7 @@ export default function MedalCarousel() {
       >
         <span
           className="inline-block font-mono text-[10px] font-bold uppercase tracking-[0.4em] animate-[hero-rise_0.7s_var(--ease-heroes)_both]"
-          style={{ color: medal.color }}
+          style={{ color: medal.colorDark }}
         >
           {t(titleKey)}
         </span>

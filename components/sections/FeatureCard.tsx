@@ -26,6 +26,18 @@ export default function FeatureCard({
   children,
 }: FeatureCardProps) {
   const tCommon = useTranslations('common');
+  const accentTextClass = {
+    teal: 'text-teal-dark',
+    amber: 'text-amber-dark',
+    coral: 'text-coral-dark',
+  };
+
+  const accentBgClass = {
+    teal: 'bg-teal',
+    amber: 'bg-amber',
+    coral: 'bg-coral',
+  };
+
   return (
     <GlassCard
       glowColor={accent}
@@ -53,7 +65,7 @@ export default function FeatureCard({
         <AnnotationLine
           d="M0 12 L200 12"
           viewBox="0 0 200 24"
-          className={`h-6 w-40 text-${accent}`}
+          className={cn('h-6 w-40', accentTextClass[accent])}
           strokeWidth={1.5}
         />
       </div>
@@ -61,7 +73,7 @@ export default function FeatureCard({
       <span
         className={cn(
           'font-mono text-[10px] font-bold uppercase tracking-[0.3em]',
-          `text-${accent}`
+          accentTextClass[accent]
         )}
       >
         {tCommon('feature_label')} / 0{index + 1}
@@ -77,7 +89,7 @@ export default function FeatureCard({
       <div
         className={cn(
           'absolute -left-6 top-1/2 -translate-y-1/2 h-2 w-2 rounded-full transition-all duration-500',
-          `bg-${accent}`,
+          accentBgClass[accent],
           active ? 'scale-150 shadow-[0_0_15px_rgba(var(--glow-rgb),0.5)]' : 'scale-0'
         )}
       />

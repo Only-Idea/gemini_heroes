@@ -57,10 +57,10 @@ export default function LanguageSwitcher({
     // Let the browser follow the href — full navigation runs middleware fresh.
   };
 
-  const hPad = size === 'compact' ? 'h-9 p-0.5' : 'h-11 p-[3px]';
-  const segW = size === 'compact' ? 'w-11 text-[11px]' : 'w-14 text-xs';
-  const widthPx = size === 'compact' ? 44 : 56;
-  const inset = size === 'compact' ? 2 : 3;
+  const hPad = size === 'compact' ? 'h-11 p-1' : 'h-12 p-[3px]';
+  const segW = size === 'compact' ? 'w-12 text-[11px]' : 'w-16 text-xs';
+  const widthPx = size === 'compact' ? 48 : 64;
+  const inset = size === 'compact' ? 4 : 3;
 
   return (
     <div

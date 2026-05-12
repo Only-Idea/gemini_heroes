@@ -11,9 +11,9 @@ interface DifficultyBadgeProps {
 }
 
 const levelStyles: Record<DifficultyLevel, { dot: string; ring: string; text: string; key: string }> = {
-  Easy: { dot: 'bg-teal', ring: 'border-teal/40 bg-teal/10', text: 'text-teal', key: 'easy' },
-  Moderate: { dot: 'bg-amber', ring: 'border-amber/50 bg-amber/10', text: 'text-amber', key: 'moderate' },
-  Epic: { dot: 'bg-coral', ring: 'border-coral/50 bg-coral/10', text: 'text-coral', key: 'epic' },
+  Easy: { dot: 'bg-teal', ring: 'border-teal/40 bg-teal/10', text: 'text-teal-dark', key: 'easy' },
+  Moderate: { dot: 'bg-amber', ring: 'border-amber/50 bg-amber/10', text: 'text-amber-dark', key: 'moderate' },
+  Epic: { dot: 'bg-coral', ring: 'border-coral/50 bg-coral/10', text: 'text-coral-dark', key: 'epic' },
 };
 
 export default function DifficultyBadge({ level, className = '' }: DifficultyBadgeProps) {

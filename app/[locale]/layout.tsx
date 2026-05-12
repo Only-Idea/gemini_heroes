@@ -2,21 +2,20 @@ import type { Viewport } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale, getTranslations } from 'next-intl/server';
+import ClientEffects from '@/components/ui/ClientEffects';
+
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
-import GrainOverlay from '@/components/ui/GrainOverlay';
-import CustomCursor from '@/components/ui/CustomCursor';
-import ScrollProgress from '@/components/ui/ScrollProgress';
-import SmoothScroll from '@/components/ui/SmoothScroll';
 import ScrollRevealMount from '@/components/ui/ScrollRevealMount';
-import GlobalCanvas from '@/components/three/GlobalCanvas';
-import DevTools from '@/components/three/DevTools';
-import FloatingDownloadBar from '@/components/ui/FloatingDownloadBar';
 import JsonLd from '@/components/ui/JsonLd';
 import HomeJsonLd from '@/components/seo/HomeJsonLd';
 import PageTransition from '@/components/ui/PageTransition';
 import { SITE_URL, SOCIAL, localeUrl } from '@/lib/site';
 import '../globals.css';
+
+export function generateStaticParams() {
+  return [{ locale: 'ja' }, { locale: 'en' }];
+}
 
 // Only the weights matched by Tailwind utilities in use (font-medium=500,
 // font-bold=700, body default=400). Wired through `@theme` in globals.css —
@@ -120,20 +119,14 @@ export default async function LocaleLayout({
         <HomeJsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
           <PageTransition />
-          <SmoothScroll>
+          <ClientEffects>
             <ScrollRevealMount />
-            <GlobalCanvas />
-            <GrainOverlay />
-            <CustomCursor />
-            <ScrollProgress />
             <Navbar />
             <div className="flex min-h-screen flex-col">
               {children}
               <Footer />
             </div>
-            <FloatingDownloadBar />
-            <DevTools />
-          </SmoothScroll>
+          </ClientEffects>
         </NextIntlClientProvider>
       </body>
     </html>

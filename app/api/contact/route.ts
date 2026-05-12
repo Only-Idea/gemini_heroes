@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 export async function POST(request: Request) {
   const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
   if (!accessKey) {

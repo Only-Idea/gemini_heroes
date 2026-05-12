@@ -73,7 +73,8 @@ export default function TypewriterText({
   const isTyping = typed.length < children.length;
 
   return (
-    <span className={`inline-flex items-baseline ${className}`} aria-label={children}>
+    <span className={`relative inline-flex items-baseline ${className}`}>
+      <span className="sr-only">{children}</span>
       <span aria-hidden="true">{typed}</span>
       {cursor && !isReducedMotion && isTyping && (
         <span

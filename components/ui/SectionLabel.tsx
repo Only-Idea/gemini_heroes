@@ -36,9 +36,9 @@ export default function SectionLabel({
   headingId,
 }: SectionLabelProps) {
   const colorMap = {
-    teal: 'text-teal',
-    coral: 'text-coral',
-    amber: 'text-amber',
+    teal: 'text-teal-dark',
+    coral: 'text-coral-dark',
+    amber: 'text-amber-dark',
     muted: 'text-muted',
   };
 

@@ -2,6 +2,8 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
+  // @ts-ignore - cacheComponents is the new home for PPR in Next.js 15/16
+  cacheComponents: true,
   images: {
     formats: ['image/avif', 'image/webp'],
   },
