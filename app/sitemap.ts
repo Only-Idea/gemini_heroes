@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://medalhero.com';
+const BASE_URL = 'https://www.medalhero.com';
 
 // Build timestamp — pinned per build so sitemap doesn't claim a fresh
 // mtime on every request (which suppresses re-crawl signals).

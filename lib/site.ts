@@ -1,7 +1,7 @@
 // Override per-environment via NEXT_PUBLIC_SITE_URL (no trailing slash).
 // Falls back to production so prod builds don't need the var set.
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://medalhero.com';
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://www.medalhero.com';
 
 export const SOCIAL = {
   twitter: 'https://x.com/HeroesMedalJp',
