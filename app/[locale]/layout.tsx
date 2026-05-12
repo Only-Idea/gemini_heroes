@@ -17,6 +17,8 @@ export function generateStaticParams() {
   return [{ locale: 'ja' }, { locale: 'en' }];
 }
 
+import { Suspense } from 'react';
+
 // Only the weights matched by Tailwind utilities in use (font-medium=500,
 // font-bold=700, body default=400). Wired through `@theme` in globals.css —
 // audit again if you add font-light / font-black classes anywhere.
@@ -79,12 +81,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function LocaleLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const locale = await getLocale();
+async function I18nProvider({ children, locale }: { children: React.ReactNode, locale: string }) {
   const messages = await getMessages();
   const pageUrl = localeUrl(locale);
 
@@ -106,6 +103,33 @@ export default async function LocaleLayout({
   };
 
   return (
+    <NextIntlClientProvider messages={messages}>
+      <JsonLd data={organizationJsonLd} />
+      <JsonLd data={websiteJsonLd} />
+      <HomeJsonLd locale={locale} />
+      <PageTransition />
+      <ClientEffects>
+        <ScrollRevealMount />
+        <Navbar />
+        <div className="flex min-h-screen flex-col">
+          {children}
+          <Footer />
+        </div>
+      </ClientEffects>
+    </NextIntlClientProvider>
+  );
+}
+
+export default async function LocaleLayout({
+  children,
+  params
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}>) {
+  const { locale } = await params;
+
+  return (
     <html lang={locale} className={`${notoSansJP.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-foreground" suppressHydrationWarning>
         <a
@@ -114,20 +138,15 @@ export default async function LocaleLayout({
         >
           Skip to content
         </a>
-        <JsonLd data={organizationJsonLd} />
-        <JsonLd data={websiteJsonLd} />
-        <HomeJsonLd locale={locale} />
-        <NextIntlClientProvider messages={messages}>
-          <PageTransition />
-          <ClientEffects>
-            <ScrollRevealMount />
-            <Navbar />
-            <div className="flex min-h-screen flex-col">
-              {children}
-              <Footer />
-            </div>
-          </ClientEffects>
-        </NextIntlClientProvider>
+        <Suspense fallback={
+          <div className="flex min-h-screen flex-col items-center justify-center bg-background">
+            <div className="h-12 w-12 animate-pulse rounded-full bg-gradient-heroes opacity-20 blur-xl" />
+          </div>
+        }>
+          <I18nProvider locale={locale}>
+            {children}
+          </I18nProvider>
+        </Suspense>
       </body>
     </html>
   );
