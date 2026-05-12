@@ -76,7 +76,6 @@ export default function GlobalCanvas() {
           onFallback={() => setPerfLevel(1)}
         />
         <View.Port />
-        <Preload all />
       </Canvas>
     </div>
   );

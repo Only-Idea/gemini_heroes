@@ -43,7 +43,7 @@ export default function StoreBadge({ store, href, className = '' }: StoreBadgePr
     >
       <Image
         src={badge.src}
-        alt={`Download on ${badge.label}`}
+        alt=""
         width={badge.width}
         height={badge.height}
         priority

@@ -32,8 +32,8 @@ export default function ScrollProgress() {
   return (
     <div className="fixed top-0 left-0 z-[60] h-[3px] w-full" aria-hidden="true">
       <div
-        className="h-full bg-gradient-heroes transition-[width] duration-300 ease-out shadow-[0_0_10px_rgba(236,122,92,0.3)]"
-        style={{ width: `${progress * 100}%` }}
+        className="h-full w-full bg-gradient-heroes origin-left transition-transform duration-300 ease-out shadow-[0_0_10px_rgba(236,122,92,0.3)]"
+        style={{ transform: `scaleX(${progress})` }}
       />
     </div>
   );

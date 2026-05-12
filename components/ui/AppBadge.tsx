@@ -41,7 +41,7 @@ export default function AppBadge({ store, size = 'default', className = '' }: Ap
     >
       <Image
         src={badge.src}
-        alt={`Download on ${badge.label}`}
+        alt=""
         width={badge.width}
         height={badge.height}
         className={cn(heightClass, 'w-auto')}

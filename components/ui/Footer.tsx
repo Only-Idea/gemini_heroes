@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="inline-flex items-center gap-3">
             <Image
               src="/images/logo/logo.png"
-              alt="Heroes"
+              alt=""
               width={96}
               height={96}
               className="h-10 w-10 object-contain"

@@ -132,7 +132,7 @@ export default function FinalCTA() {
             <GradientButton
               variant="primary"
               size="lg"
-              className="cta-pulse [animation:cta-pulse_3.6s_ease-in-out_infinite]"
+              className="cta-pulse"
               onClick={handleInstallClick}
             >
               {t('primary')}

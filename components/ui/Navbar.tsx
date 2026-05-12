@@ -83,7 +83,7 @@ export default function Navbar() {
           >
             <Image
               src="/images/logo/logo.png"
-              alt="Heroes"
+              alt=""
               width={96}
               height={96}
               priority

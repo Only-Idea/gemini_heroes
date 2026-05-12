@@ -36,14 +36,11 @@ export default function CustomCursor() {
       }
 
       if (ringRef.current) {
-        const size = isHovering.current ? 72 : 24;
-        const offset = size / 2;
-        ringRef.current.style.width = `${size}px`;
-        ringRef.current.style.height = `${size}px`;
-        ringRef.current.style.transform = `translate(${ringPos.current.x - offset}px, ${ringPos.current.y - offset}px)`;
+        const scale = isHovering.current ? 3 : 1;
+        ringRef.current.style.transform = `translate(${ringPos.current.x - 12}px, ${ringPos.current.y - 12}px) scale(${scale})`;
         ringRef.current.style.borderColor = isHovering.current
           ? 'var(--color-coral)'
-          : 'rgba(26, 28, 30, 0.15)'; // Using foreground color with low opacity
+          : 'rgba(26, 28, 30, 0.15)';
         
         if (isHovering.current) {
           ringRef.current.style.backgroundColor = 'rgba(236, 122, 92, 0.05)';
@@ -77,7 +74,7 @@ export default function CustomCursor() {
       {/* Ring */}
       <div
         ref={ringRef}
-        className="absolute left-0 top-0 h-6 w-6 rounded-full border border-foreground/15 transition-[width,height,border-color,background-color] duration-500 ease-out"
+        className="absolute left-0 top-0 h-6 w-6 rounded-full border border-foreground/15 transition-[transform,border-color,background-color] duration-500 ease-out will-change-transform"
       />
     </div>
   );
