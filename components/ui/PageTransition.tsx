@@ -12,10 +12,15 @@ export default function PageTransition() {
   const setIntroComplete = useStore((s) => s.setIntroComplete);
   const [phase, setPhase] = useState<Phase>('visible');
   const [progress, setProgress] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (phase === 'hidden') {
-      setIntroComplete(true);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || phase === 'hidden') {
+      if (phase === 'hidden') setIntroComplete(true);
       return;
     }
 
@@ -43,9 +48,9 @@ export default function PageTransition() {
       clearTimeout(safetyExit);
       clearTimeout(safetyHide);
     };
-  }, [isWebGLReady, phase, setIntroComplete]);
+  }, [isWebGLReady, phase, setIntroComplete, mounted]);
 
-  if (phase === 'hidden') return null;
+  if (!mounted || phase === 'hidden') return null;
 
   return (
     <div

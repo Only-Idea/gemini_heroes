@@ -1,16 +1,13 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import SmoothScroll from '@/components/ui/SmoothScroll';
 
 // Defer heavy UI and 3D components to avoid blocking the main thread during initial paint.
 // This reduces the 'Render Blocking Resources' and 'Main Thread Activity' metrics.
 
 const GlobalCanvas = dynamic(() => import('@/components/three/GlobalCanvas'), {
-  ssr: false,
-});
-
-const SmoothScroll = dynamic(() => import('@/components/ui/SmoothScroll'), {
   ssr: false,
 });
 
@@ -40,15 +37,20 @@ export default function ClientEffects({ children }: { children: React.ReactNode 
   useEffect(() => {
     // Phase 2: Defer heaviest elements until window is fully loaded or a short idle period.
     // This protects the TBT metric during the critical hydration phase.
-    const timer = setTimeout(() => {
+    const onReady = () => {
       if ('requestIdleCallback' in window) {
         window.requestIdleCallback(() => setIsDeferredReady(true));
       } else {
         setIsDeferredReady(true);
       }
-    }, 200);
+    };
 
-    return () => clearTimeout(timer);
+    if (document.readyState === 'complete') {
+      onReady();
+    } else {
+      window.addEventListener('load', onReady);
+      return () => window.removeEventListener('load', onReady);
+    }
   }, []);
 
   return (

@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { setRequestLocale } from 'next-intl/server';
 import Hero from '@/components/sections/Hero';
 import StatsBar from '@/components/sections/StatsBar';
 import MechanismSection from '@/components/sections/MechanismSection';
@@ -26,7 +27,14 @@ const ContactSection = dynamic(() => import('@/components/sections/ContactSectio
   loading: () => <div className="min-h-[50vh] bg-background" />,
 });
 
-export default function Home() {
+export default async function Home({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <main id="main" className="flex-1">
       <Hero />

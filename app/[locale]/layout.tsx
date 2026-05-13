@@ -1,23 +1,20 @@
 import type { Viewport } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getLocale, getTranslations } from 'next-intl/server';
-import ClientEffects from '@/components/ui/ClientEffects';
-
+import { getMessages, getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import ScrollRevealMount from '@/components/ui/ScrollRevealMount';
 import JsonLd from '@/components/ui/JsonLd';
 import HomeJsonLd from '@/components/seo/HomeJsonLd';
 import PageTransition from '@/components/ui/PageTransition';
+import ClientEffects from '@/components/ui/ClientEffects';
 import { SITE_URL, SOCIAL, localeUrl } from '@/lib/site';
 import '../globals.css';
 
 export function generateStaticParams() {
   return [{ locale: 'ja' }, { locale: 'en' }];
 }
-
-import { Suspense } from 'react';
 
 // Only the weights matched by Tailwind utilities in use (font-medium=500,
 // font-bold=700, body default=400). Wired through `@theme` in globals.css —
@@ -81,7 +78,16 @@ export async function generateMetadata({
   };
 }
 
-async function I18nProvider({ children, locale }: { children: React.ReactNode, locale: string }) {
+export default async function LocaleLayout({
+  children,
+  params
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}>) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const messages = await getMessages();
   const pageUrl = localeUrl(locale);
 
@@ -103,33 +109,6 @@ async function I18nProvider({ children, locale }: { children: React.ReactNode, l
   };
 
   return (
-    <NextIntlClientProvider messages={messages}>
-      <JsonLd data={organizationJsonLd} />
-      <JsonLd data={websiteJsonLd} />
-      <HomeJsonLd locale={locale} />
-      <PageTransition />
-      <ClientEffects>
-        <ScrollRevealMount />
-        <Navbar />
-        <div className="flex min-h-screen flex-col">
-          {children}
-          <Footer />
-        </div>
-      </ClientEffects>
-    </NextIntlClientProvider>
-  );
-}
-
-export default async function LocaleLayout({
-  children,
-  params
-}: Readonly<{
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}>) {
-  const { locale } = await params;
-
-  return (
     <html lang={locale} className={`${notoSansJP.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-foreground" suppressHydrationWarning>
         <a
@@ -138,15 +117,20 @@ export default async function LocaleLayout({
         >
           Skip to content
         </a>
-        <Suspense fallback={
-          <div className="flex min-h-screen flex-col items-center justify-center bg-background">
-            <div className="h-12 w-12 animate-pulse rounded-full bg-gradient-heroes opacity-20 blur-xl" />
-          </div>
-        }>
-          <I18nProvider locale={locale}>
-            {children}
-          </I18nProvider>
-        </Suspense>
+        <JsonLd data={organizationJsonLd} />
+        <JsonLd data={websiteJsonLd} />
+        <HomeJsonLd locale={locale} />
+        <NextIntlClientProvider messages={messages}>
+          <PageTransition />
+          <ClientEffects>
+            <ScrollRevealMount />
+            <Navbar />
+            <div className="flex min-h-screen flex-col">
+              {children}
+              <Footer />
+            </div>
+          </ClientEffects>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
