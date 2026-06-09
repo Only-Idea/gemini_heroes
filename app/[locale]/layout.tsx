@@ -2,6 +2,7 @@ import type { Viewport } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
+import { Analytics } from '@vercel/analytics/next';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import ScrollRevealMount from '@/components/ui/ScrollRevealMount';
@@ -131,6 +132,7 @@ export default async function LocaleLayout({
             </div>
           </ClientEffects>
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
