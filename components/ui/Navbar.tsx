@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import GradientButton from '@/components/ui/GradientButton';
+import { useAnchorScroll } from '@/components/ui/SmoothScroll';
+import { useLenis } from 'lenis/react';
 
 const navLinks = [
   { key: 'challenges', href: '#challenges' },
@@ -25,38 +27,19 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Lock scroll while the mobile menu is open (Lenis adds overflow: clip to <html>).
+  const lenis = useLenis();
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileOpen]);
+    if (mobileOpen) lenis?.stop();
+    else lenis?.start();
+  }, [mobileOpen, lenis]);
 
+  const scrollToAnchor = useAnchorScroll();
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Real anchors stay crawlable; intercept click for smooth scroll + close menu.
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: 'smooth' });
-      // Keep the URL hash in sync without a page jump.
-      if (typeof history !== 'undefined') {
-        history.replaceState(null, '', href);
-      }
-    }
-  };
-
-  const handleDownloadClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setMobileOpen(false);
-    const el = document.querySelector('#download');
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      if (typeof history !== 'undefined') {
-        history.replaceState(null, '', '#download');
-      }
-    }
+    // Restart now: start() resets Lenis, which would cancel a scroll begun before the effect runs.
+    lenis?.start();
+    scrollToAnchor(e, href);
   };
 
   return (
@@ -74,10 +57,7 @@ export default function Navbar() {
           {/* Logo — left column */}
           <a
             href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onClick={(e) => handleAnchorClick(e, '#')}
             aria-label="Heroes — home"
             className="justify-self-start inline-flex items-center gap-2"
           >
@@ -114,7 +94,7 @@ export default function Navbar() {
             <GradientButton
               variant="primary"
               href="#download"
-              onClick={handleDownloadClick}
+              onClick={(e) => handleAnchorClick(e, '#download')}
               className="h-10 px-5 text-xs tracking-wide"
             >
               {t('download')}
@@ -173,7 +153,7 @@ export default function Navbar() {
               variant="primary"
               size="lg"
               href="#download"
-              onClick={handleDownloadClick}
+              onClick={(e) => handleAnchorClick(e, '#download')}
               className="px-10"
             >
               {t('download')}

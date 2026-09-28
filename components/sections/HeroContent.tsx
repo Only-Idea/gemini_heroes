@@ -3,6 +3,7 @@
 import AnimatedHeadline from '@/components/ui/AnimatedHeadline';
 import GradientButton from '@/components/ui/GradientButton';
 import TypewriterText from '@/components/ui/TypewriterText';
+import { useAnchorScroll } from '@/components/ui/SmoothScroll';
 import { useStore } from '@/store/useStore';
 
 interface HeroContentProps {
@@ -22,14 +23,7 @@ export default function HeroContent({
 }: HeroContentProps) {
   const isIntroComplete = useStore((s) => s.isIntroComplete);
 
-  const handleDownloadClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const el = document.getElementById('download');
-    if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      history.replaceState(null, '', '#download');
-    }
-  };
+  const scrollToAnchor = useAnchorScroll();
 
   return (
     <>
@@ -43,11 +37,9 @@ export default function HeroContent({
         id="hero-heading"
         className="mt-8 font-display text-hero font-bold leading-[1.05] tracking-tight text-foreground"
       >
-        <span className="animate-hero-shimmer bg-gradient-heroes bg-[length:200%_200%] bg-clip-text text-transparent [animation:hero-shimmer_8s_ease-in-out_infinite]">
-          <AnimatedHeadline start={isIntroComplete} delay={420} stagger={0.035}>
-            {title}
-          </AnimatedHeadline>
-        </span>
+        <AnimatedHeadline start={isIntroComplete} delay={420} stagger={0.035} gradient>
+          {title}
+        </AnimatedHeadline>
       </h1>
 
       <p
@@ -66,7 +58,7 @@ export default function HeroContent({
           size="lg"
           href="#download"
           aria-label={ctaDownload}
-          onClick={handleDownloadClick}
+          onClick={(e) => scrollToAnchor(e, '#download')}
         >
           {ctaDownload}
         </GradientButton>

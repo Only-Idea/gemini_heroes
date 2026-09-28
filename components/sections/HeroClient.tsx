@@ -87,7 +87,7 @@ export default function HeroClient({ children }: { children: React.ReactNode }) 
 
       <div
         ref={contentRef}
-        className={`relative z-10 flex max-w-5xl flex-col items-center text-center ${
+        className={`relative z-10 flex max-w-6xl flex-col items-center text-center ${
           isIntroComplete ? 'hero-ready' : ''
         }`}
       >

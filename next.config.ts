@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
+import { STORE_LINKS } from './lib/storeLinks';
 
 const nextConfig: NextConfig = {
   // @ts-ignore - cacheComponents is the new home for PPR in Next.js 15/16
@@ -17,6 +18,24 @@ const nextConfig: NextConfig = {
       { source: '/challenges', destination: '/#challenges', permanent: true },
       { source: '/features', destination: '/#features', permanent: true },
       { source: '/download', destination: '/#download', permanent: true },
+      // Smart app link (QR codes, social bios): /app → store by user-agent,
+      // everyone else → Japanese homepage. Temporary so store URLs can change.
+      // ponytail: iPadOS 13+ sends a desktop Mac UA, so iPads land on the homepage.
+      {
+        source: '/app',
+        has: [{ type: 'header', key: 'user-agent', value: '.*(iPhone|iPad|iPod).*' }],
+        destination: STORE_LINKS.apple,
+        permanent: false,
+        basePath: false,
+      },
+      {
+        source: '/app',
+        has: [{ type: 'header', key: 'user-agent', value: '.*Android.*' }],
+        destination: STORE_LINKS.google,
+        permanent: false,
+        basePath: false,
+      },
+      { source: '/app', destination: '/ja', permanent: false },
       // Direct deep-links for the three challenge products → Shopify variants.
       // `basePath: false` keeps the locale prefix from being prepended to the
       // external destination URL.

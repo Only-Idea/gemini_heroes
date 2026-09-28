@@ -84,14 +84,14 @@
   --font-body: var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Font sizes — Type Scale */
-  --font-size-hero: clamp(48px, 9vw, 112px);
-  --font-size-section-title: clamp(36px, 5vw, 64px);
-  --font-size-subhead: 24px;
-  --font-size-body-lg: 20px;
-  --font-size-body: 17px;
-  --font-size-nav: 13px;
-  --font-size-label: 11px;
+  /* Font sizes — Type Scale (Tailwind v4 reads the `--text-*` namespace) */
+  --text-hero: clamp(48px, 9vw, 112px);
+  --text-section-title: clamp(36px, 5vw, 64px);
+  --text-subhead: 24px;
+  --text-body-lg: 20px;
+  --text-body: 17px;
+  --text-nav: 13px;
+  --text-label: 11px;
 }
 
 /* =========================================
@@ -172,6 +172,34 @@ button, a, [role="button"] {
   50%      { background-position: 100% 50%; }
 }
 
+/* Hero headline gradient, clipped per char — offsets set in AnimatedHeadline.
+   Mirrors hero-shimmer: 200% gradient box sliding left and back. */
+@property --ah-shimmer {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes ah-shimmer {
+  0%, 100% { --ah-shimmer: 0; }
+  50%      { --ah-shimmer: 1; }
+}
+
+.ah-gradient {
+  animation: ah-shimmer 8s ease-in-out infinite;
+}
+
+.ah-gradient .ah-char {
+  background-image: var(--gradient-heroes);
+  background-size: calc(var(--ah-w) * 2) calc(var(--ah-h) * 2);
+  background-position:
+    calc(-1 * var(--ah-x) - var(--ah-shimmer) * var(--ah-w))
+    calc(-1 * var(--ah-y) - var(--ah-h) / 2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -221,7 +249,7 @@ button, a, [role="button"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-hero-shimmer {
+  .ah-gradient {
     animation: none !important;
   }
   .hero-rise,
